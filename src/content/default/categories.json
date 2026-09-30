@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Web Development",
+    "slug": "web-development",
+    "description": "Phát triển web hiện đại & Edge Computing",
+    "color": "#424245",
+    "icon": "💻"
+  },
+  {
+    "name": "UI/UX Design",
+    "slug": "ui-ux-design",
+    "description": "Thiết kế trải nghiệm và giao diện người dùng tối giản",
+    "color": "#c97a61",
+    "icon": "🎨"
+  },
+  {
+    "name": "SvelteKit",
+    "slug": "sveltekit",
+    "description": "Fullstack Svelte 5 framework",
+    "color": "#ff3e00",
+    "icon": "🔥"
+  },
+  {
+    "name": "Documentation",
+    "slug": "documentation",
+    "description": "Tài liệu kỹ thuật & hướng dẫn kiến trúc",
+    "color": "#2563eb",
+    "icon": "📚"
+  },
+  {
+    "name": "SaaS & Cloud",
+    "slug": "saas-cloud",
+    "description": "Giải pháp phần mềm dịch vụ và điện toán đám mây",
+    "color": "#6366f1",
+    "icon": "⚡"
+  },
+  {
+    "name": "Open Source",
+    "slug": "open-source",
+    "description": "Các dự án và công cụ nguồn mở cho cộng đồng",
+    "color": "#10b981",
+    "icon": "🌐"
+  }
+]

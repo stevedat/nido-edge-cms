@@ -1,0 +1,74 @@
+[
+  {
+    "id": "post_welcome_edge_cms",
+    "title": "Chào mừng bạn đến với Nido Edge CMS: Nền tảng CMS & Tài liệu Siêu Tốc",
+    "title_en": "Welcome to Nido Edge CMS: The Ultra-Fast Edge-Native Platform",
+    "slug": "chao-mung-den-voi-edge-cms",
+    "content": "Chào mừng bạn đã triển khai thành công **Nido Edge CMS**! Đây là nền tảng quản trị nội dung và tài liệu thế hệ mới, kết hợp sức mạnh biên dịch của **Svelte 5 Runes**, kiểu dáng tối giản của **Tailwind CSS v4**, và kiến trúc điện toán biên (**Edge Computing**).\n\n## 1. Tại sao Edge CMS khác biệt?\n\nKhác với các hệ thống CMS truyền thống như WordPress hay Docusaurus:\n- **Tải tức thì (Zero-VDOM):** Nhờ cơ chế phản ứng mịn (Fine-grained reactivity) của Svelte 5, website không cần nạp Virtual DOM nặng nề, mang lại điểm Core Web Vitals 100/100.\n- **Không cần Máy chủ SQL đắt đỏ:** Nội dung được lưu trữ trực tiếp dưới dạng tệp tĩnh (Git-backed JSON / Markdown) hoặc cache thông minh tại hơn 300 trạm biên trên toàn cầu qua Cloudflare Workers và Vercel.\n- **Trình soạn thảo trực quan tích hợp:** Bạn không cần phải mở VS Code để viết tài liệu. Chỉ cần truy cập `/admin`, đăng nhập và sử dụng trình soạn thảo WYSIWYG mượt mà.\n\n## 2. Các bước tiếp theo\n\n1. Đăng nhập vào trang quản trị tại `/admin/login` bằng mật khẩu đã cấu hình trong file `.env`.\n2. Thay đổi thông tin cá nhân hoặc thương hiệu trong mục **Cài đặt (Settings)**.\n3. Viết bài viết hoặc tài liệu mới trong mục **Bài viết (Posts)**.\n\nChúc bạn có những trải nghiệm tuyệt vời cùng Edge CMS!",
+    "content_en": "Welcome to **Nido Edge CMS**! A next-generation content management and documentation engine combining the compiled efficiency of **Svelte 5 Runes**, modern styling with **Tailwind CSS v4**, and global **Edge Computing**.\n\n## 1. What makes Edge CMS special?\n\nUnlike traditional CMS setups or legacy static generators:\n- **Instant Load (Zero-VDOM):** Powered by Svelte 5 fine-grained signals, eliminating heavy virtual DOM hydration overhead for perfect 100/100 Lighthouse performance.\n- **No Expensive SQL Servers:** Content is version-controlled cleanly via Git-backed JSON & Markdown, cached globally across 300+ edge nodes.\n- **Integrated Visual CMS:** You don't need a code editor to write documentation. Simply log in at `/admin` and enjoy the frictionless WYSIWYG editing experience.\n\n## 2. Next Steps\n\n1. Sign in to your dashboard at `/admin/login` using the password configured in your `.env` file.\n2. Customize your site title and theme presets in **Settings**.\n3. Publish your first article or guide in **Posts**.",
+    "excerpt": "Khám phá kiến trúc Svelte 5 và cách bắt đầu xây dựng trang tài liệu, blog cá nhân với Edge CMS.",
+    "excerpt_en": "Discover Svelte 5 architecture and learn how to kickstart your docs and blog with Edge CMS.",
+    "status": "PUBLISHED",
+    "authorId": "admin",
+    "thumbnail": "/projects/project-1.svg",
+    "publishedAt": "2026-09-24T07:18:00.441Z",
+    "tags": [
+      "SvelteKit",
+      "Edge CMS",
+      "Guide"
+    ],
+    "tagSlugs": [
+      "sveltekit",
+      "edge-cms",
+      "guide"
+    ]
+  },
+  {
+    "id": "post_mastering_markdown_editor",
+    "title": "Hướng dẫn Soạn thảo: Markdown & Trình biên tập WYSIWYG",
+    "title_en": "Mastering Content Creation: Markdown & WYSIWYG Editor",
+    "slug": "huong-dan-soan-thao-markdown-wysiwyg",
+    "content": "Edge CMS mang lại trải nghiệm viết bài linh hoạt nhất: bạn có thể viết bằng cú pháp **Markdown** quen thuộc, hoặc định dạng trực quan bằng thanh công cụ **WYSIWYG**.\n\n## 1. Tiêu đề và Danh sách\n\nHệ thống hỗ trợ đầy đủ các phân cấp tiêu đề `H1`, `H2`, `H3` cùng với danh sách có thứ tự và không thứ tự:\n- Hỗ trợ đánh dấu đoạn code (Inline code: `const x = 10;`)\n- Hỗ trợ khối trích dẫn (Blockquote)\n- Tự động định dạng liên kết và hình ảnh\n\n> Trích dẫn: Sự tối giản không phải là có ít hơn, mà là làm cho những gì còn lại có ý nghĩa nhiều hơn.\n\n## 2. Nhúng Code và Đánh dấu Cú pháp\n\nBạn có thể dễ dàng nhúng mã nguồn trong các bài viết kỹ thuật:\n```javascript\n// Khởi chạy Svelte 5 Rune\nlet count = $state(0);\nfunction increment() {\n    count += 1;\n}\n```\n\nMọi khối mã đều được hiển thị sắc nét với tương phản WCAG AAA cao nhất trên cả Light Mode và Dark Mode.",
+    "content_en": "Edge CMS delivers the ultimate flexible writing experience: toggle freely between native **Markdown syntax** and visual **WYSIWYG toolbar formatting**.\n\n## 1. Headings & Formatting\n\nFull semantic support for `H1`, `H2`, `H3`, blockquotes, and nested lists:\n- High-contrast inline code formatting\n- Responsive images with lazy-loading\n- Clean link previews\n\n> Quote: Minimalism is not about having less. It is about making room for what truly matters.\n\n## 2. Code Blocks & Highlights\n\nEmbed code snippets effortlessly for technical guides:\n```javascript\n// Svelte 5 Reactive State\nlet count = $state(0);\nfunction increment() {\n    count += 1;\n}\n```\n\nEvery block is rendered with optimal WCAG AAA contrast across both Light Mode and OLED Dark Mode.",
+    "excerpt": "Tìm hiểu cách định dạng bài viết chuyên nghiệp với trình soạn thảo Tiptap WYSIWYG và cú pháp Markdown.",
+    "excerpt_en": "Learn how to format professional articles with Tiptap WYSIWYG and Markdown syntax.",
+    "status": "PUBLISHED",
+    "authorId": "admin",
+    "thumbnail": "/projects/project-2.svg",
+    "publishedAt": "2026-09-23T07:18:00.446Z",
+    "tags": [
+      "Markdown",
+      "Tips",
+      "Editor"
+    ],
+    "tagSlugs": [
+      "markdown",
+      "tips",
+      "editor"
+    ]
+  },
+  {
+    "id": "post_customizing_themes",
+    "title": "Tùy biến Giao diện với 4 Theme Presets chuẩn Apple",
+    "title_en": "Customizing Aesthetics with 4 Apple Minimalist Theme Presets",
+    "slug": "tuy-bien-giao-dien-4-theme-presets",
+    "content": "Một trong những điểm mạnh nhất của Edge CMS là hệ thống **Semantic Design Tokens** (Tailwind v4), cho phép bạn thay đổi hoàn toàn phong cách thẩm mỹ của website chỉ với một cú nhấp chuột trong Admin Dashboard.\n\n## 4 Theme Presets tích hợp sẵn:\n\n1. **`apple` (Mặc định):** Tông Slate Titan và Đen sâu OLED tối giản đẳng cấp.\n2. **`academic`:** Tông giấy kem ấm áp, phong thái xuất bản sách và học thuật trang nhã.\n3. **`executive`:** Sắc xanh hoàng gia và vàng kim sang trọng dành cho doanh nghiệp, cố vấn cấp cao.\n4. **`wellness`:** Xanh ngọc y tế và bạc hà dịu mát dành cho chăm sóc sức khỏe, phòng khám, coach.\n\nMọi preset đều tự động tương thích hoàn hảo giữa chế độ Sáng (Light Mode) và Tối (Dark Mode).",
+    "content_en": "One of the crowning achievements of Edge CMS is its **Semantic Design Tokens** architecture, enabling you to switch themes effortlessly with zero CSS rewrites.\n\n## 4 Built-in Theme Presets:\n\n1. **`apple` (Default):** Minimalist slate titanium and OLED deep blacks.\n2. **`academic`:** Warm cream paper tone inspired by traditional typography and editorial elegance.\n3. **`executive`:** Deep royal navy and champagne gold accents for corporate authority.\n4. **`wellness`:** Crisp medical teal and refreshing mint palette for health & coaching portfolios.\n\nEvery theme adapts seamlessly between Day and OLED Night environments.",
+    "excerpt": "Khám phá 4 phong cách giao diện Apple Minimalist tích hợp sẵn và cách chuyển đổi trong 1 giây.",
+    "excerpt_en": "Explore the 4 built-in theme presets and learn how to switch styles instantly.",
+    "status": "PUBLISHED",
+    "authorId": "admin",
+    "thumbnail": "/projects/project-1.svg",
+    "publishedAt": "2026-09-22T07:18:00.446Z",
+    "tags": [
+      "Design System",
+      "Tailwind",
+      "Theme"
+    ],
+    "tagSlugs": [
+      "design-system",
+      "tailwind",
+      "theme"
+    ]
+  }
+]

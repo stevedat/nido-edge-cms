@@ -1,0 +1,72 @@
+[
+  {
+    "name": "SaaS",
+    "slug": "saas",
+    "color": "#6366f1"
+  },
+  {
+    "name": "Gamification",
+    "slug": "gamification",
+    "color": "#ec4899"
+  },
+  {
+    "name": "Marketplace",
+    "slug": "marketplace",
+    "color": "#f59e0b"
+  },
+  {
+    "name": "Mobile App (iOS & Android)",
+    "slug": "mobile-app",
+    "color": "#3b82f6"
+  },
+  {
+    "name": "Design System",
+    "slug": "design-system",
+    "color": "#c97a61"
+  },
+  {
+    "name": "Svelte 5",
+    "slug": "svelte-5",
+    "color": "#ff3e00"
+  },
+  {
+    "name": "Tailwind",
+    "slug": "tailwind",
+    "color": "#38bdf8"
+  },
+  {
+    "name": "SvelteKit",
+    "slug": "sveltekit",
+    "color": "#ff3e00"
+  },
+  {
+    "name": "Edge CMS",
+    "slug": "edge-cms",
+    "color": "#424245"
+  },
+  {
+    "name": "Guide",
+    "slug": "guide",
+    "color": "#047857"
+  },
+  {
+    "name": "Markdown",
+    "slug": "markdown",
+    "color": "#2563eb"
+  },
+  {
+    "name": "Tips",
+    "slug": "tips",
+    "color": "#0ea5e9"
+  },
+  {
+    "name": "Editor",
+    "slug": "editor",
+    "color": "#8b5cf6"
+  },
+  {
+    "name": "Theme",
+    "slug": "theme",
+    "color": "#14b8a6"
+  }
+]

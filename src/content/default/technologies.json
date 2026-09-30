@@ -1,0 +1,44 @@
+[
+  {
+    "name": "React",
+    "slug": "react",
+    "icon": "⚛️",
+    "color": "#61DAFB"
+  },
+  {
+    "name": "Next.js",
+    "slug": "nextjs",
+    "icon": "▲",
+    "color": "#000000"
+  },
+  {
+    "name": "TypeScript",
+    "slug": "typescript",
+    "icon": "📘",
+    "color": "#3178C6"
+  },
+  {
+    "name": "Capacitor (iOS/Android)",
+    "slug": "capacitor",
+    "icon": "📱",
+    "color": "#119EFF"
+  },
+  {
+    "name": "Cloudflare Edge",
+    "slug": "cloudflare",
+    "icon": "⚡",
+    "color": "#F38020"
+  },
+  {
+    "name": "Tailwind CSS",
+    "slug": "tailwindcss",
+    "icon": "🎨",
+    "color": "#06B6D4"
+  },
+  {
+    "name": "SvelteKit",
+    "slug": "sveltekit",
+    "icon": "🔥",
+    "color": "#FF3E00"
+  }
+]

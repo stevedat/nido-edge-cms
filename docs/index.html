@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="meta.title">Nido Edge CMS — Ultra-fast Native Edge Multi-tenant CMS & Headless Content Engine</title>
+  <meta name="description" data-i18n-attr="content:meta.description" content="Ultra-fast, minimalist, Edge-native Multi-tenant CMS & Headless Content Engine; 100% Web Standards Core. Database-free Multi-tenant on Cloudflare & Vercel Edge.">
+  
+  <!-- Canonical & OpenGraph / Social Preview -->
+  <link rel="canonical" href="https://stevedat.github.io/nido-edge-cms/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nido Edge CMS">
+  <meta property="og:url" content="https://stevedat.github.io/nido-edge-cms/">
+  <meta property="og:title" content="Nido Edge CMS — Ultra-fast Native Edge Multi-tenant CMS & Headless Content Engine">
+  <meta property="og:description" content="Ultra-fast, minimalist, Edge-native Multi-tenant CMS & Headless Content Engine; 100% Web Standards Core. Database-free Multi-tenant on Cloudflare & Vercel Edge.">
+  <meta property="og:image" content="https://stevedat.github.io/nido-edge-cms/assets/og-card.png">
+  <meta property="og:image:secure_url" content="https://stevedat.github.io/nido-edge-cms/assets/og-card.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Nido Edge CMS — Ultra-fast Native Edge Multi-tenant CMS & Headless Content Engine">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="vi_VN">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nido Edge CMS — Ultra-fast Native Edge Multi-tenant CMS & Headless Content Engine">
+  <meta name="twitter:description" content="Ultra-fast, minimalist, Edge-native Multi-tenant CMS & Headless Content Engine; 100% Web Standards Core. Database-free Multi-tenant on Cloudflare & Vercel Edge.">
+  <meta name="twitter:image" content="https://stevedat.github.io/nido-edge-cms/assets/og-card.png">
+  <meta name="twitter:image:alt" content="Nido Edge CMS — Ultra-fast Native Edge Multi-tenant CMS & Headless Content Engine">
+  
+  <!-- Favicons -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/symbol.svg">
+
+  <!-- PayPal Hosted Buttons SDK -->
+  <script 
+    src="https://www.paypal.com/sdk/js?client-id=BAApJO4UX_wSPJjsxzIMAdPNweP_3AgA3-kBZLt5uH3HKIhX1ViVgd5UHu5GvqGPMxyiL19UDIgwKEFJWM&components=hosted-buttons&disable-funding=venmo&currency=USD">
+  </script>
+
+  <!-- Tailwind CSS CDN for high-performance self-contained rendering -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            edge: {
+              orange: '#FF3E00',
+              flame: '#F38020',
+              cyan: '#06B6D4',
+              dark: '#08080C',
+              card: 'rgba(255, 255, 255, 0.03)',
+              border: 'rgba(255, 255, 255, 0.08)'
+            }
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"SF Pro Text"', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['SF Mono', 'Menlo', 'Monaco', 'Courier New', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #07070A;
+      color: #F8FAFC;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .gradient-brand {
+      background: linear-gradient(135deg, #FF3E00 0%, #F38020 50%, #06B6D4 100%);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #FF7043 0%, #FFA726 50%, #22D3EE 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255, 62, 0, 0.28);
+    }
+
+    .glass-nav {
+      background: rgba(7, 7, 10, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .glow-ambient {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* PayPal Hosted Button Dark Mode & Layout Refinement */
+    #paypal-container-T2CFZT8EL6QA4 {
+      width: 100%;
+      max-width: 25rem;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+    #paypal-container-T2CFZT8EL6QA4 #desc-label {
+      color: #F8FAFC !important;
+      font-size: 1.125rem !important;
+      font-weight: 600 !important;
+      text-align: center !important;
+      margin-bottom: 1rem !important;
+      overflow-wrap: normal !important;
+      word-break: normal !important;
+    }
+    #paypal-container-T2CFZT8EL6QA4 .input-label {
+      color: #94A3B8 !important;
+      font-size: 0.8125rem !important;
+      font-weight: 500 !important;
+      text-align: left !important;
+      overflow-wrap: normal !important;
+      word-break: normal !important;
+    }
+    #paypal-container-T2CFZT8EL6QA4 input {
+      background-color: rgba(255, 255, 255, 0.06) !important;
+      color: #FFFFFF !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      border-radius: 0.75rem !important;
+      font-size: 1rem !important;
+      transition: border-color 0.2s, box-shadow 0.2s !important;
+    }
+    #paypal-container-T2CFZT8EL6QA4 input:focus {
+      border-color: #F38020 !important;
+      box-shadow: 0 0 0 2px rgba(243, 128, 32, 0.2) !important;
+      outline: none !important;
+    }
+    #paypal-container-T2CFZT8EL6QA4 .currency-symbol,
+    #paypal-container-T2CFZT8EL6QA4 .currency-label {
+      color: #94A3B8 !important;
+    }
+    #paypal-container-T2CFZT8EL6QA4 #checkout-button {
+      border-radius: 0.75rem !important;
+      font-weight: 600 !important;
+      transition: transform 0.15s, opacity 0.15s !important;
+    }
+    #paypal-container-T2CFZT8EL6QA4 #checkout-button:active {
+      transform: scale(0.98) !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-edge-orange/30 selection:text-white">
+
+  <!-- Ambient Glows -->
+  <div class="glow-ambient top-[-100px] left-1/2 -translate-x-1/2 bg-gradient-to-br from-edge-orange via-edge-flame to-edge-cyan"></div>
+  <div class="glow-ambient top-[600px] -left-48 bg-edge-cyan opacity-10"></div>
+  <div class="glow-ambient top-[1200px] -right-48 bg-edge-orange opacity-10"></div>
+
+  <!-- 1. Header / Navbar (Streamlined Apple-Minimalist & Bilingual) -->
+  <header class="sticky top-0 z-50 glass-nav transition-all duration-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-2.5 group shrink-0">
+        <img src="assets/symbol.svg" alt="Nido Edge CMS Logo" class="w-8 h-8 rounded-lg shadow-sm group-hover:scale-105 transition-transform duration-200">
+        <span class="font-semibold text-base sm:text-lg tracking-tight text-white flex items-center gap-1.5">
+          Nido Edge CMS
+          <span class="text-[10px] font-medium tracking-wide uppercase px-1.5 py-0.5 rounded-full bg-white/10 text-slate-300 border border-white/10">v1.0</span>
+        </span>
+      </a>
+
+      <!-- Streamlined Desktop Nav (Only 3 essential anchors) -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-300">
+        <a href="#features" class="hover:text-white transition-colors" data-i18n="nav.features">Tính năng</a>
+        <a href="#playground" class="hover:text-white transition-colors" data-i18n="nav.playground">API</a>
+        <a href="#architecture" class="hover:text-white transition-colors" data-i18n="nav.architecture">Kiến trúc</a>
+      </nav>
+
+      <!-- Right Action Group: Language Switcher + GitHub + Quick Start CTA -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Language Switcher Pill (VI | EN) -->
+        <div class="flex items-center p-0.5 rounded-lg bg-white/5 border border-white/10 text-xs font-semibold" role="group" aria-label="Language selection">
+          <button type="button" id="btn-lang-vi" onclick="switchLanguage('vi')" 
+                  class="px-2 py-1 rounded-md transition-all text-white bg-white/20 shadow-sm" aria-label="Tiếng Việt">
+            VI
+          </button>
+          <button type="button" id="btn-lang-en" onclick="switchLanguage('en')" 
+                  class="px-2 py-1 rounded-md transition-all text-slate-400 hover:text-white" aria-label="English">
+            EN
+          </button>
+        </div>
+
+        <!-- Compact GitHub Link -->
+        <a href="https://github.com/stevedat/nido-edge-cms" target="_blank" rel="noopener noreferrer" 
+           class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 sm:px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-colors" title="GitHub Repository">
+          <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          <span class="hidden sm:inline">GitHub</span>
+        </a>
+
+        <!-- Streamlined CTA Button -->
+        <a href="#setup" class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 sm:px-3.5 py-1.5 rounded-lg gradient-brand text-white shadow-sm hover:opacity-95 active:scale-95 transition-all shrink-0">
+          <svg class="w-3.5 h-3.5 fill-current hidden sm:inline" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v8.586l2.293-2.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 11.586V3a1 1 0 011-1zM3 16a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/></svg>
+          <span data-i18n="nav.cta">Khởi tạo</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow z-10">
+
+    <!-- 2. Hero Section -->
+    <section class="pt-14 sm:pt-16 pb-20 px-4 sm:px-6 max-w-5xl mx-auto text-center">
+      <!-- Pill Badge -->
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-slate-300 mb-8 backdrop-blur-md">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span data-i18n="hero.badge">Mã nguồn mở · Giấy phép AGPL v3 · 100% Web Standards · $0 Edge Serverless</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-3xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+        Nido Edge CMS<br>
+        <span class="gradient-text" data-i18n="hero.headline_sub">Multi-tenant CMS & Headless Content Engine Siêu tốc.</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="max-w-2xl mx-auto text-base sm:text-lg text-slate-400 font-normal leading-relaxed mb-10" data-i18n="hero.description">
+        Giao diện quản trị Zero-VDOM siêu tốc với Svelte 5. Lõi Web Standards độc lập không phụ thuộc framework. 
+        Đa người thuê (Multi-tenant) không cần cơ sở dữ liệu trên Cloudflare & Vercel Edge.
+      </p>
+
+      <!-- Action Buttons -->
+      <div id="setup" class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+        <!-- Main Quick Start CTA -->
+        <a href="#cmd-block" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 py-3.5 rounded-xl gradient-brand text-white font-medium shadow-lg shadow-edge-orange/20 hover:opacity-95 active:scale-95 transition-all group">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+          <div class="text-left">
+            <div class="text-sm font-semibold tracking-tight" data-i18n="hero.cta_start_title">Khởi tạo Dự án Nhanh</div>
+            <div class="text-[11px] opacity-90 font-normal" data-i18n="hero.cta_start_sub">SvelteKit 2 + Svelte 5 + Tailwind v4</div>
+          </div>
+        </a>
+
+        <!-- Secondary API Link -->
+        <a href="#playground" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-5 py-3.5 rounded-xl glass-card text-white hover:bg-white/10 active:scale-95 transition-all">
+          <svg class="w-5 h-5 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+          </svg>
+          <div class="text-left">
+            <div class="text-sm font-medium" data-i18n="hero.cta_api_title">Thử nghiệm Edge API</div>
+            <div class="text-[11px] text-slate-400" data-i18n="hero.cta_api_sub">Headless API /api/v1/ trực tiếp</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Quick Command Snippet -->
+      <div id="cmd-block" class="max-w-xl mx-auto mb-12">
+        <div class="flex items-center justify-between px-4 py-2.5 rounded-xl bg-black/60 border border-white/10 text-xs font-mono text-slate-300 shadow-inner">
+          <div class="flex items-center gap-2 overflow-hidden mr-2">
+            <span class="text-edge-orange select-none">$</span>
+            <span id="cmd-text" class="truncate">git clone https://github.com/stevedat/nido-edge-cms.git && cd nido-edge-cms && npm i && npm run dev</span>
+          </div>
+          <button id="btn-copy-command" class="px-2.5 py-1 rounded bg-white/10 hover:bg-white/15 text-slate-200 hover:text-white transition-colors flex items-center gap-1.5 shrink-0" title="Chép lệnh">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            <span id="copy-label" data-i18n="hero.cmd_copy">Chép</span>
+          </button>
+        </div>
+        <p class="text-[11px] text-slate-500 mt-2" data-i18n="hero.cmd_note">Dành cho Terminal: Tải mã nguồn, cài đặt dependencies và khởi chạy trang web tại localhost:5173.</p>
+      </div>
+
+      <!-- 3 Verified Technical Metrics -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto mb-16">
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <div class="text-2xl sm:text-3xl font-extrabold text-white mb-1 tracking-tight">100 / 100</div>
+          <div class="text-xs font-medium text-slate-400" data-i18n="metrics.cwv">Core Web Vitals (LCP &lt; 0.6s, CLS 0, INP vi-giây)</div>
+        </div>
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <div class="text-2xl sm:text-3xl font-extrabold text-white mb-1 tracking-tight">$0 / 0 Byte DB</div>
+          <div class="text-xs font-medium text-slate-400" data-i18n="metrics.db">Không chi phí máy chủ (Flat-file &amp; Git-backed)</div>
+        </div>
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <div class="text-2xl sm:text-3xl font-extrabold text-white mb-1 tracking-tight">100% Web Standards</div>
+          <div class="text-xs font-medium text-slate-400" data-i18n="metrics.standards">Lõi Web Crypto API thuần túy, Zero-Lockin</div>
+        </div>
+      </div>
+
+      <!-- 3-Step Setup Guide -->
+      <div class="max-w-3xl mx-auto text-left">
+        <h3 class="text-xs uppercase tracking-wider text-slate-400 font-semibold mb-4 text-center" data-i18n="steps.heading">3 Bước Triển Khai Đơn Giản Lên Edge Cloud</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="glass-card rounded-2xl p-5 border border-white/10">
+            <div class="w-7 h-7 rounded-lg bg-edge-orange/20 text-edge-orange text-xs font-bold flex items-center justify-center mb-3">1</div>
+            <div class="text-sm font-semibold text-white mb-1" data-i18n="steps.s1_title">Clone & Khởi động</div>
+            <div class="text-xs text-slate-400 leading-relaxed" data-i18n="steps.s1_desc">Clone mã nguồn, cấu hình <code class="text-slate-300">.env</code> và chạy <code class="text-slate-300">npm run dev</code>.</div>
+          </div>
+          <div class="glass-card rounded-2xl p-5 border border-white/10">
+            <div class="w-7 h-7 rounded-lg bg-edge-flame/20 text-orange-300 text-xs font-bold flex items-center justify-center mb-3">2</div>
+            <div class="text-sm font-semibold text-white mb-1" data-i18n="steps.s2_title">Quản trị Nội dung</div>
+            <div class="text-xs text-slate-400 leading-relaxed" data-i18n="steps.s2_desc">Truy cập <code class="text-slate-300">/admin/login</code> viết bài bằng trình soạn thảo Tiptap WYSIWYG.</div>
+          </div>
+          <div class="glass-card rounded-2xl p-5 border border-white/10">
+            <div class="w-7 h-7 rounded-lg bg-edge-cyan/20 text-cyan-300 text-xs font-bold flex items-center justify-center mb-3">3</div>
+            <div class="text-sm font-semibold text-white mb-1" data-i18n="steps.s3_title">Xuất bản Toàn cầu</div>
+            <div class="text-xs text-slate-400 leading-relaxed" data-i18n="steps.s3_desc">Chạy lệnh <code class="text-slate-300">npx wrangler pages deploy</code> hoặc đẩy lên Vercel Edge $0.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Interactive Edge API & Tenant Playground -->
+    <section id="playground" class="py-16 px-4 sm:px-6 max-w-4xl mx-auto">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2" data-i18n="playground.title">Trải nghiệm Edge API Trực tiếp</h2>
+        <p class="text-sm text-slate-400" data-i18n="playground.desc">Thử nghiệm các endpoint Headless API và mô phỏng điều hướng đa người thuê (Multi-tenant) ngay trên trình duyệt.</p>
+      </div>
+
+      <!-- Simulated Mac Terminal / API Inspector Window -->
+      <div class="glass-card rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+        <!-- Window Titlebar -->
+        <div class="bg-white/[0.04] px-4 py-3 flex items-center justify-between border-b border-white/[0.06]">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+          </div>
+          <div class="text-xs font-medium text-slate-400 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span data-i18n="playground.edge_node">Edge Node: Cloudflare Worker · Global CDN</span>
+          </div>
+          <div class="text-xs text-slate-500 font-mono">CORS: *</div>
+        </div>
+
+        <!-- Playground Body -->
+        <div class="p-6 bg-black/60">
+          <!-- Endpoint Selector Chips -->
+          <div class="flex flex-wrap items-center gap-2 mb-4 text-xs">
+            <span class="text-slate-500" data-i18n="playground.select_endpoint">Chọn API Endpoint:</span>
+            <button class="api-btn px-2.5 py-1 rounded-md bg-edge-orange/20 text-edge-orange border border-edge-orange/30 font-mono transition-colors" data-endpoint="/api/v1/posts" data-method="GET">GET /api/v1/posts</button>
+            <button class="api-btn px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/10 text-slate-300 border border-white/5 font-mono transition-colors" data-endpoint="/api/v1/settings" data-method="GET">GET /api/v1/settings</button>
+            <button class="api-btn px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/10 text-slate-300 border border-white/5 font-mono transition-colors" data-endpoint="/api/v1/challenge" data-method="GET">GET /api/v1/challenge</button>
+            <button class="api-btn px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/10 text-slate-300 border border-white/5 font-mono transition-colors" data-endpoint="/api/v1/leads" data-method="POST">POST /api/v1/leads (PoW)</button>
+          </div>
+
+          <!-- Tenant Selector -->
+          <div class="flex flex-wrap items-center gap-2 mb-4 text-xs font-mono">
+            <span class="text-slate-500" data-i18n="playground.tenant_label">Header x-tenant-domain:</span>
+            <button class="tenant-btn px-2 py-0.5 rounded bg-white/10 text-white border border-white/20" data-tenant="default" data-i18n="playground.t_default">default (Apple OLED)</button>
+            <button class="tenant-btn px-2 py-0.5 rounded bg-white/5 text-slate-400 hover:text-white" data-tenant="academic.local" data-i18n="playground.t_academic">academic (Giấy kem)</button>
+            <button class="tenant-btn px-2 py-0.5 rounded bg-white/5 text-slate-400 hover:text-white" data-tenant="executive.local" data-i18n="playground.t_executive">executive (Hoàng gia)</button>
+            <button class="tenant-btn px-2 py-0.5 rounded bg-white/5 text-slate-400 hover:text-white" data-tenant="wellness.local" data-i18n="playground.t_wellness">wellness (Y tế/Coach)</button>
+          </div>
+
+          <!-- Code Response Preview -->
+          <div class="relative">
+            <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 pb-2 border-b border-white/5 mb-2">
+              <span id="response-status" class="text-emerald-400 font-semibold">HTTP 200 OK · 11ms latency</span>
+              <span id="response-meta" class="text-slate-500">Content-Type: application/json</span>
+            </div>
+            <pre id="api-output" class="text-xs font-mono text-slate-300 overflow-x-auto p-4 rounded-xl bg-white/[0.02] border border-white/5 max-h-72 leading-relaxed">
+{
+  "success": true,
+  "posts": [
+    {
+      "slug": "chao-mung-den-voi-edge-cms",
+      "title": "Chào mừng bạn đến với Nido Edge CMS",
+      "title_en": "Welcome to Nido Edge CMS",
+      "publishedAt": "2026-09-30T00:00:00.000Z",
+      "tags": ["svelte5", "edge", "cms", "serverless"],
+      "excerpt": "Hệ thống quản trị nội dung siêu tốc hoạt động trên Cloudflare Pages và Vercel Edge...",
+      "readingMinutes": 3
+    }
+  ],
+  "total": 1,
+  "page": 1,
+  "limit": 10,
+  "tenant": "default"
+}
+            </pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Showcase Section (Admin Portal) -->
+    <section id="showcase" class="py-12 px-4 sm:px-6 max-w-5xl mx-auto">
+      <div class="glass-card rounded-3xl p-8 sm:p-12 border border-white/10 flex flex-col md:flex-row items-center gap-10">
+        <div class="flex-1 text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-edge-orange mb-4">
+            <span data-i18n="showcase.badge">Thiết kế Apple Minimalist OLED</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-4" data-i18n="showcase.title">Bảng Quản trị Hiện đại, Tinh giản</h2>
+          <p class="text-sm text-slate-400 leading-relaxed mb-6" data-i18n="showcase.desc">
+            Không cửa sổ cồng kềnh, không cấu hình rườm rà. Bảng quản trị tích hợp bộ soạn thảo Tiptap WYSIWYG mượt mà, hỗ trợ Markdown, hình ảnh kéo thả và AI-Ready Minimalist Starter UI.
+          </p>
+          <ul class="space-y-3 text-xs sm:text-sm text-slate-300">
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span><strong data-i18n="showcase.i1_title">Trình soạn thảo Tiptap WYSIWYG:</strong> <span data-i18n="showcase.i1_desc">Hỗ trợ Markdown, code block, hình ảnh kéo thả tải thẳng lên Git repository.</span></span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span><strong data-i18n="showcase.i2_title">4 Theme Presets Thích ứng:</strong> <span data-i18n="showcase.i2_desc">Chuyển đổi linh hoạt giữa Apple Titan, Academic (học thuật), Executive (doanh nghiệp), và Wellness (chăm sóc sức khỏe).</span></span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span><strong data-i18n="showcase.i3_title">Song ngữ Việt — Anh 100%:</strong> <span data-i18n="showcase.i3_desc">Quản trị tiêu đề, trích đoạn và nội dung song ngữ chuẩn mực quốc tế.</span></span>
+            </li>
+          </ul>
+        </div>
+        <div class="flex-shrink-0 relative group max-w-full md:max-w-md">
+          <div class="absolute -inset-1 rounded-2xl bg-gradient-to-r from-edge-orange via-edge-flame to-edge-cyan opacity-30 blur-lg group-hover:opacity-50 transition-opacity"></div>
+          <img src="assets/showcase.svg" alt="Giao diện Nido Edge CMS" class="relative rounded-2xl shadow-2xl border border-white/15 w-full">
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Core Technical USPs -->
+    
+    <!-- TWO PARADIGMS (Vibe Coding vs Pro Dev) -->
+    <section id="paradigms" class="py-12 px-4 sm:px-6 max-w-5xl mx-auto border-t border-white/5">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-xl sm:text-2xl font-bold text-white text-center mb-8" data-i18n="paradigms.title">Kiến trúc cho 2 Trường phái Lập trình Hiện đại</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- AI / Vibe Coders -->
+          <div class="glass-card rounded-2xl p-6 border border-primary/20 relative overflow-hidden group">
+            <div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="text-xs uppercase tracking-wider text-primary font-bold mb-2">1. Vibe Coding (AI Agents)</div>
+            <h3 class="text-lg font-bold text-white mb-2" data-i18n="paradigms.p1_title">Giao diện Cơ sở Sẵn sàng cho AI</h3>
+            <p class="text-sm text-slate-400 leading-relaxed" data-i18n="paradigms.p1_desc">
+              Một khung UI Svelte 5 + Tailwind siêu nhẹ, không rườm rà CSS. Chỉ cần mở Cursor / Windsurf và prompt: <em class="text-slate-300">"Sửa layout này thành trang SaaS"</em>. AI sẽ tự động sinh code cực mượt mà không bị vướng bận Theme cũ.
+            </p>
+          </div>
+
+          <!-- Pro Devs / Headless -->
+          <div class="glass-card rounded-2xl p-6 border border-white/10 relative overflow-hidden group">
+            <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-2">2. Pro Devs (Enterprise)</div>
+            <h3 class="text-lg font-bold text-white mb-2" data-i18n="paradigms.p2_title">Lõi API Headless Siêu Tốc</h3>
+            <p class="text-sm text-slate-400 leading-relaxed" data-i18n="paradigms.p2_desc">
+              Lõi chuẩn Web Standards 100%. Anh em Pro Dev có thể xóa sạch giao diện Svelte, chỉ giữ lại Core để làm một máy chủ API vô hình siêu nhanh, gắn vào các app React, Next.js hay Mobile của doanh nghiệp.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="py-20 px-4 sm:px-6 max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-4" data-i18n="features.title">4 Khác biệt Kỹ thuật Cốt lõi</h2>
+        <p class="text-base text-slate-400 max-w-2xl mx-auto" data-i18n="features.desc">Được thiết kế từ gốc để giải quyết triệt để vấn đề chi phí hạ tầng máy chủ và độ trễ phân phối nội dung toàn cầu.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Feature 1 -->
+        <div class="glass-card rounded-2xl p-8 relative overflow-hidden group">
+          <div class="w-12 h-12 rounded-xl bg-edge-orange/10 border border-edge-orange/20 flex items-center justify-center text-edge-orange mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3" data-i18n="features.f1_title">Giao diện Quản trị Zero-VDOM (Svelte 5)</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="features.f1_desc">
+            Loại bỏ hoàn toàn lớp Virtual DOM nặng nề. Mã nguồn biên dịch thành các cập nhật trực tiếp tại DOM, giúp giảm 70% kích thước bundle so với Next.js và đạt trọn 100/100 điểm Google Core Web Vitals.
+          </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="glass-card rounded-2xl p-8 relative overflow-hidden group">
+          <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3" data-i18n="features.f2_title">100% Web Standards Core — Zero Lock-in</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="features.f2_desc">
+            Toàn bộ logic nghiệp vụ (<code class="text-xs bg-white/10 px-1 py-0.5 rounded font-mono text-slate-300">src/lib/core/</code>) sử dụng chuẩn Web thuần túy (<code class="text-xs bg-white/10 px-1 py-0.5 rounded font-mono text-slate-300">crypto.subtle</code>, PBKDF2, JWT HS256). Dễ dàng chuyển đổi hoặc nhúng vào Hono, Astro, hoặc Node.js độc lập.
+          </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="glass-card rounded-2xl p-8 relative overflow-hidden group">
+          <div class="w-12 h-12 rounded-xl bg-edge-cyan/10 border border-edge-cyan/20 flex items-center justify-center text-edge-cyan mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3" data-i18n="features.f3_title">Đa người thuê Không Cần Database</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="features.f3_desc">
+            Phục vụ hàng trăm website và khách hàng riêng biệt theo tên miền tùy chỉnh (<code class="text-xs bg-white/10 px-1 py-0.5 rounded font-mono text-slate-300">src/content/{domain}/</code>) trên cùng một Edge Worker duy nhất. Tiết kiệm 100% chi phí máy chủ SQL đắt đỏ.
+          </p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="glass-card rounded-2xl p-8 relative overflow-hidden group">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3" data-i18n="features.f4_title">Chống Bot Spam Bằng Proof-of-Work (PoW)</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="features.f4_desc">
+            Nói không với các mã CAPTCHA hình ảnh khó chịu và theo dõi người dùng. Hệ thống tự động phát bài toán giải mã vi tính SHA-256 trong 10ms để chặn đứng bot flood form liên hệ và bình luận.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Comparison Matrix -->
+    <section id="comparison" class="py-20 px-4 sm:px-6 max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-4" data-i18n="comparison.title">Bảng So sánh Trực quan</h2>
+        <p class="text-base text-slate-400 max-w-2xl mx-auto" data-i18n="comparison.desc">So sánh thực tế giữa Nido Edge CMS với WordPress truyền thống và các nền tảng Headless CMS phổ biến.</p>
+      </div>
+
+      <div class="glass-card rounded-2xl overflow-x-auto border border-white/10">
+        <table class="w-full text-left text-sm text-slate-300 min-w-[640px]">
+          <thead class="bg-white/[0.04] text-xs font-semibold text-slate-200 uppercase tracking-wider border-b border-white/[0.08]">
+            <tr>
+              <th scope="col" class="py-4 px-6" data-i18n="comparison.th_metric">Tiêu chí kỹ thuật</th>
+              <th scope="col" class="py-4 px-6 text-center text-slate-400">WordPress</th>
+              <th scope="col" class="py-4 px-6 text-center text-slate-400">Strapi / Contentful</th>
+              <th scope="col" class="py-4 px-6 text-center text-edge-orange bg-edge-orange/[0.05] border-x border-white/[0.08]">Nido Edge CMS</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/[0.06]">
+            <tr>
+              <td class="py-4 px-6 font-medium text-white" data-i18n="comparison.r1_metric">Chi phí hạ tầng máy chủ</td>
+              <td class="py-4 px-6 text-center text-rose-400" data-i18n="comparison.r1_wp">$10 – $50 / tháng (VPS)</td>
+              <td class="py-4 px-6 text-center text-amber-400" data-i18n="comparison.r1_headless">$20 – $300 / tháng</td>
+              <td class="py-4 px-6 text-center font-semibold text-emerald-400 bg-edge-orange/[0.05] border-x border-white/[0.08]" data-i18n="comparison.r1_edge">$0 (Edge Serverless)</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 font-medium text-white" data-i18n="comparison.r2_metric">Độ trễ phản hồi toàn cầu (Edge)</td>
+              <td class="py-4 px-6 text-center text-rose-400">800 – 2500 ms</td>
+              <td class="py-4 px-6 text-center text-slate-400">200 – 500 ms</td>
+              <td class="py-4 px-6 text-center font-semibold text-emerald-400 bg-edge-orange/[0.05] border-x border-white/[0.08]" data-i18n="comparison.r2_edge">&lt; 50 ms (CDN Toàn cầu)</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 font-medium text-white" data-i18n="comparison.r3_metric">Cơ sở dữ liệu (Database)</td>
+              <td class="py-4 px-6 text-center text-slate-400" data-i18n="comparison.r3_wp">Bắt buộc MySQL/MariaDB</td>
+              <td class="py-4 px-6 text-center text-slate-400" data-i18n="comparison.r3_headless">Bắt buộc PostgreSQL/MongoDB</td>
+              <td class="py-4 px-6 text-center font-semibold text-emerald-400 bg-edge-orange/[0.05] border-x border-white/[0.08]" data-i18n="comparison.r3_edge">Không cần (Flat-file &amp; Git)</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 font-medium text-white" data-i18n="comparison.r4_metric">Điểm số Google Core Web Vitals</td>
+              <td class="py-4 px-6 text-center text-rose-400">40 – 75 / 100</td>
+              <td class="py-4 px-6 text-center text-amber-400">70 – 90 / 100</td>
+              <td class="py-4 px-6 text-center font-semibold text-emerald-400 bg-edge-orange/[0.05] border-x border-white/[0.08]" data-i18n="comparison.r4_edge">100 / 100 Hoàn hảo</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 font-medium text-white" data-i18n="comparison.r5_metric">Đa người thuê (Multi-tenancy)</td>
+              <td class="py-4 px-6 text-center text-slate-400" data-i18n="comparison.r5_wp">Phức tạp (Multisite nặng)</td>
+              <td class="py-4 px-6 text-center text-rose-400" data-i18n="comparison.r5_headless">Gói Enterprise đắt đỏ</td>
+              <td class="py-4 px-6 text-center font-semibold text-emerald-400 bg-edge-orange/[0.05] border-x border-white/[0.08]" data-i18n="comparison.r5_edge">Tích hợp sẵn (Theo Domain)</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 font-medium text-white" data-i18n="comparison.r6_metric">Chống bot spam</td>
+              <td class="py-4 px-6 text-center text-slate-400" data-i18n="comparison.r6_wp">reCAPTCHA (theo dõi cookie)</td>
+              <td class="py-4 px-6 text-center text-slate-400" data-i18n="comparison.r6_headless" data-i18n="comparison.r6_headless">Cần dịch vụ ngoài</td>
+              <td class="py-4 px-6 text-center font-semibold text-emerald-400 bg-edge-orange/[0.05] border-x border-white/[0.08]" data-i18n="comparison.r6_edge">Proof-of-Work bảo mật cao</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 font-medium text-white" data-i18n="comparison.r7_metric">Giấy phép phát hành</td>
+              <td class="py-4 px-6 text-center text-slate-400">GPL v2</td>
+              <td class="py-4 px-6 text-center text-slate-400" data-i18n="comparison.r7_headless">Thương mại / Khóa tính năng</td>
+              <td class="py-4 px-6 text-center font-semibold text-slate-200 bg-edge-orange/[0.05] border-x border-white/[0.08]" data-i18n="comparison.r7_edge">Mã nguồn mở AGPL-3.0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 7. Architecture & Tech Specs -->
+    <section id="architecture" class="py-20 px-4 sm:px-6 max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-4" data-i18n="arch.title">Kiến trúc Tách lớp Độc lập</h2>
+        <p class="text-base text-slate-400 max-w-2xl mx-auto" data-i18n="arch.desc">Tách bạch nghiêm ngặt giữa tầng giao diện SvelteKit, lõi chuẩn Web Standards và tầng lưu trữ phân tán.</p>
+      </div>
+
+      <div class="glass-card rounded-2xl p-8 border border-white/10 font-mono text-xs sm:text-sm">
+        <div class="text-slate-400 mb-2" data-i18n="arch.caption">// Sơ đồ kiến trúc Edge Multi-tenant & Web Standards Core</div>
+        <div class="p-4 rounded-xl bg-black/50 border border-white/5 overflow-x-auto text-slate-200 leading-relaxed">
+<pre id="arch-diagram">
+┌────────────────────────────────────────────────────────────────────────┐
+│  TẦNG PHÂN PHỐI TOÀN CẦU: Edge Network (Cloudflare Pages / Vercel)     │
+│  • Điều hướng đa miền (Host Header / ?tenant= routing)                 │
+│  • Edge Caching tự động phân tán tại hơn 300+ thành phố trên thế giới  │
+│  • Phục vụ Static Assets (WebP, SVG, Fonts) tại Edge siêu tốc          │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ (Direct Edge Invocation)
+┌───────────────────────────────────┴────────────────────────────────────┐
+│  LÕI WEB STANDARDS CORE: src/lib/core/ (Zero Framework Lock-in)        │
+│  • Crypto Engine: Web Crypto API (crypto.subtle, PBKDF2-SHA256, JWT)   │
+│  • Anti-Spam: Thử thách giải đố Proof-of-Work (PoW) vi-giây           │
+│  • Tenant Resolver: Định danh Tenant từ Request Headers / Host         │
+│  • Content Engine: Quản lý Posts, Projects, Videos, Settings, Leads    │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ (Standard Storage Adapter)
+┌───────────────────────────────────┴────────────────────────────────────┐
+│  TẦNG DỮ LIỆU & GIAO TIẾP: Universal Edge API (/api/v1/) + Flat-file   │
+│  • REST Endpoints: GET /posts, GET /settings, POST /leads, POST /login │
+│  • Lưu trữ Flat-file JSON (src/content/{domain}/) & Git-backed Sync   │
+│  • Giao diện Svelte 5 Runes: Reference UI (AI-Ready Base)│
+└────────────────────────────────────────────────────────────────────────┘
+</pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Roadmap & Community -->
+    <section id="roadmap" class="py-20 px-4 sm:px-6 max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-4" data-i18n="roadmap.title">Lộ trình Phát triển</h2>
+        <p class="text-base text-slate-400 max-w-2xl mx-auto" data-i18n="roadmap.desc">Định hướng hoàn thiện nền tảng CMS mã nguồn mở tốc độ cao và thân thiện nhất với các AI Coding Agents.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <!-- Step 1 -->
+        <div class="glass-card rounded-2xl p-6 border-emerald-500/30">
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 mb-4">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span data-i18n="roadmap.s1_badge">v1.0.0 (Hiện tại)</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2" data-i18n="roadmap.s1_title">Edge Standards Core</h3>
+          <p class="text-xs text-slate-400 leading-relaxed" data-i18n="roadmap.s1_desc">
+            Hoàn thiện 100% Web Standards Core, Svelte 5 Runes, Universal Edge API, bảo mật PoW và AI-Ready Minimalist Starter UI.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="glass-card rounded-2xl p-6 border-edge-orange/30">
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-edge-orange/20 text-edge-orange mb-4">
+            <span class="w-2 h-2 rounded-full bg-edge-orange animate-pulse"></span>
+            <span data-i18n="roadmap.s2_badge">Đang phát triển</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2" data-i18n="roadmap.s2_title">Đồng bộ Git 2 Chiều</h3>
+          <p class="text-xs text-slate-400 leading-relaxed" data-i18n="roadmap.s2_desc">
+            Hỗ trợ xuất bản nội dung tự động tạo Commit hoặc Pull Request về GitHub/GitLab repository, giữ toàn quyền kiểm soát phiên bản.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="glass-card rounded-2xl p-6 border-white/10">
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-white/10 text-slate-400 mb-4">
+            <span data-i18n="roadmap.s3_badge">Dự kiến</span>
+          </div>
+          <h3 class="text-lg font-bold text-white mb-2" data-i18n="roadmap.s3_title">Edge Vector AI Search</h3>
+          <p class="text-xs text-slate-400 leading-relaxed" data-i18n="roadmap.s3_desc">
+            Tích hợp bộ tìm kiếm ngữ nghĩa thông minh chạy trực tiếp tại Edge Worker mà không cần phụ thuộc vào dịch vụ vector bên ngoài.
+          </p>
+        </div>
+      </div>
+
+      <!-- Community Callout -->
+      <div class="glass-card rounded-2xl p-8 text-center max-w-3xl mx-auto border-edge-orange/20">
+        <h3 class="text-xl font-bold text-white mb-2" data-i18n="community.title">Dự án Mã Nguồn Mở Vì Cộng đồng Lập trình viên</h3>
+        <p class="text-sm text-slate-400 mb-6 max-w-xl mx-auto" data-i18n="community.desc">
+          Nido Edge CMS được phát hành theo giấy phép AGPL v3. Mọi đóng góp kiến trúc, tính năng mở rộng hoặc phản hồi đều được hoan nghênh nồng nhiệt.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <a href="https://github.com/stevedat/nido-edge-cms" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-sm font-semibold border border-white/10 transition-colors">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span data-i18n="community.btn">Tham gia Đóng góp trên GitHub</span>
+          </a>
+          <button type="button" onclick="openSponsorModal()"
+             class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-sm font-semibold border border-amber-500/25 active:scale-95 transition-all cursor-pointer">
+            <svg class="w-4 h-4 fill-current text-amber-400" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            <span data-i18n="community.sponsor_btn">Ủng hộ qua PayPal</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Sponsor Modal Dialog (Clean Apple Minimalist) -->
+  <div id="sponsor-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-200" onclick="if(event.target === this) closeSponsorModal()" role="dialog" aria-modal="true" aria-labelledby="modal-sponsor-title">
+    <div class="relative w-full max-w-md p-6 sm:p-8 rounded-3xl bg-[#0f0f13] border border-white/10 shadow-2xl text-center">
+      <!-- Close Button -->
+      <button onclick="closeSponsorModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer" aria-label="Close">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/20 text-xs font-semibold text-amber-300 mb-3">
+        <svg class="w-3.5 h-3.5 fill-current text-amber-400" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+        </svg>
+        <span data-i18n="sponsor.badge">Đồng hành & Tài trợ</span>
+      </div>
+
+      <h3 id="modal-sponsor-title" class="text-xl font-bold text-white mb-2" data-i18n="sponsor.title">Ủng hộ Dự án qua PayPal</h3>
+      <p class="text-xs text-slate-400 leading-relaxed mb-6" data-i18n="sponsor.desc">
+        Mọi khoản tài trợ giúp duy trì hạ tầng Edge CDN, domain test đa người thuê và đẩy nhanh nghiên cứu các tính năng cốt lõi.
+      </p>
+
+      <!-- PayPal Button Container -->
+      <div class="py-2">
+        <div id="paypal-container-T2CFZT8EL6QA4"></div>
+      </div>
+
+      <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-500">
+        <span data-i18n="sponsor.point1">100% Mã nguồn mở AGPL v3</span>
+        <a href="https://www.paypal.com/ncp/payment/T2CFZT8EL6QA4" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 font-medium transition-colors">
+          Mở trên PayPal ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Footer (Compliant, Minimal) -->
+  <footer class="border-t border-white/[0.08] py-12 px-4 sm:px-6 bg-black/40 z-10">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-500">
+      <div class="flex items-center gap-3">
+        <img src="assets/symbol.svg" alt="Nido Edge CMS Logo" class="w-6 h-6 opacity-80">
+        <div class="flex flex-col"><span data-i18n="footer.license">Nido Edge CMS · Mã nguồn mở theo giấy phép <strong>AGPL v3</strong>.</span><span class="text-[10px] text-slate-500/80 mt-1 uppercase tracking-wider font-semibold">Created by Steve Dat. Engineered & Copyrighted by Nido Holdings.</span></div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-6">
+        <a href="https://github.com/stevedat/nido-edge-cms" target="_blank" rel="noopener noreferrer" class="hover:text-slate-300 transition-colors">GitHub Repository</a>
+        <a href="https://github.com/stevedat/nido-edge-cms/releases" target="_blank" rel="noopener noreferrer" class="hover:text-slate-300 transition-colors" data-i18n="footer.releases">Bản phát hành</a>
+        <button type="button" onclick="openSponsorModal()" class="text-amber-400 hover:text-amber-300 font-medium transition-colors cursor-pointer" data-i18n="footer.sponsor">Tài trợ (Sponsor)</button>
+        <a href="https://github.com/stevedat/nido-edge-cms/issues" target="_blank" rel="noopener noreferrer" class="hover:text-slate-300 transition-colors" data-i18n="footer.issues">Báo lỗi</a>
+        <a href="ARCHITECTURE.md" class="hover:text-slate-300 transition-colors" data-i18n="footer.architecture">Kiến trúc</a>
+        <a href="DEPLOYMENT.md" class="hover:text-slate-300 transition-colors" data-i18n="footer.deployment">Triển khai</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bilingual Dictionary & Interactive Simulator Script -->
+  <script>
+    // -------------------------------------------------------------
+    // 1. I18N DICTIONARY & LOCALE MANAGEMENT
+    // -------------------------------------------------------------
+    const I18N = {
+      vi: {
+        'meta.title': 'Nido Edge CMS — Multi-tenant CMS & Headless Content Engine trên Edge Siêu tốc',
+        'meta.description': 'Nền tảng Multi-tenant CMS & Headless Content Engine native trên Edge siêu tốc. Xây dựng bằng SvelteKit 2, Svelte 5 Runes, Tailwind CSS v4 và Lõi 100% Web Standards. Đa người thuê không cần cơ sở dữ liệu trên Cloudflare & Vercel Edge.',
+        'nav.features': 'Tính năng',
+        'nav.playground': 'API',
+        'nav.architecture': 'Kiến trúc',
+        'nav.cta': 'Khởi tạo',
+        'hero.badge': 'Mã nguồn mở · Giấy phép AGPL v3 · 100% Web Standards · $0 Edge Serverless',
+        'hero.headline_sub': 'Multi-tenant CMS & Headless Content Engine Siêu tốc.',
+        'hero.description': 'Giao diện quản trị Zero-VDOM siêu tốc với Svelte 5. Lõi Web Standards độc lập không phụ thuộc framework. Đa người thuê (Multi-tenant) không cần cơ sở dữ liệu trên Cloudflare & Vercel Edge.',
+        'hero.cta_start_title': 'Khởi tạo Dự án Nhanh',
+        'hero.cta_start_sub': 'SvelteKit 2 + Svelte 5 + Tailwind v4',
+        'hero.cta_api_title': 'Thử nghiệm Edge API',
+        'hero.cta_api_sub': 'Headless API /api/v1/ trực tiếp',
+        'hero.cmd_copy': 'Chép',
+        'hero.cmd_copied': 'Đã chép!',
+        'hero.cmd_note': 'Dành cho Terminal: Tải mã nguồn, cài đặt dependencies và khởi chạy trang web tại localhost:5173.',
+        'metrics.cwv': 'Core Web Vitals (LCP < 0.6s, CLS 0, INP vi-giây)',
+        'metrics.db': 'Không chi phí máy chủ (Flat-file & Git-backed)',
+        'metrics.standards': 'Lõi Web Crypto API thuần túy, Zero-Lockin',
+        'steps.heading': '3 Bước Triển Khai Đơn Giản Lên Edge Cloud',
+        'steps.s1_title': 'Clone & Khởi động',
+        'steps.s1_desc': 'Clone mã nguồn, cấu hình <code class="text-slate-300">.env</code> và chạy <code class="text-slate-300">npm run dev</code>.',
+        'steps.s2_title': 'Quản trị Nội dung',
+        'steps.s2_desc': 'Truy cập <code class="text-slate-300">/admin/login</code> viết bài bằng trình soạn thảo Tiptap WYSIWYG.',
+        'steps.s3_title': 'Xuất bản Toàn cầu',
+        'steps.s3_desc': 'Chạy lệnh <code class="text-slate-300">npx wrangler pages deploy</code> hoặc đẩy lên Vercel Edge $0.',
+        'playground.title': 'Trải nghiệm Edge API Trực tiếp',
+        'playground.desc': 'Thử nghiệm các endpoint Headless API và mô phỏng điều hướng đa người thuê (Multi-tenant) ngay trên trình duyệt.',
+        'playground.edge_node': 'Edge Node: Cloudflare Worker · Global CDN',
+        'playground.select_endpoint': 'Chọn API Endpoint:',
+        'playground.tenant_label': 'Header x-tenant-domain:',
+        'playground.t_default': 'default (Apple OLED)',
+        'playground.t_academic': 'academic (Giấy kem)',
+        'playground.t_executive': 'executive (Hoàng gia)',
+        'playground.t_wellness': 'wellness (Y tế/Coach)',
+        'showcase.badge': 'Thiết kế Apple Minimalist OLED',
+        'showcase.title': 'Bảng Quản trị Hiện đại, Tinh giản',
+        'showcase.desc': 'Không cửa sổ cồng kềnh, không cấu hình rườm rà. Bảng quản trị tích hợp bộ soạn thảo Tiptap WYSIWYG mượt mà, hỗ trợ Markdown, hình ảnh kéo thả và AI-Ready Minimalist Starter UI.',
+        'showcase.i1_title': 'Trình soạn thảo Tiptap WYSIWYG:',
+        'showcase.i1_desc': 'Hỗ trợ Markdown, code block, hình ảnh kéo thả tải thẳng lên Git repository.',
+        'showcase.i2_title': '4 Theme Presets Thích ứng:',
+        'showcase.i2_desc': 'Chuyển đổi linh hoạt giữa Apple Titan, Academic (học thuật), Executive (doanh nghiệp), và Wellness (chăm sóc sức khỏe).',
+        'showcase.i3_title': 'Song ngữ Việt — Anh 100%:',
+        'showcase.i3_desc': 'Quản trị tiêu đề, trích đoạn và nội dung song ngữ chuẩn mực quốc tế.',
+        'paradigms.title': 'Kiến trúc cho 2 Trường phái Lập trình Hiện đại',
+        'paradigms.p1_title': 'Giao diện Cơ sở Sẵn sàng cho AI',
+        'paradigms.p1_desc': 'Một khung UI Svelte 5 + Tailwind siêu nhẹ, không rườm rà CSS. Chỉ cần mở Cursor / Windsurf và prompt: "Sửa layout này thành trang SaaS". AI sẽ tự động sinh code cực mượt mà không bị vướng bận Theme cũ.',
+        'paradigms.p2_title': 'Lõi API Headless Siêu Tốc',
+        'paradigms.p2_desc': 'Lõi chuẩn Web Standards 100%. Anh em Pro Dev có thể xóa sạch giao diện Svelte, chỉ giữ lại Core để làm một máy chủ API vô hình siêu nhanh, gắn vào các app React, Next.js hay Mobile của doanh nghiệp.',
+        'features.title': '4 Khác biệt Kỹ thuật Cốt lõi',
+        'features.desc': 'Được thiết kế từ gốc để giải quyết triệt để vấn đề chi phí hạ tầng máy chủ và độ trễ phân phối nội dung toàn cầu.',
+        'features.f1_title': 'Giao diện Quản trị Zero-VDOM (Svelte 5)',
+        'features.f1_desc': 'Loại bỏ hoàn toàn lớp Virtual DOM nặng nề. Mã nguồn biên dịch thành các cập nhật trực tiếp tại DOM, giúp giảm 70% kích thước bundle so với Next.js và đạt trọn 100/100 điểm Google Core Web Vitals.',
+        'features.f2_title': '100% Web Standards Core — Zero Lock-in',
+        'features.f2_desc': 'Toàn bộ logic nghiệp vụ (src/lib/core/) sử dụng chuẩn Web thuần túy (crypto.subtle, PBKDF2, JWT HS256). Dễ dàng chuyển đổi hoặc nhúng vào Hono, Astro, hoặc Node.js độc lập.',
+        'features.f3_title': 'Đa người thuê Không Cần Database',
+        'features.f3_desc': 'Phục vụ hàng trăm website và khách hàng riêng biệt theo tên miền tùy chỉnh (src/content/{domain}/) trên cùng một Edge Worker duy nhất. Tiết kiệm 100% chi phí máy chủ SQL đắt đỏ.',
+        'features.f4_title': 'Chống Bot Spam Bằng Proof-of-Work (PoW)',
+        'features.f4_desc': 'Nói không với các mã CAPTCHA hình ảnh khó chịu và theo dõi người dùng. Hệ thống tự động phát bài toán giải mã vi tính SHA-256 trong 10ms để chặn đứng bot flood form liên hệ và bình luận.',
+        'comparison.title': 'Bảng So sánh Trực quan',
+        'comparison.desc': 'So sánh thực tế giữa Nido Edge CMS với WordPress truyền thống và các nền tảng Headless CMS phổ biến.',
+        'comparison.th_metric': 'Tiêu chí kỹ thuật',
+        'comparison.r1_metric': 'Chi phí hạ tầng máy chủ',
+        'comparison.r1_wp': '$10 – $50 / tháng (VPS)',
+        'comparison.r1_headless': '$20 – $300 / tháng',
+        'comparison.r1_edge': '$0 (Edge Serverless)',
+        'comparison.r2_metric': 'Độ trễ phản hồi toàn cầu (Edge)',
+        'comparison.r2_edge': '< 50 ms (CDN Toàn cầu)',
+        'comparison.r3_metric': 'Cơ sở dữ liệu (Database)',
+        'comparison.r3_wp': 'Bắt buộc MySQL/MariaDB',
+        'comparison.r3_headless': 'Bắt buộc PostgreSQL/MongoDB',
+        'comparison.r3_edge': 'Không cần (Flat-file & Git)',
+        'comparison.r4_metric': 'Điểm số Google Core Web Vitals',
+        'comparison.r4_edge': '100 / 100 Hoàn hảo',
+        'comparison.r5_metric': 'Đa người thuê (Multi-tenancy)',
+        'comparison.r5_wp': 'Phức tạp (Multisite nặng)',
+        'comparison.r5_headless': 'Gói Enterprise đắt đỏ',
+        'comparison.r5_edge': 'Tích hợp sẵn (Theo Domain)',
+        'comparison.r6_metric': 'Chống bot spam',
+        'comparison.r6_wp': 'reCAPTCHA (theo dõi cookie)',
+        'comparison.r6_headless': 'Cần dịch vụ ngoài',
+        'comparison.r6_edge': 'Proof-of-Work bảo mật cao',
+        'comparison.r7_metric': 'Giấy phép phát hành',
+        'comparison.r7_headless': 'Thương mại / Khóa tính năng',
+        'comparison.r7_edge': 'Mã nguồn mở AGPL-3.0',
+        'arch.title': 'Kiến trúc Tách lớp Độc lập',
+        'arch.desc': 'Tách bạch nghiêm ngặt giữa tầng giao diện SvelteKit, lõi chuẩn Web Standards và tầng lưu trữ phân tán.',
+        'arch.caption': '// Sơ đồ kiến trúc Edge Multi-tenant & Web Standards Core',
+        'roadmap.title': 'Lộ trình Phát triển',
+        'roadmap.desc': 'Định hướng hoàn thiện nền tảng CMS mã nguồn mở tốc độ cao và thân thiện nhất với các AI Coding Agents.',
+        'roadmap.s1_badge': 'v1.0.0 (Hiện tại)',
+        'roadmap.s1_title': 'Edge Standards Core',
+        'roadmap.s1_desc': 'Hoàn thiện 100% Web Standards Core, Svelte 5 Runes, Universal Edge API, bảo mật PoW và AI-Ready Minimalist Starter UI.',
+        'roadmap.s2_badge': 'Đang phát triển',
+        'roadmap.s2_title': 'Đồng bộ Git 2 Chiều',
+        'roadmap.s2_desc': 'Hỗ trợ xuất bản nội dung tự động tạo Commit hoặc Pull Request về GitHub/GitLab repository, giữ toàn quyền kiểm soát phiên bản.',
+        'roadmap.s3_badge': 'Dự kiến',
+        'roadmap.s3_title': 'Edge Vector AI Search',
+        'roadmap.s3_desc': 'Tích hợp bộ tìm kiếm ngữ nghĩa thông minh chạy trực tiếp tại Edge Worker mà không cần phụ thuộc vào dịch vụ vector bên ngoài.',
+        'community.title': 'Dự án Mã Nguồn Mở Vì Cộng đồng Lập trình viên',
+        'community.desc': 'Nido Edge CMS được phát hành theo giấy phép AGPL v3. Mọi đóng góp kiến trúc, tính năng mở rộng hoặc phản hồi đều được hoan nghênh nồng nhiệt.',
+        'community.btn': 'Tham gia Đóng góp trên GitHub',
+        'community.sponsor_btn': 'Ủng hộ qua PayPal',
+        'sponsor.badge': 'Đồng hành & Tài trợ',
+        'sponsor.title': 'Ủng hộ Dự án qua PayPal',
+        'sponsor.desc': 'Nido Edge CMS được phát triển hoàn toàn vì cộng đồng mã nguồn mở. Mọi khoản tài trợ giúp duy trì hạ tầng Edge CDN, domain test đa người thuê và đẩy nhanh nghiên cứu các tính năng cốt lõi.',
+        'sponsor.point1': '100% Mã nguồn mở AGPL v3',
+        'sponsor.point2': 'Bảo mật thanh toán qua PayPal',
+        'sponsor.point3': 'Duy trì hạ tầng Edge $0',
+        'footer.license': 'Nido Edge CMS · Mã nguồn mở theo giấy phép <strong>AGPL v3</strong>.',
+        'footer.releases': 'Bản phát hành',
+        'footer.sponsor': 'Tài trợ (Sponsor)',
+        'footer.issues': 'Báo lỗi',
+        'footer.architecture': 'Kiến trúc',
+        'footer.deployment': 'Triển khai'
+      },
+      en: {
+        'meta.title': 'Nido Edge CMS — Ultra-fast Native Edge Multi-tenant CMS & Headless Content Engine',
+        'meta.description': 'Ultra-fast, minimalist, Edge-native Multi-tenant CMS & Headless Content Engine; 100% Web Standards Core. Database-free Multi-tenant on Cloudflare & Vercel Edge.',
+        'nav.features': 'Features',
+        'nav.playground': 'Playground',
+        'nav.architecture': 'Architecture',
+        'nav.cta': 'Get Started',
+        'hero.badge': 'Open Source · AGPL v3 License · 100% Web Standards · $0 Edge Serverless',
+        'hero.headline_sub': 'Ultra-fast Edge Multi-tenant CMS & Headless Content Engine.',
+        'hero.description': 'Ultra-fast Zero-VDOM Admin UI powered by Svelte 5. Framework-agnostic Web Standards core. Zero-database multi-tenancy deployed on Cloudflare & Vercel Edge.',
+        'hero.cta_start_title': 'Quick Start Project',
+        'hero.cta_start_sub': 'SvelteKit 2 + Svelte 5 + Tailwind v4',
+        'hero.cta_api_title': 'Explore Edge API',
+        'hero.cta_api_sub': 'Live Headless /api/v1/ Endpoints',
+        'hero.cmd_copy': 'Copy',
+        'hero.cmd_copied': 'Copied!',
+        'hero.cmd_note': 'Terminal command: Clone repository, install dependencies, and launch dev server at localhost:5173.',
+        'metrics.cwv': 'Core Web Vitals (LCP < 0.6s, CLS 0, Sub-ms INP)',
+        'metrics.db': 'Zero Hosting Costs (Flat-file & Git-backed)',
+        'metrics.standards': 'Pure Web Crypto API Core, Zero Lock-in',
+        'steps.heading': '3 Simple Steps to Deploy on Edge Cloud',
+        'steps.s1_title': 'Clone & Launch',
+        'steps.s1_desc': 'Clone repo, configure <code class="text-slate-300">.env</code>, and run <code class="text-slate-300">npm run dev</code>.',
+        'steps.s2_title': 'Manage Content',
+        'steps.s2_desc': 'Visit <code class="text-slate-300">/admin/login</code> and craft content with Tiptap WYSIWYG editor.',
+        'steps.s3_title': 'Deploy Globally',
+        'steps.s3_desc': 'Run <code class="text-slate-300">npx wrangler pages deploy</code> or ship to Vercel Edge for $0.',
+        'playground.title': 'Interactive Edge API Playground',
+        'playground.desc': 'Test Headless REST endpoints and simulate multi-tenant dynamic routing right in your browser.',
+        'playground.edge_node': 'Edge Node: Cloudflare Worker · Global CDN',
+        'playground.select_endpoint': 'Select API Endpoint:',
+        'playground.tenant_label': 'Header x-tenant-domain:',
+        'playground.t_default': 'default (Apple OLED)',
+        'playground.t_academic': 'academic (Warm Paper)',
+        'playground.t_executive': 'executive (Royal Navy)',
+        'playground.t_wellness': 'wellness (Emerald Health)',
+        'showcase.badge': 'Apple Minimalist OLED Design',
+        'showcase.title': 'Modern, Distraction-Free Admin Portal',
+        'showcase.desc': 'No bloated modals, no complex configs. The admin portal features a seamless Tiptap WYSIWYG editor with Markdown support, drag-and-drop media, and 4 industry-adaptive Theme Presets:',
+        'showcase.i1_title': 'Tiptap WYSIWYG Editor:',
+        'showcase.i1_desc': 'Native Markdown shortcuts, code block syntax highlighting, and drag-and-drop media synced directly to Git.',
+        'showcase.i2_title': '4 Adaptive Theme Presets:',
+        'showcase.i2_desc': 'Effortlessly switch between Apple Titanium, Academic (warm paper), Executive (royal navy), and Wellness (mint & emerald).',
+        'showcase.i3_title': '100% Dual-Language (VI / EN):',
+        'showcase.i3_desc': 'Manage localized titles, excerpts, and rich markdown bodies with international compliance.',
+        'paradigms.title': 'Architected for 2 Modern Paradigms',
+        'paradigms.p1_title': 'AI-Ready Starter UI',
+        'paradigms.p1_desc': 'A pristine Svelte 5 + Tailwind baseline with zero bloated CSS. Open Cursor/Windsurf and prompt: "Make this look like a modern SaaS dashboard". The AI generates your UI seamlessly without fighting legacy themes.',
+        'paradigms.p2_title': 'Ultra-Fast Headless API Core',
+        'paradigms.p2_desc': '100% Web Standards. Pro Devs can strip out the Svelte presentation layer and keep the Core as an invisible, high-performance API backend for their React, Next.js, or Mobile apps.',
+        'features.title': '4 Core Technical Advantages',
+        'features.desc': 'Architected from first principles to eradicate server hosting bills and conquer global content latency.',
+        'features.f1_title': 'Zero-VDOM Admin UI (Svelte 5)',
+        'features.f1_desc': 'Eliminates virtual DOM overhead completely. Code compiles into surgical direct DOM updates, slashing bundle size by 70% vs Next.js with perfect 100/100 Core Web Vitals.',
+        'features.f2_title': '100% Web Standards Core — Zero Lock-in',
+        'features.f2_desc': 'All core business logic (src/lib/core/) relies on pure Web APIs (crypto.subtle, PBKDF2, JWT HS256). Run anywhere: Hono, Astro, Express, or standalone Node.js.',
+        'features.f3_title': 'Database-Free Multi-Tenancy',
+        'features.f3_desc': 'Host hundreds of isolated tenant domains from flat-file repositories (src/content/{domain}/) on a single Edge Worker. Save 100% on expensive relational database clusters.',
+        'features.f4_title': 'Anti-Spam Proof-of-Work (PoW) Defense',
+        'features.f4_desc': 'Say goodbye to frustrating image CAPTCHAs and surveillance trackers. The edge issues cryptographic sub-10ms SHA-256 micro-puzzles to block spam bots silently.',
+        'comparison.title': 'Visual Comparison Matrix',
+        'comparison.desc': 'Direct comparison between Nido Edge CMS, traditional WordPress, and heavy SaaS Headless CMS platforms.',
+        'comparison.th_metric': 'Technical Metric',
+        'comparison.r1_metric': 'Hosting & Server Cost',
+        'comparison.r1_wp': '$10 – $50 / mo (VPS)',
+        'comparison.r1_headless': '$20 – $300 / mo',
+        'comparison.r1_edge': '$0 (Edge Serverless)',
+        'comparison.r2_metric': 'Global Edge Latency',
+        'comparison.r2_edge': '< 50 ms (Global CDN)',
+        'comparison.r3_metric': 'Database Requirement',
+        'comparison.r3_wp': 'Mandatory MySQL/MariaDB',
+        'comparison.r3_headless': 'Mandatory PostgreSQL/MongoDB',
+        'comparison.r3_edge': 'Zero DB (Flat-file & Git)',
+        'comparison.r4_metric': 'Google Core Web Vitals',
+        'comparison.r4_edge': '100 / 100 Perfect',
+        'comparison.r5_metric': 'Multi-Tenancy Architecture',
+        'comparison.r5_wp': 'Bloated Multisite setup',
+        'comparison.r5_headless': 'Expensive Enterprise tiers',
+        'comparison.r5_edge': 'Built-in (Per-domain routing)',
+        'comparison.r6_metric': 'Anti-Spam Security',
+        'comparison.r6_wp': 'reCAPTCHA (cookie tracking)',
+        'comparison.r6_headless': 'Third-party plugins needed',
+        'comparison.r6_edge': 'Native Proof-of-Work (PoW)',
+        'comparison.r7_metric': 'License',
+        'comparison.r7_headless': 'Commercial / Feature locks',
+        'comparison.r7_edge': 'Open Source AGPL-3.0',
+        'arch.title': 'Decoupled Edge Architecture',
+        'arch.desc': 'Strict separation between presentation layer, pure Web Standards business core, and edge-distributed storage.',
+        'arch.caption': '// Multi-tenant Edge & Web Standards Core Architecture Diagram',
+        'roadmap.title': 'Project Roadmap',
+        'roadmap.desc': 'Building the fastest open-source CMS platform optimized for modern developers and AI coding agents.',
+        'roadmap.s1_badge': 'v1.0.0 (Current)',
+        'roadmap.s1_title': 'Edge Standards Core',
+        'roadmap.s1_desc': 'Complete 100% Web Standards Core, Svelte 5 Runes, Universal Edge API, cryptographic PoW anti-spam, and AI-Ready Minimalist Starter UI.',
+        'roadmap.s2_badge': 'In Progress',
+        'roadmap.s2_title': 'Two-Way Git Sync',
+        'roadmap.s2_desc': 'Publishing content directly generates commits or pull requests to GitHub/GitLab repositories with zero lock-in.',
+        'roadmap.s3_badge': 'Planned',
+        'roadmap.s3_title': 'Edge Vector AI Search',
+        'roadmap.s3_desc': 'Semantic vector search running natively on Edge Workers without external vector database dependencies.',
+        'community.title': 'Open Source Built for Modern Engineers',
+        'community.desc': 'Nido Edge CMS is released under the AGPL-3.0 license. Architecture contributions, feature PRs, and community feedback are warmly welcomed.',
+        'community.btn': 'Contribute on GitHub',
+        'community.sponsor_btn': 'Sponsor via PayPal',
+        'sponsor.badge': 'Sponsorship & Support',
+        'sponsor.title': 'Support the Project via PayPal',
+        'sponsor.desc': 'Nido Edge CMS is an independent open-source project. Your sponsorship directly powers continuous edge infrastructure testing, multi-tenant test domains, and advanced core research.',
+        'sponsor.point1': '100% Open Source AGPL v3',
+        'sponsor.point2': 'Secure Checkout via PayPal',
+        'sponsor.point3': 'Sustain $0 Edge Infrastructure',
+        'footer.license': 'Nido Edge CMS · Open source under the <strong>AGPL v3</strong> license.',
+        'footer.releases': 'Releases',
+        'footer.sponsor': 'Sponsor',
+        'footer.issues': 'Issues',
+        'footer.architecture': 'Architecture',
+        'footer.deployment': 'Deployment'
+      }
+    };
+
+    let currentLang = 'vi';
+
+    const archDiagrams = {
+      vi: `┌────────────────────────────────────────────────────────────────────────┐
+│  TẦNG PHÂN PHỐI TOÀN CẦU: Edge Network (Cloudflare Pages / Vercel)     │
+│  • Điều hướng đa miền (Host Header / ?tenant= routing)                 │
+│  • Edge Caching tự động phân tán tại hơn 300+ thành phố trên thế giới  │
+│  • Phục vụ Static Assets (WebP, SVG, Fonts) tại Edge siêu tốc          │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ (Direct Edge Invocation)
+┌───────────────────────────────────┴────────────────────────────────────┐
+│  LÕI WEB STANDARDS CORE: src/lib/core/ (Zero Framework Lock-in)        │
+│  • Crypto Engine: Web Crypto API (crypto.subtle, PBKDF2-SHA256, JWT)   │
+│  • Anti-Spam: Thử thách giải đố Proof-of-Work (PoW) vi-giây           │
+│  • Tenant Resolver: Định danh Tenant từ Request Headers / Host         │
+│  • Content Engine: Quản lý Posts, Projects, Videos, Settings, Leads    │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ (Standard Storage Adapter)
+┌───────────────────────────────────┴────────────────────────────────────┐
+│  TẦNG DỮ LIỆU & GIAO TIẾP: Universal Edge API (/api/v1/) + Flat-file   │
+│  • REST Endpoints: GET /posts, GET /settings, POST /leads, POST /login │
+│  • Lưu trữ Flat-file JSON (src/content/{domain}/) & Git-backed Sync   │
+│  • Giao diện Svelte 5 Runes: Reference UI (AI-Ready Base)│
+└────────────────────────────────────────────────────────────────────────┘`,
+      en: `┌────────────────────────────────────────────────────────────────────────┐
+│  GLOBAL DISTRIBUTION LAYER: Edge Network (Cloudflare Pages / Vercel)   │
+│  • Multi-domain routing (Host Header / ?tenant= resolution)            │
+│  • Automatic Edge Caching distributed across 300+ PoPs worldwide       │
+│  • Lightning-fast Static Assets delivery (WebP, SVG, Fonts) at the Edge│
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ (Direct Edge Invocation)
+┌───────────────────────────────────┴────────────────────────────────────┐
+│  WEB STANDARDS CORE: src/lib/core/ (Zero Framework Lock-in)            │
+│  • Crypto Engine: Web Crypto API (crypto.subtle, PBKDF2-SHA256, JWT)   │
+│  • Anti-Spam: Sub-millisecond Proof-of-Work (PoW) cryptographic puzzle │
+│  • Tenant Resolver: Zero-latency Tenant Resolution from Request / Host │
+│  • Content Engine: Headless Posts, Projects, Videos, Settings & Leads  │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ (Standard Storage Adapter)
+┌───────────────────────────────────┴────────────────────────────────────┐
+│  DATA & INTERFACE LAYER: Universal Edge API (/api/v1/) + Flat-file     │
+│  • REST Endpoints: GET /posts, GET /settings, POST /leads, POST /login │
+│  • Flat-file JSON Storage (src/content/{domain}/) & Git-backed Sync    │
+│  • Svelte 5 Runes UI: Reference UI (AI-Ready Base)    │
+└────────────────────────────────────────────────────────────────────────┘`
+    };
+
+    function switchLanguage(lang) {
+      if (!I18N[lang]) return;
+      currentLang = lang;
+      localStorage.setItem('edge_cms_locale', lang);
+      document.documentElement.lang = lang;
+
+      // Update button active states
+      const viBtn = document.getElementById('btn-lang-vi');
+      const enBtn = document.getElementById('btn-lang-en');
+      if (lang === 'vi') {
+        viBtn.className = 'px-2 py-1 rounded-md transition-all text-white bg-white/20 shadow-sm';
+        enBtn.className = 'px-2 py-1 rounded-md transition-all text-slate-400 hover:text-white';
+      } else {
+        enBtn.className = 'px-2 py-1 rounded-md transition-all text-white bg-white/20 shadow-sm';
+        viBtn.className = 'px-2 py-1 rounded-md transition-all text-slate-400 hover:text-white';
+      }
+
+      // Update all data-i18n elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (I18N[lang][key]) {
+          el.innerHTML = I18N[lang][key];
+        }
+      });
+
+      // Update attribute-based i18n
+      document.querySelectorAll('[data-i18n-attr]').forEach(el => {
+        const spec = el.getAttribute('data-i18n-attr');
+        const [attr, key] = spec.split(':');
+        if (I18N[lang][key]) {
+          el.setAttribute(attr, I18N[lang][key]);
+        }
+      });
+
+      // Update page title
+      if (I18N[lang]['meta.title']) {
+        document.title = I18N[lang]['meta.title'];
+      }
+
+      // Update Architecture Diagram ASCII text
+      const archPre = document.getElementById('arch-diagram');
+      if (archPre && archDiagrams[lang]) {
+        archPre.textContent = archDiagrams[lang];
+      }
+
+      // Refresh API response preview if simulator is initialized
+      if (typeof renderOutput === 'function') {
+        renderOutput();
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 2. COPY TERMINAL COMMAND
+    // -------------------------------------------------------------
+    const copyCmdBtn = document.getElementById('btn-copy-command');
+    copyCmdBtn.addEventListener('click', () => {
+      const cmdText = document.getElementById('cmd-text')?.innerText || 'git clone https://github.com/stevedat/nido-edge-cms.git && cd nido-edge-cms && npm i && npm run dev';
+      navigator.clipboard.writeText(cmdText).then(() => {
+        const copyLabel = document.getElementById('copy-label');
+        if (copyLabel) {
+          copyLabel.innerText = I18N[currentLang]['hero.cmd_copied'] || 'Copied!';
+        }
+        setTimeout(() => {
+          if (copyLabel) {
+            copyLabel.innerText = I18N[currentLang]['hero.cmd_copy'] || 'Copy';
+          }
+        }, 2000);
+      });
+    });
+
+    // -------------------------------------------------------------
+    // 3. INTERACTIVE Edge API SIMULATOR
+    // -------------------------------------------------------------
+    const apiBtns = document.querySelectorAll('.api-btn');
+    const tenantBtns = document.querySelectorAll('.tenant-btn');
+    const apiOutput = document.getElementById('api-output');
+    const responseStatus = document.getElementById('response-status');
+
+    let currentEndpoint = '/api/v1/posts';
+    let currentTenant = 'default';
+
+    const sampleResponses = {
+      vi: {
+        '/api/v1/posts': {
+          default: {
+            success: true,
+            posts: [
+              {
+                slug: "chao-mung-den-voi-edge-cms",
+                title: "Chào mừng bạn đến với Nido Edge CMS",
+                title_en: "Welcome to Nido Edge CMS",
+                publishedAt: "2026-09-30T00:00:00.000Z",
+                tags: ["svelte5", "edge", "cms", "serverless"],
+                excerpt: "Hệ thống quản trị nội dung siêu tốc hoạt động trên Cloudflare Pages và Vercel Edge...",
+                readingMinutes: 3
+              },
+              {
+                slug: "kien-truc-web-standards-core",
+                title: "Tối ưu hóa Lõi Web Standards cho Edge Runtimes",
+                title_en: "Optimizing Web Standards Core for Edge Runtimes",
+                publishedAt: "2026-09-29T10:00:00.000Z",
+                tags: ["architecture", "web-crypto", "edge"],
+                excerpt: "Loại bỏ hoàn toàn phụ thuộc Node.js để chạy mượt mà trên mọi Edge Worker...",
+                readingMinutes: 5
+              }
+            ],
+            total: 2,
+            page: 1,
+            limit: 10,
+            tenant: "default"
+          },
+          'academic.local': {
+            success: true,
+            posts: [
+              {
+                slug: "nghien-cuu-giao-duc-so",
+                title: "Chuyển đổi số trong Giáo dục Đại học",
+                publishedAt: "2026-09-28T08:00:00.000Z",
+                tags: ["academic", "research", "digital-education"],
+                excerpt: "Khảo sát và phân tích các phương pháp sư phạm kết hợp...",
+                readingMinutes: 8
+              }
+            ],
+            total: 1,
+            tenant: "academic.local"
+          },
+          'executive.local': {
+            success: true,
+            posts: [
+              {
+                slug: "chien-luoc-doanh-nghiep-2026",
+                title: "Báo cáo Chiến lược Tăng trưởng Bền vững",
+                publishedAt: "2026-09-27T09:00:00.000Z",
+                tags: ["executive", "consulting", "growth"],
+                excerpt: "Giải pháp chuyển đổi mô hình kinh doanh trên hạ tầng đám mây tối giản...",
+                readingMinutes: 4
+              }
+            ],
+            total: 1,
+            tenant: "executive.local"
+          },
+          'wellness.local': {
+            success: true,
+            posts: [
+              {
+                slug: "loi-song-tinh-thuc",
+                title: "Cân bằng Thân - Tâm - Trí trong Kỷ nguyên Số",
+                publishedAt: "2026-09-26T07:00:00.000Z",
+                tags: ["wellness", "health", "mindfulness"],
+                excerpt: "Chăm sóc sức khỏe toàn diện và phương pháp tái tạo năng lượng mỗi ngày...",
+                readingMinutes: 6
+              }
+            ],
+            total: 1,
+            tenant: "wellness.local"
+          }
+        },
+        '/api/v1/settings': {
+          default: {
+            success: true,
+            settings: {
+              title: "Nido Edge CMS",
+              description: "Hệ thống Edge CMS tối giản chuẩn Apple",
+              theme: "apple",
+              homeLayout: "editorial",
+              locale: "vi",
+              enableComments: true
+            },
+            tenant: "default"
+          },
+          'academic.local': {
+            success: true,
+            settings: {
+              title: "Viện Nghiên cứu & Học thuật",
+              theme: "academic",
+              homeLayout: "bento_portfolio",
+              locale: "vi"
+            },
+            tenant: "academic.local"
+          },
+          'executive.local': {
+            success: true,
+            settings: {
+              title: "Executive Advisory Partners",
+              theme: "executive",
+              homeLayout: "one_page_consulting",
+              locale: "en"
+            },
+            tenant: "executive.local"
+          },
+          'wellness.local': {
+            success: true,
+            settings: {
+              title: "Trung tâm Y học & Sức khỏe Tự nhiên",
+              theme: "wellness",
+              homeLayout: "minimal_story",
+              locale: "vi"
+            },
+            tenant: "wellness.local"
+          }
+        },
+        '/api/v1/challenge': {
+          all: {
+            success: true,
+            challenge: "edge_cms_pow_f7a29e81b4c90d",
+            difficulty: "000",
+            resource: "contact_inquiry",
+            expiresIn: 300,
+            hint: "Solve Proof-of-Work puzzle to verify non-bot activity",
+            timestamp: new Date().toISOString()
+          }
+        },
+        '/api/v1/leads': {
+          all: {
+            success: true,
+            message: "Lead inquiry registered successfully",
+            lead: {
+              id: "lead_982b14c3",
+              name: "Lập trình viên Khách mời",
+              email: "guest@example.com",
+              field: "Tư vấn kiến trúc Edge CMS",
+              verifiedBy: "Proof-of-Work (SHA-256)",
+              status: "NEW",
+              createdAt: new Date().toISOString()
+            }
+          }
+        }
+      },
+      en: {
+        '/api/v1/posts': {
+          default: {
+            success: true,
+            posts: [
+              {
+                slug: "welcome-to-edge-cms",
+                title: "Welcome to Nido Edge CMS",
+                title_vi: "Chào mừng bạn đến với Nido Edge CMS",
+                publishedAt: "2026-09-30T00:00:00.000Z",
+                tags: ["svelte5", "edge", "cms", "serverless"],
+                excerpt: "Ultra-fast headless content management system running on Cloudflare Pages and Vercel Edge...",
+                readingMinutes: 3
+              },
+              {
+                slug: "web-standards-core-architecture",
+                title: "Optimizing Web Standards Core for Edge Runtimes",
+                title_vi: "Tối ưu hóa Lõi Web Standards cho Edge Runtimes",
+                publishedAt: "2026-09-29T10:00:00.000Z",
+                tags: ["architecture", "web-crypto", "edge"],
+                excerpt: "Zero Node.js dependency runtime designed for seamless deployment across global Edge Workers...",
+                readingMinutes: 5
+              }
+            ],
+            total: 2,
+            page: 1,
+            limit: 10,
+            tenant: "default"
+          },
+          'academic.local': {
+            success: true,
+            posts: [
+              {
+                slug: "digital-higher-education-research",
+                title: "Digital Transformation in Higher Education",
+                publishedAt: "2026-09-28T08:00:00.000Z",
+                tags: ["academic", "research", "digital-education"],
+                excerpt: "Empirical survey and analysis of modern blended pedagogy models...",
+                readingMinutes: 8
+              }
+            ],
+            total: 1,
+            tenant: "academic.local"
+          },
+          'executive.local': {
+            success: true,
+            posts: [
+              {
+                slug: "corporate-strategy-2026",
+                title: "Strategic Blueprint for Sustainable Growth",
+                publishedAt: "2026-09-27T09:00:00.000Z",
+                tags: ["executive", "consulting", "growth"],
+                excerpt: "Actionable frameworks for enterprise IT modernizations on serverless cloud...",
+                readingMinutes: 4
+              }
+            ],
+            total: 1,
+            tenant: "executive.local"
+          },
+          'wellness.local': {
+            success: true,
+            posts: [
+              {
+                slug: "mindful-living-in-digital-age",
+                title: "Balancing Mind, Body & Vitality in the Digital Era",
+                publishedAt: "2026-09-26T07:00:00.000Z",
+                tags: ["wellness", "health", "mindfulness"],
+                excerpt: "Holistic health practices and evidence-based daily energy restoration...",
+                readingMinutes: 6
+              }
+            ],
+            total: 1,
+            tenant: "wellness.local"
+          }
+        },
+        '/api/v1/settings': {
+          default: {
+            success: true,
+            settings: {
+              title: "Nido Edge CMS",
+              description: "Ultra-fast Apple-minimalist Edge CMS",
+              theme: "apple",
+              homeLayout: "editorial",
+              locale: "en",
+              enableComments: true
+            },
+            tenant: "default"
+          },
+          'academic.local': {
+            success: true,
+            settings: {
+              title: "Academic & Research Institute",
+              theme: "academic",
+              homeLayout: "bento_portfolio",
+              locale: "en"
+            },
+            tenant: "academic.local"
+          },
+          'executive.local': {
+            success: true,
+            settings: {
+              title: "Executive Advisory Partners",
+              theme: "executive",
+              homeLayout: "one_page_consulting",
+              locale: "en"
+            },
+            tenant: "executive.local"
+          },
+          'wellness.local': {
+            success: true,
+            settings: {
+              title: "Natural Medicine & Wellness Center",
+              theme: "wellness",
+              homeLayout: "minimal_story",
+              locale: "en"
+            },
+            tenant: "wellness.local"
+          }
+        },
+        '/api/v1/challenge': {
+          all: {
+            success: true,
+            challenge: "edge_cms_pow_f7a29e81b4c90d",
+            difficulty: "000",
+            resource: "contact_inquiry",
+            expiresIn: 300,
+            hint: "Solve Proof-of-Work puzzle to verify non-bot activity",
+            timestamp: new Date().toISOString()
+          }
+        },
+        '/api/v1/leads': {
+          all: {
+            success: true,
+            message: "Lead inquiry registered successfully",
+            lead: {
+              id: "lead_982b14c3",
+              name: "Visiting Developer",
+              email: "guest@example.com",
+              field: "Edge CMS Architecture Consulting",
+              verifiedBy: "Proof-of-Work (SHA-256)",
+              status: "NEW",
+              createdAt: new Date().toISOString()
+            }
+          }
+        }
+      }
+    };
+
+    function renderOutput() {
+      const langDict = sampleResponses[currentLang] || sampleResponses['vi'];
+      let data;
+      if (currentEndpoint === '/api/v1/challenge' || currentEndpoint === '/api/v1/leads') {
+        data = langDict[currentEndpoint]?.all;
+      } else {
+        const tenantMap = langDict[currentEndpoint];
+        data = tenantMap ? (tenantMap[currentTenant] || tenantMap['default']) : { success: true };
+      }
+      
+      const latency = Math.floor(Math.random() * 8) + 7;
+      responseStatus.innerText = `HTTP ${currentEndpoint === '/api/v1/leads' ? '201 Created' : '200 OK'} · ${latency}ms latency (Edge CDN)`;
+      apiOutput.innerText = JSON.stringify(data, null, 2);
+    }
+
+    apiBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        apiBtns.forEach(b => {
+          b.className = 'api-btn px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/10 text-slate-300 border border-white/5 font-mono transition-colors';
+        });
+        btn.className = 'api-btn px-2.5 py-1 rounded-md bg-edge-orange/20 text-edge-orange border border-edge-orange/30 font-mono transition-colors';
+        currentEndpoint = btn.getAttribute('data-endpoint') || '/api/v1/posts';
+        renderOutput();
+      });
+    });
+
+    tenantBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tenantBtns.forEach(b => {
+          b.className = 'tenant-btn px-2 py-0.5 rounded bg-white/5 text-slate-400 hover:text-white';
+        });
+        btn.className = 'tenant-btn px-2 py-0.5 rounded bg-white/10 text-white border border-white/20';
+        currentTenant = btn.getAttribute('data-tenant') || 'default';
+        renderOutput();
+      });
+    });
+
+    // Initialize locale on load
+    const savedLocale = localStorage.getItem('edge_cms_locale') || (navigator.language && navigator.language.startsWith('en') ? 'en' : 'vi');
+    switchLanguage(savedLocale);
+
+    // -------------------------------------------------------------
+    // 4. PAYPAL HOSTED BUTTON & SPONSOR MODAL
+    // -------------------------------------------------------------
+    function openSponsorModal() {
+      const modal = document.getElementById('sponsor-modal');
+      if (modal) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100', 'pointer-events-auto');
+        document.body.style.overflow = 'hidden';
+        initPayPalButton();
+      }
+    }
+
+    function closeSponsorModal() {
+      const modal = document.getElementById('sponsor-modal');
+      if (modal) {
+        modal.classList.remove('opacity-100', 'pointer-events-auto');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = '';
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeSponsorModal();
+      }
+    });
+
+    function initPayPalButton() {
+      if (window.paypal && typeof window.paypal.HostedButtons === 'function') {
+        try {
+          const container = document.getElementById('paypal-container-T2CFZT8EL6QA4');
+          if (container && !container.hasChildNodes()) {
+            paypal.HostedButtons({
+              hostedButtonId: "T2CFZT8EL6QA4",
+            }).render("#paypal-container-T2CFZT8EL6QA4");
+          }
+        } catch (e) {
+          console.warn("PayPal render warning:", e);
+        }
+      } else {
+        setTimeout(initPayPalButton, 350);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "proj_docs_engine",
+    "title": "Svelte Edge Docs",
+    "title_en": "Svelte Edge Docs",
+    "slug": "svelte-edge-docs",
+    "description": "Nền tảng tài liệu kỹ thuật thế hệ mới được tối ưu hóa cho Edge Computing và Svelte 5.",
+    "description_en": "Next-generation documentation framework tailored for Edge networks and Svelte 5.",
+    "thumbnail": "/projects/project-1.svg",
+    "url": "https://example.com",
+    "link": "https://example.com",
+    "categorySlug": "web-development",
+    "featured": true,
+    "technologies": [
+      "SvelteKit",
+      "Tailwind CSS",
+      "TypeScript"
+    ]
+  },
+  {
+    "id": "proj_minimal_portfolio",
+    "title": "Minimalist Starter",
+    "title_en": "Minimalist Starter",
+    "slug": "minimalist-starter",
+    "description": "Khung mẫu giao diện chuẩn Apple Minimalist hỗ trợ song ngữ i18n và Dark Mode.",
+    "description_en": "Apple minimalist portfolio boilerplate with full i18n and OLED dark mode.",
+    "thumbnail": "/projects/project-2.svg",
+    "url": "https://example.com",
+    "link": "https://example.com",
+    "categorySlug": "ui-ux-design",
+    "featured": true,
+    "technologies": [
+      "Svelte 5",
+      "Vite",
+      "Cloudflare"
+    ]
+  }
+]
