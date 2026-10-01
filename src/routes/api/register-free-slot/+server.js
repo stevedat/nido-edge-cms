@@ -26,7 +26,7 @@ import { serverT } from '$lib/i18n/index.js';
 
 /**
  * Helper to get localized API response message
- * @param {import('$lib/i18n/index.js').Locale} locale
+ * @param {import('$lib/i18n/index.js').Locale | string | undefined | null} locale
  * @param {string} key
  */
 function getApiMessage(locale, key) {
@@ -37,8 +37,11 @@ function getApiMessage(locale, key) {
 export async function POST({ request, getClientAddress, locals, url }) {
 	try {
 		const ip = getClientAddress ? getClientAddress() : 'unknown';
+		/** @type {import('$lib/i18n/index.js').Locale} */
 		const headerLang = request.headers.get('accept-language')?.startsWith('en') ? 'en' : 'vi';
-		const queryLocale = url.searchParams.get('lang') || headerLang;
+		const langParam = url.searchParams.get('lang');
+		/** @type {import('$lib/i18n/index.js').Locale} */
+		const queryLocale = (langParam === 'en' || langParam === 'vi') ? langParam : headerLang;
 
 		if (isRateLimited(ip)) {
 			return json(
@@ -49,7 +52,8 @@ export async function POST({ request, getClientAddress, locals, url }) {
 
 		const body = await request.json();
 		const { phone, email, name, field, note, source, website_trap, locale: bodyLocale } = body;
-		const locale = bodyLocale || queryLocale;
+		/** @type {import('$lib/i18n/index.js').Locale} */
+		const locale = (bodyLocale === 'en' || bodyLocale === 'vi') ? bodyLocale : queryLocale;
 
 		// 1. Honeypot anti-bot trap
 		if (website_trap) {

@@ -13,8 +13,9 @@ const translations: Record<Locale, typeof vi> = {
 /**
  * Server-side robust translation (thread-safe, does not rely on global getLocale)
  */
-export function serverT(key: string, locale: Locale, params?: Record<string, string | number>): string {
-	const dict = translations[locale] || translations[DEFAULT_LOCALE];
+export function serverT(key: string, locale?: Locale | string | null, params?: Record<string, string | number>): string {
+	const activeLocale: Locale = (locale === 'en' || locale === 'vi') ? locale : DEFAULT_LOCALE;
+	const dict = translations[activeLocale] || translations[DEFAULT_LOCALE];
 	const fallbackDict = translations[DEFAULT_LOCALE];
 
 	const keys = key.split('.');

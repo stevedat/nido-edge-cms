@@ -3,6 +3,9 @@ import { fail } from '@sveltejs/kit';
 import { core } from '$lib/server/core.js';
 import { getVideos } from '$lib/server/content.js';
 
+/**
+ * @param {unknown} data
+ */
 const toJson = (data) => `${JSON.stringify(data, null, 2)}\n`;
 
 export const load = async ({ locals }) => {
@@ -27,6 +30,7 @@ export const actions = {
 
 		try {
 			const remote = await core.storage.read(domainPath);
+			/** @type {Array<{id: string, title?: string, [key: string]: any}>} */
 			let videos = [];
 			
 			if (remote) {

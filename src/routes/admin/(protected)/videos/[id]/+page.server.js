@@ -2,6 +2,9 @@
 import { error, fail, redirect, isRedirect } from '@sveltejs/kit';
 import { core } from '$lib/server/core.js';
 
+/**
+ * @param {unknown} data
+ */
 const toJson = (data) => `${JSON.stringify(data, null, 2)}\n`;
 
 export const load = async ({ params, locals }) => {
@@ -10,6 +13,7 @@ export const load = async ({ params, locals }) => {
 	const domainPath = `src/content/${domain}/videos.json`;
 	
 	try {
+		/** @type {Array<{id: string, [key: string]: any}>} */
 		let videos = [];
 		const remote = await core.storage.read(domainPath);
 		if (remote) {
@@ -48,6 +52,7 @@ export const actions = {
 		}
 
 		try {
+			/** @type {Array<{id: string, [key: string]: any}>} */
 			let videos = [];
 			const remote = await core.storage.read(domainPath);
 			if (remote) {
@@ -83,6 +88,7 @@ export const actions = {
 		const domainPath = `src/content/${domain}/videos.json`;
 
 		try {
+			/** @type {Array<{id: string, title?: string, [key: string]: any}>} */
 			let videos = [];
 			const remote = await core.storage.read(domainPath);
 			if (remote) {
