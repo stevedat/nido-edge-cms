@@ -1,0 +1,20 @@
+[
+	{
+		"id": "video_1",
+		"title": "Nido Edge CMS — Theme Showcase",
+		"title_en": "Nido Edge CMS — Theme Showcase",
+		"url": "https://youtu.be/dQw4w9WgXcQ",
+		"platform": "YOUTUBE",
+		"categorySlug": "ui-ux-design",
+		"tagSlugs": ["design-system", "theme"]
+	},
+	{
+		"id": "video_2",
+		"title": "Getting Started with SvelteKit",
+		"title_en": "Getting Started with SvelteKit",
+		"url": "https://youtu.be/MoGkX4RvZ38",
+		"platform": "YOUTUBE",
+		"categorySlug": "sveltekit",
+		"tagSlugs": ["svelte-5", "sveltekit"]
+	}
+]

@@ -1,0 +1,6 @@
+# Allow crawling everything by default, protect admin & api
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://example.com/sitemap.xml

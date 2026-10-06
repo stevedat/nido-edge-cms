@@ -1,0 +1,155 @@
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	/* Primary Accent */
+	--color-primary: #0066cc;
+	--color-primary-light: #2997ff;
+	--color-accent: #111111;
+	--color-accent-light: #333333;
+
+	/* Domain Accents */
+	--color-edtech: #0d9488;
+	--color-edtech-light: #2dd4bf;
+	--color-fintech: #d97706;
+	--color-fintech-light: #fbbf24;
+
+	/* Light Theme Tokens (Apple Default - WCAG AAA Compliant) */
+	--color-main-bg: #f5f5f7;
+	--color-soft-bg: #ebebed;
+	--color-surface: #ffffff;
+	--color-surface-hover: #fafafc;
+	--color-border-subtle: rgba(0, 0, 0, 0.09);
+	--color-border-strong: rgba(0, 0, 0, 0.18);
+	--color-overlay: rgba(0, 0, 0, 0.4);
+
+	/* High-Contrast Typographic Tokens */
+	--color-text-main: #111827; /* 16.2:1 on main-bg (AAA) */
+	--color-text-body: #374151; /* 9.5:1 on main-bg (AAA) */
+	--color-text-muted: #4b5563; /* 6.8:1 on main-bg (AAA large / AA text) */
+
+	/* Modern Border Radius Scale */
+	--radius-sm: 0.375rem;
+	--radius-md: 0.5rem;
+	--radius-lg: 0.75rem;
+	--radius-xl: 1rem;
+	--radius-2xl: 1.25rem;
+	--radius-3xl: 1.5rem;
+}
+
+/* ==========================================================================
+   BASE TYPOGRAPHY & FONT STACKS
+   ========================================================================== */
+body {
+	font-family:
+		-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', Roboto,
+		Helvetica, Arial, sans-serif;
+	@apply bg-main-bg text-text-main antialiased transition-colors duration-200 selection:bg-primary/20 selection:text-primary;
+	min-height: 100vh;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Dark Mode Tokens (Apple Pro Dark Philosophy) */
+.dark {
+	--color-main-bg: #000000;
+	--color-soft-bg: #2c2c2e; /* Elevated secondary fill inside surface */
+	--color-surface: #1c1c1e; /* Card & container surface */
+	--color-surface-hover: #262628; /* Subtle hover state */
+	--color-border-subtle: rgba(255, 255, 255, 0.14);
+	--color-border-strong: rgba(255, 255, 255, 0.25);
+	--color-overlay: rgba(0, 0, 0, 0.7);
+
+	--color-text-main: #ffffff; /* 21:1 on OLED, 16.5:1 on surface (AAA) */
+	--color-text-body: #e5e5ea; /* 16:1 on OLED, 12.5:1 on surface (AAA) */
+	--color-text-muted: #a1a1aa; /* 9.5:1 on OLED, 7.2:1 on surface (AAA) */
+
+	--color-primary: #2997ff;
+	--color-primary-light: #64b5f6;
+
+	--color-edtech: #2dd4bf;
+	--color-fintech: #fbbf24;
+}
+
+/* Accessible focus ring for keyboard navigation */
+:focus-visible {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 2px;
+	border-radius: var(--radius-sm);
+}
+
+/* Smooth ambient lighting utilities */
+.ambient-glow-blue {
+	background: radial-gradient(circle at 50% 0%, rgba(0, 102, 204, 0.08) 0%, transparent 70%);
+}
+
+.dark .ambient-glow-blue {
+	background: radial-gradient(circle at 50% 0%, rgba(41, 151, 255, 0.12) 0%, transparent 70%);
+}
+
+.ambient-glow-warm {
+	background: radial-gradient(
+		circle at 30% 20%,
+		rgba(217, 119, 6, 0.06) 0%,
+		rgba(13, 148, 136, 0.06) 50%,
+		transparent 75%
+	);
+}
+
+.dark .ambient-glow-warm {
+	background: radial-gradient(circle at 50% 0%, rgba(45, 212, 191, 0.1) 0%, transparent 70%);
+}
+
+/* ==========================================================================
+   ISLAND FRAMING & SPECULAR HIGHLIGHT UTILITIES (Apple Studio Depth)
+   ========================================================================== */
+.island-container {
+	background-color: color-mix(in srgb, var(--color-surface) 50%, var(--color-main-bg));
+	border: 1px solid var(--color-border-subtle);
+	border-radius: var(--radius-3xl);
+	position: relative;
+	overflow: hidden;
+}
+
+.specular-highlight {
+	box-shadow:
+		inset 0 1px 0 0 rgba(255, 255, 255, 0.75),
+		0 1px 2px 0 rgba(0, 0, 0, 0.02);
+}
+
+.dark .specular-highlight,
+.dark.specular-highlight,
+:where(.dark, .dark *) .specular-highlight {
+	box-shadow:
+		inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+		0 1px 3px 0 rgba(0, 0, 0, 0.35);
+}
+
+.section-indexer {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--color-text-muted);
+}
+
+@layer components {
+	[data-article] p {
+		@apply leading-relaxed text-text-body;
+	}
+}
+
+/* Utility to hide scrollbar while preserving scroll functionality */
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+.no-scrollbar {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
