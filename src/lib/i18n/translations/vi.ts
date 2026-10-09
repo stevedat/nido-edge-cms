@@ -20,7 +20,6 @@ export const vi = {
 		ariaLabel: 'Chuyển đổi giao diện sáng/tối'
 	},
 	footer: {
-		slogan: 'Thiết kế tối giản chuẩn Apple · Vận hành 0 VNĐ/tháng · Tự chủ dữ liệu 100%.',
 		rights: 'Đã đăng ký bản quyền.',
 		sendEmail: 'Gửi Email',
 		contact: 'Liên hệ',

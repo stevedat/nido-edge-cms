@@ -732,9 +732,52 @@
 			</div>
 		</div>
 
-		<!-- Footer -->
+		<!-- Footer & Corporate Info -->
 		<div class="space-y-6 md:col-span-2">
-			<h2 class="text-lg font-bold text-text-main">Footer</h2>
+			<h2 class="text-lg font-bold text-text-main">Thông tin Pháp nhân & Footer</h2>
+
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+				<div>
+					<label for="companyName" class="block text-sm font-medium text-text-body mb-1.5"
+						>Tên Công ty / Pháp nhân</label
+					>
+					<input
+						type="text"
+						id="companyName"
+						name="companyName"
+						value={data.settings?.companyName ?? ''}
+						placeholder="Ví dụ: Công Ty Luật TNHH KGC"
+						class="w-full rounded-xl border border-border-subtle bg-surface px-4 py-2.5 text-text-main placeholder:text-text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm transition-colors"
+					/>
+				</div>
+				<div>
+					<label for="taxId" class="block text-sm font-medium text-text-body mb-1.5"
+						>Mã số thuế (MST)</label
+					>
+					<input
+						type="text"
+						id="taxId"
+						name="taxId"
+						value={data.settings?.taxId ?? ''}
+						placeholder="Ví dụ: 0319736355"
+						class="w-full rounded-xl border border-border-subtle bg-surface px-4 py-2.5 text-text-main placeholder:text-text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm transition-colors"
+					/>
+				</div>
+			</div>
+
+			<div>
+				<label for="officeAddress" class="block text-sm font-medium text-text-body mb-1.5"
+					>Địa chỉ Trụ sở chính</label
+				>
+				<input
+					type="text"
+					id="officeAddress"
+					name="officeAddress"
+					value={data.settings?.officeAddress ?? ''}
+					placeholder="Địa chỉ xuất hiện ở Footer và trang Liên hệ"
+					class="w-full rounded-xl border border-border-subtle bg-surface px-4 py-2.5 text-text-main placeholder:text-text-muted focus:border-primary focus:ring-2 focus:ring-primary/20 text-sm transition-colors"
+				/>
+			</div>
 
 			<div>
 				<label for="footerCopyright" class="block text-sm font-medium text-text-body mb-1.5"

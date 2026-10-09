@@ -573,9 +573,19 @@
 							{/if}
 						</a>
 					</div>
-					<p class="text-xs text-text-muted">
-						{t('footer.slogan')}
-					</p>
+					{#if data.settings?.companyName}
+						<p class="text-xs text-text-muted font-medium mt-1">
+							{data.settings.companyName}
+							{#if data.settings.taxId}
+								<span class="px-1.5 opacity-50">&middot;</span> {t('common.taxId', { defaultValue: 'MST' })}: {data.settings.taxId}
+							{/if}
+						</p>
+					{/if}
+					{#if data.settings?.officeAddress}
+						<p class="text-xs text-text-muted mt-0.5 max-w-lg">
+							{data.settings.officeAddress}
+						</p>
+					{/if}
 				</div>
 
 				<!-- Social & Connection Links -->

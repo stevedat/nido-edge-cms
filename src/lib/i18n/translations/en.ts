@@ -20,7 +20,6 @@ export const en = {
 		ariaLabel: 'Toggle dark/light theme'
 	},
 	footer: {
-		slogan: 'Apple-grade minimalist design · Permanent $0/month server costs · 100% Data autonomy.',
 		rights: 'All rights reserved.',
 		sendEmail: 'Send Email',
 		contact: 'Contact',
