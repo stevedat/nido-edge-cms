@@ -1,5 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import { getPosts, deletePost } from '$lib/server/content.js';
+import { serverT } from '$lib/i18n/index.js';
 
 export const load = async ({ locals }) => {
 	const domain = locals.domain || 'default';
@@ -21,15 +22,16 @@ export const actions = {
 		const formData = await request.formData();
 		const slug = formData.get('slug')?.toString().trim() || formData.get('id')?.toString().trim();
 		if (!slug) {
-			return fail(400, { message: 'Thiếu định danh bài viết' });
+			return fail(400, { message: serverT('admin.posts.missingIdentifier', locals.locale) });
 		}
 
 		try {
 			const domain = locals.domain || 'default';
 			await deletePost(domain, slug, locals.user?.id || 'admin');
-			return { message: `Đã xoá thành công` };
+			return { message: serverT('admin.posts.deleteSuccess', locals.locale) };
 		} catch (error) {
-			const message = error instanceof Error ? error.message : 'Lỗi khi xóa bài viết';
+			const message =
+				error instanceof Error ? error.message : serverT('admin.posts.deleteError', locals.locale);
 			return fail(500, { message });
 		}
 	}

@@ -574,12 +574,15 @@ export const vi = {
 			authenticating: 'Đang xác thực...',
 			loginBtn: 'Đăng nhập',
 			backHome: 'Quay về trang chủ',
-			errorFallback: 'Có lỗi xảy ra, vui lòng thử lại.'
+			errorFallback: 'Có lỗi xảy ra, vui lòng thử lại.',
+			missingCredentials: 'Vui lòng nhập đầy đủ thông tin',
+			serverError: 'Lỗi hệ thống, vui lòng thử lại'
 		},
 		projects: {
 			notFound: 'Không tìm thấy project',
 			loadError: 'Không thể tải project',
 			missingInfo: 'Cần có tiêu đề và mô tả',
+			createError: 'Không thể thêm project',
 			updateError: 'Không thể cập nhật project',
 			deleteError: 'Không thể xóa project',
 			missingJson: 'Nhập dữ liệu projects',
@@ -878,6 +881,13 @@ export const vi = {
 			phoneHotline: 'Số điện thoại / Zalo / WhatsApp',
 			contactBookingUrl: 'Đường dẫn Liên hệ / Đặt lịch (Contact URL)',
 			copyright: 'Tên bản quyền (Copyright)',
+			corporateInfo: 'Thông tin Pháp nhân & Footer',
+			companyName: 'Tên Công ty / Pháp nhân',
+			companyNamePlaceholder: 'Ví dụ: Công Ty Luật TNHH KGC',
+			taxId: 'Mã số thuế (MST)',
+			taxIdPlaceholder: 'Ví dụ: 0319736355',
+			officeAddress: 'Địa chỉ Trụ sở chính',
+			officeAddressPlaceholder: 'Địa chỉ xuất hiện ở Footer và trang Liên hệ',
 			saveSettings: 'Lưu cài đặt',
 			savingSettings: 'Đang lưu...'
 		},
@@ -918,6 +928,7 @@ export const vi = {
 			notFound: 'Không tìm thấy video',
 			loadError: 'Không thể tải video',
 			missingInfo: 'Điền đủ thông tin video',
+			createError: 'Không thể thêm video',
 			updateNotFound: 'Không tìm thấy video để cập nhật',
 			updateError: 'Không thể cập nhật video',
 			deleteNotFound: 'Không tìm thấy video để xóa',
@@ -1007,7 +1018,12 @@ export const vi = {
 		},
 		posts: {
 			notFound: 'Không tìm thấy bài viết',
-			missingInfo: 'Cần tiêu đề và nội dung',
+			missingInfo: 'Cần có tiêu đề và nội dung',
+			missingIdentifier: 'Thiếu định danh bài viết',
+			deleteSuccess: 'Đã xoá thành công',
+			deleteError: 'Lỗi khi xóa bài viết',
+			createError: 'Không thể tạo bài viết. Lỗi: {message}',
+			unknownError: 'Lỗi không xác định',
 			updateError: 'Không thể cập nhật bài viết',
 			title: 'Quản lý Bài viết - Admin',
 			contentManagement: 'Quản lý Nội dung',
@@ -1171,6 +1187,10 @@ export const vi = {
 			videosCount: 'video',
 			leadsCount: 'leads',
 			noTenants: 'Chưa có tenant nào khác ngoài mặc định.'
+		},
+		publish: {
+			success: 'Đã kích hoạt Xuất bản thành công!',
+			error: 'Không thể xuất bản, vui lòng thử lại sau.'
 		}
 	},
 	homeStory: {
@@ -1237,7 +1257,10 @@ export const vi = {
 		github: {
 			missingFile: 'Thiếu file upload.',
 			unsupportedAction: 'Hành động không được hỗ trợ.',
-			missingPathOrSha: 'Thiếu path hoặc sha'
+			missingPathOrSha: 'Thiếu path hoặc sha',
+			invalidPath: 'Đường dẫn tệp không hợp lệ.',
+			forbiddenPath: 'Bạn không có quyền truy cập đường dẫn này.',
+			unauthorized: 'Bạn cần đăng nhập để thực hiện thao tác này.'
 		},
 		register: {
 			rateLimit: 'Bạn gửi yêu cầu quá nhanh. Vui lòng thử lại sau vài phút.',
@@ -1246,37 +1269,69 @@ export const vi = {
 			invalidEmail: 'Địa chỉ email không đúng định dạng.',
 			serverError: 'Có lỗi xảy ra trong quá trình xử lý. Vui lòng thử lại sau.'
 		}
-	}
-,
-		onboarding: {
+	},
+	onboarding: {
 		title: 'Cỗ Máy AI Đã Sẵn Sàng',
-		description: 'Xin chào! Bạn đang ở màn hình khởi tạo của Nido Edge CMS. Hiện tại trang web của bạn vẫn đang trống. Hãy dùng Trợ lý AI để tự động thiết kế giao diện và hệ thống quản trị (CMS).',
+		description:
+			'Xin chào! Bạn đang ở màn hình khởi tạo của Nido Edge CMS. Hiện tại trang web của bạn vẫn đang trống. Hãy dùng Trợ lý AI để tự động thiết kế giao diện và hệ thống quản trị (CMS).',
 		demoPrompts: 'Gợi ý Mẫu (Demo Prompts)',
 		prompt1Title: 'Landing Page SaaS',
-		prompt1Desc: '"Tạo landing page cho phần mềm SaaS. Cần có phần Hero Banner ấn tượng, Các tính năng chính (Icon, Tên, Mô tả), Bảng giá 3 gói (Cơ bản, Pro, Doanh nghiệp), và Ý kiến khách hàng."',
+		prompt1Desc:
+			'"Tạo landing page cho phần mềm SaaS. Cần có phần Hero Banner ấn tượng, Các tính năng chính (Icon, Tên, Mô tả), Bảng giá 3 gói (Cơ bản, Pro, Doanh nghiệp), và Ý kiến khách hàng."',
 		prompt2Title: 'Hồ Sơ Cá Nhân (Portfolio)',
-		prompt2Desc: '"Tạo trang Portfolio cho một lập trình viên/designer. Bao gồm phần Giới thiệu bản thân, Kỹ năng hiện có, Danh sách các Dự án nổi bật (Tên, Hình, Link) và Form liên hệ."',
+		prompt2Desc:
+			'"Tạo trang Portfolio cho một lập trình viên/designer. Bao gồm phần Giới thiệu bản thân, Kỹ năng hiện có, Danh sách các Dự án nổi bật (Tên, Hình, Link) và Form liên hệ."',
 		prompt3Title: 'Web Nhà Hàng / Cafe',
-		prompt3Desc: '"Tạo trang web cho tiệm Cafe. Gồm hình ảnh không gian quán, Danh sách Menu các món đặc trưng (Tên món, Giá, Hình ảnh) và Thời gian/Địa chỉ mở cửa."',
+		prompt3Desc:
+			'"Tạo trang web cho tiệm Cafe. Gồm hình ảnh không gian quán, Danh sách Menu các món đặc trưng (Tên món, Giá, Hình ảnh) và Thời gian/Địa chỉ mở cửa."',
 		prompt4Title: 'Agency Dịch Vụ',
-		prompt4Desc: '"Làm landing page cho Agency Marketing. Yêu cầu có các Dịch Vụ cung cấp, Khách hàng tiêu biểu (Logo đối tác), và Đội ngũ nhân sự chính (Tên, Chức vụ)."',
+		prompt4Desc:
+			'"Làm landing page cho Agency Marketing. Yêu cầu có các Dịch Vụ cung cấp, Khách hàng tiêu biểu (Logo đối tác), và Đội ngũ nhân sự chính (Tên, Chức vụ)."',
 		startBuilding: 'Bắt Đầu Tạo Web',
 		step1: 'Truy cập vào <strong>Khu vực Quản trị (Admin)</strong> để bảo mật thao tác.',
 		step2: 'Đăng nhập với mật khẩu Quản trị viên cấu hình trong tệp .env:',
-		step3: 'Dán Prompt hoặc kết nối API Key (Gemini/Claude) để cỗ máy tự động sinh Giao diện và Trang Admin cho bạn.',
+		step3:
+			'Dán Prompt hoặc kết nối API Key (Gemini/Claude) để cỗ máy tự động sinh Giao diện và Trang Admin cho bạn.',
 		goToBuilder: 'Đi tới Phòng Điều Khiển AI',
-		footerNote: 'Sau khi bạn dùng AI tạo web thành công, trang màn hình này sẽ tự động được thay thế bằng Website mới của bạn.'
+		footerNote:
+			'Sau khi bạn dùng AI tạo web thành công, trang màn hình này sẽ tự động được thay thế bằng Website mới của bạn.'
 	},
 	builder: {
-		title: "Tạo Website Bằng AI",
-		description: "Mô tả website bạn muốn, AI sẽ tự động sinh giao diện và trang Admin.",
-		provider: "AI Provider",
-		api_key: "API Key",
-		prompt: "Yêu cầu (Prompt)",
-		generate_btn: "Tự động tạo",
-		generating: "Đang sinh trang web...",
-		missing_fields: "Vui lòng nhập Prompt và API Key",
-		copiedPrompt: "Đã sao chép!",
-		copyPromptBtn: "Sao chép câu lệnh mẫu cho ChatGPT/Claude"
+		title: 'Tạo Website Bằng AI',
+		description: 'Mô tả website bạn muốn, AI sẽ tự động sinh giao diện và trang Admin.',
+		autoTab: 'Tự động (Cần API Key)',
+		manualTab: 'Thủ công (Miễn phí)',
+		provider: 'AI Provider',
+		geminiOption: 'Google Gemini (Khuyên dùng)',
+		claudeOption: 'Anthropic Claude 3.5',
+		openaiOption: 'OpenAI GPT-4o',
+		api_key: 'API Key',
+		apiKeyPlaceholder: 'Nhập API Key của bạn...',
+		manualGuideTitle: 'Cách dùng miễn phí (Dùng ChatGPT/Claude của bạn)',
+		manualStep1: 'Nhập mô tả web bạn muốn vào ô Yêu cầu bên dưới.',
+		manualStep2: 'Bấm nút',
+		manualStep2Btn: 'Copy Mẫu Lệnh',
+		manualStep3: 'Mở ChatGPT hoặc Claude, dán lệnh đó vào.',
+		manualStep4: 'Copy đoạn mã JSON mà AI trả về, dán vào ô',
+		manualStep4Target: 'Kết quả JSON',
+		prompt: 'Yêu cầu (Prompt)',
+		promptPlaceholder: 'Ví dụ: Tạo trang web Coach Sức khoẻ gồm giới thiệu, gói tập và học viên...',
+		promptRequirementLabel: '=== YÊU CẦU CỦA TÔI ===',
+		promptRequirementFallback: '[Mô tả web bạn muốn ở đây]',
+		copiedPrompt: 'Đã sao chép!',
+		copyPromptBtn: 'Sao chép câu lệnh mẫu cho ChatGPT/Claude',
+		manualJsonLabel: 'Dán kết quả JSON từ ChatGPT vào đây',
+		manualJsonPlaceholder: 'Dán mã JSON vào đây...',
+		generatingAuto: 'Đang sinh trang web...',
+		generatingManual: 'Đang cập nhật hệ thống...',
+		generateAutoBtn: 'Tự động tạo',
+		updateWebBtn: 'Cập nhật Web',
+		missingAutoFields: 'Vui lòng nhập Prompt và API Key',
+		missingManualPayload: 'Vui lòng dán kết quả JSON từ AI vào',
+		generateError: 'Lỗi khi tạo website',
+		successTitle: 'Hoàn tất! Cỗ máy đã xử lý xong:',
+		successItem1: 'Giao diện (Frontend) đã được lưu vào thư mục public.',
+		successItem2: 'Cấu trúc CMS (Schema) đã được tạo và kích hoạt.',
+		viewWebsite: 'Xem Website →'
 	}
 };

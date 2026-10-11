@@ -1,6 +1,7 @@
 // @ts-check
 import { fail, redirect, isRedirect } from '@sveltejs/kit';
 import { createProject } from '$lib/server/content.js';
+import { serverT } from '$lib/i18n/index.js';
 
 export const actions = {
 	default: async ({ request, locals }) => {
@@ -11,7 +12,7 @@ export const actions = {
 		const tagsInput = form.get('tags')?.toString() ?? '';
 
 		if (!title || !description) {
-			return fail(400, { message: 'Cần có tiêu đề và mô tả' });
+			return fail(400, { message: serverT('admin.projects.missingInfo', locals.locale) });
 		}
 
 		try {
@@ -33,7 +34,10 @@ export const actions = {
 		} catch (error) {
 			if (isRedirect(error)) throw error;
 			console.error('Failed to add project', error);
-			const message = error instanceof Error ? error.message : 'Không thể thêm project';
+			const message =
+				error instanceof Error
+					? error.message
+					: serverT('admin.projects.createError', locals.locale);
 			return fail(500, { message });
 		}
 	}

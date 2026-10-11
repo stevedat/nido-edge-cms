@@ -1,11 +1,12 @@
 import { json } from '@sveltejs/kit';
 import { triggerDeploy } from '$lib/server/github.js';
 import { env } from '$env/dynamic/private';
+import { serverT } from '$lib/i18n/index.js';
 
 export async function POST({ locals }) {
 	// Only logged in users (admin/clients) can publish
 	if (!locals.isAuthenticated) {
-		return json({ error: 'Unauthorized' }, { status: 401 });
+		return json({ error: serverT('api.github.unauthorized', locals.locale) }, { status: 401 });
 	}
 
 	try {
@@ -14,9 +15,9 @@ export async function POST({ locals }) {
 
 		await triggerDeploy(branchName);
 
-		return json({ success: true, message: 'Đã kích hoạt Xuất bản thành công!' });
+		return json({ success: true, message: serverT('admin.publish.success', locals.locale) });
 	} catch (error) {
-		console.error('Lỗi khi xuất bản:', error);
-		return json({ error: 'Không thể xuất bản, vui lòng thử lại sau.' }, { status: 500 });
+		console.error('Publish deploy error:', error);
+		return json({ error: serverT('admin.publish.error', locals.locale) }, { status: 500 });
 	}
 }

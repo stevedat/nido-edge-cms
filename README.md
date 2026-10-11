@@ -35,10 +35,12 @@ npm run dev
 ## 🌟 Điểm Nhấn Cốt Lõi (Core Highlights)
 
 ### 1. 🤖 Tích Hợp Sẵn Trình Tạo Web Bằng AI (AI Website Builder)
+
 - **Chế độ Tự Động (Auto API Key)**: Nhập yêu cầu giao diện (Prompt) + Google Gemini API Key. AI sẽ tự động lập trình mã nguồn Svelte 5 và sinh cấu trúc Form Quản trị (`schema.json`) đồng bộ.
 - **Chế độ Thủ Công Miễn Phí (Manual Prompt Mode)**: Sao chép System Prompt chuẩn, dán vào ChatGPT / Claude Web, rồi dán chuỗi JSON kết quả trở lại CMS để tạo website ngay lập tức mà không tốn chi phí API.
 
 ### 2. ⚡ Không Ác Mộng Database (No SQL · No Prisma · No Migrations)
+
 - Quản lý nội dung 100% bằng **JSON Schemas & Markdown**. Không cần cài PostgreSQL/MySQL, không cấu hình Docker DB, không bao giờ gặp xung đột migration.
 - Hỗ trợ đa dạng Storage Adapter:
   - **Local Filesystem (`FsStorageAdapter`)**: Lưu trực tiếp vào thư mục `src/content/` (phù hợp Local Dev, VPS, Docker).
@@ -46,6 +48,7 @@ npm run dev
   - **GitHub Sync (`GitHubStorageAdapter`)**: Tự động commit nội dung trực tiếp vào Git repository (GitOps workflow).
 
 ### 3. 🏢 Kiến Trúc Multi-Tenant Độc Lập Trên Mạng Lưới Edge
+
 - Một lần triển khai (Single Instance) có thể phục vụ **hàng trăm khách hàng / thương hiệu độc lập**.
 - Dữ liệu và cấu hình giao diện được cô lập hoàn toàn theo Tenant ID (`src/content/{domain}/`).
 - Tự động nhận diện Tenant linh hoạt qua:
@@ -56,15 +59,18 @@ npm run dev
 - Cung cấp sẵn **REST API Auto-Provisioning** (`/api/v1/tenants`) cho phép tự động cấp phát website mới ngay khi khách thanh toán qua Stripe/LemonSqueezy.
 
 ### 4. 🎨 Chuẩn Thiết Kế Apple Minimalist & Dark Mode OLED (`AGENTS.md`)
+
 - 100% Semantic Design Tokens từ Tailwind v4: `bg-main-bg`, `bg-soft-bg`, `bg-surface`, `text-text-main`, `border-border-subtle`.
 - Dark Mode OLED màu đen sâu tuyệt đối (`#000000`) với đường viền phản quang specular highlight.
 - Quy chuẩn nét Icon Apple SF Symbols (`strokeWidth={1.75}`) và vùng chạm di động tối thiểu 44px (`min-h-[44px]`).
 
 ### 5. 🌐 Quốc Tế Hóa Song Ngữ 100% (i18n)
+
 - Đồng bộ song ngữ Anh - Việt đầy đủ từ giao diện công khai, bảng điều khiển quản trị, đến các thông báo hệ thống.
 - Hỗ trợ hàm dịch `t('namespace.key')` và dữ liệu đa ngữ theo Tenant.
 
 ### 6. 🛡️ An Toàn & Bảo Mật Chuẩn Edge
+
 - **Proof-of-Work (PoW) Anti-Spam**: Chặn bot spam form liên hệ/leads bằng thuật toán giải mã băm trên trình duyệt mà không cần CAPTCHA phiền phức.
 - **Xác thực JWT an toàn**: Phiên đăng nhập HttpOnly, phân quyền Admin / Tenant Admin, so sánh mật khẩu chống timing attack (`constantTimeEqual`).
 - **Bảo vệ Payload Hydration**: Dữ liệu nạp phía client tuyệt đối không rò rỉ password hash hay bí mật hệ thống khi mở F12 DevTools.
@@ -80,11 +86,13 @@ Nido Edge CMS được thiết kế để chạy mượt mà trên mọi môi tr
 Hệ thống tận dụng Cloudflare Pages kết hợp Cloudflare KV để đạt hiệu năng Edge toàn cầu và 0ms cold-start.
 
 #### Bước 1: 1-Click Deploy qua Giao diện
+
 Bấm nút bên dưới để Cloudflare tự động fork repository, tạo project và cấp tên miền `*.pages.dev` miễn phí:
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/stevedat/nido-edge-cms)
 
 #### Bước 2: Triển Khai Qua Wrangler CLI
+
 ```bash
 # 1. Đăng nhập tài khoản Cloudflare
 npx wrangler login
@@ -98,7 +106,9 @@ npm run deploy
 ```
 
 #### Bước 3: Cấu hình Biến Môi trường trên Cloudflare Pages
+
 Vào **Cloudflare Dashboard** → **Workers & Pages** → Chọn dự án → **Settings** → **Environment variables**:
+
 - `ADMIN_PASSWORD`: Mật khẩu đăng nhập quản trị viên chính.
 - `JWT_SECRET`: Chuỗi khóa bảo mật ngẫu nhiên 64 ký tự (tạo bằng lệnh `openssl rand -hex 32`).
 - `STORAGE_ADAPTER`: `cloudflare-kv`
@@ -123,6 +133,7 @@ Vào **Cloudflare Dashboard** → **Workers & Pages** → Chọn dự án → **
 Nếu bạn muốn tự làm chủ 100% hạ tầng với Node.js và lưu trữ file cục bộ (`FsStorageAdapter`):
 
 #### 1. Chạy Trực Tiếp Bằng PM2
+
 ```bash
 # Đóng gói ứng dụng
 npm run build
@@ -132,7 +143,9 @@ pm2 start build/index.js --name "nido-edge-cms" --env PORT=3000
 ```
 
 #### 2. Chạy Qua Docker
+
 Tạo tệp `Dockerfile`:
+
 ```dockerfile
 FROM node:22-alpine AS builder
 WORKDIR /app
@@ -153,6 +166,7 @@ CMD ["node", "build"]
 ```
 
 Build và chạy container:
+
 ```bash
 docker build -t nido-edge-cms .
 docker run -d -p 3000:3000 \
@@ -167,6 +181,7 @@ docker run -d -p 3000:3000 \
 ### Lựa Chọn 4: Git-Backed CMS (Lưu Trữ Nội Dung Trực Tiếp Lên GitHub)
 
 Bạn có thể cấu hình CMS hoạt động như một **Decoupled Git Editor**:
+
 1. Trong file `.env`, thiết lập:
    ```bash
    STORAGE_ADAPTER="github"
@@ -182,18 +197,18 @@ Bạn có thể cấu hình CMS hoạt động như một **Decoupled Git Editor
 
 Hệ sinh thái cung cấp hệ thống API RESTful đầy đủ, hỗ trợ CORS, xác thực Bearer Token và giải thuật PoW:
 
-| Phương Thức | Đường Dẫn (Endpoint) | Mô Tả Chức Năng | Yêu Cầu Xác Thực |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/api/v1/tenants` | Tự động khởi tạo Website/Tenant mới | `Bearer <MASTER_API_KEY>` |
-| `POST` | `/api/v1/auth/login` | Đăng nhập tài khoản Admin/Tenant | Không (Xác thực mật khẩu) |
-| `GET` | `/api/v1/posts` | Danh sách bài viết (phân trang, lọc tag) | Công khai |
-| `GET` | `/api/v1/posts/[slug]` | Chi tiết bài viết theo đường dẫn tĩnh (slug) | Công khai |
-| `GET` | `/api/v1/projects` | Danh sách các dự án tiêu biểu | Công khai |
-| `GET` | `/api/v1/settings` | Cấu hình website, thông tin SEO & Theme | Công khai |
-| `GET` | `/api/v1/challenge` | Cấp mã băm Proof-of-Work chống bot | Công khai |
-| `POST` | `/api/v1/leads` | Nhận form liên hệ khách hàng (kèm giải PoW) | Xác thực mã PoW |
-| `GET` | `/api/v1/builder/generate` | Lấy System Prompt mẫu cho AI Builder | Công khai |
-| `POST` | `/api/v1/builder/generate` | Hô biến giao diện Svelte & Schema bằng AI | Cookie Admin |
+| Phương Thức | Đường Dẫn (Endpoint)       | Mô Tả Chức Năng                              | Yêu Cầu Xác Thực          |
+| :---------- | :------------------------- | :------------------------------------------- | :------------------------ |
+| `POST`      | `/api/v1/tenants`          | Tự động khởi tạo Website/Tenant mới          | `Bearer <MASTER_API_KEY>` |
+| `POST`      | `/api/v1/auth/login`       | Đăng nhập tài khoản Admin/Tenant             | Không (Xác thực mật khẩu) |
+| `GET`       | `/api/v1/posts`            | Danh sách bài viết (phân trang, lọc tag)     | Công khai                 |
+| `GET`       | `/api/v1/posts/[slug]`     | Chi tiết bài viết theo đường dẫn tĩnh (slug) | Công khai                 |
+| `GET`       | `/api/v1/projects`         | Danh sách các dự án tiêu biểu                | Công khai                 |
+| `GET`       | `/api/v1/settings`         | Cấu hình website, thông tin SEO & Theme      | Công khai                 |
+| `GET`       | `/api/v1/challenge`        | Cấp mã băm Proof-of-Work chống bot           | Công khai                 |
+| `POST`      | `/api/v1/leads`            | Nhận form liên hệ khách hàng (kèm giải PoW)  | Xác thực mã PoW           |
+| `GET`       | `/api/v1/builder/generate` | Lấy System Prompt mẫu cho AI Builder         | Công khai                 |
+| `POST`      | `/api/v1/builder/generate` | Hô biến giao diện Svelte & Schema bằng AI    | Cookie Admin              |
 
 ### Ví dụ: Cấp phát Tenant tự động qua cURL
 

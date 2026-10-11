@@ -25,8 +25,7 @@
 
 	const baseMenu = [
 		{ key: 'dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-		{ key: 'leads', href: '/admin/leads', icon: Users,
-		Wand2 },
+		{ key: 'leads', href: '/admin/leads', icon: Users, Wand2 },
 		{ key: 'posts', href: '/admin/posts', icon: FileText },
 		{ key: 'newPost', href: '/admin/posts/new', icon: PenSquare },
 		{ key: 'comments', href: '/admin/comments', icon: MessageSquare },

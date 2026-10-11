@@ -2,6 +2,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { createPost, getSchema } from '$lib/server/content.js';
 import { uploadImage } from '$lib/server/github.js';
 import { slugify } from '$lib/utils/index.js';
+import { serverT } from '$lib/i18n/index.js';
 
 export const load = async ({ locals }) => {
 	const schema = await getSchema(locals.domain || 'default');
@@ -22,7 +23,7 @@ export const actions = {
 		const thumbnailFile = form.get('thumbnail_file');
 
 		if (!title || !body) {
-			return fail(400, { message: 'Cần có tiêu đề và nội dung' });
+			return fail(400, { message: serverT('admin.posts.missingInfo', locals.locale) });
 		}
 
 		slug = slug || slugify(title);
@@ -72,9 +73,10 @@ export const actions = {
 			);
 		} catch (error) {
 			console.error('Failed to create post', error);
-			const message = error instanceof Error ? error.message : 'Lỗi không xác định';
+			const message =
+				error instanceof Error ? error.message : serverT('admin.posts.unknownError', locals.locale);
 			return fail(500, {
-				message: 'Không thể tạo bài viết. Lỗi: ' + message
+				message: serverT('admin.posts.createError', locals.locale, { message })
 			});
 		}
 

@@ -576,12 +576,15 @@ export const en = {
 			authenticating: 'Authenticating...',
 			loginBtn: 'Login',
 			backHome: 'Back to home',
-			errorFallback: 'An error occurred, please try again.'
+			errorFallback: 'An error occurred, please try again.',
+			missingCredentials: 'Please enter your username and password',
+			serverError: 'System error, please try again'
 		},
 		projects: {
 			notFound: 'Project not found',
 			loadError: 'Unable to load project',
 			missingInfo: 'Title and description are required',
+			createError: 'Could not add project',
 			updateError: 'Unable to update project',
 			deleteError: 'Unable to delete project',
 			missingJson: 'Please provide project data',
@@ -881,6 +884,13 @@ export const en = {
 			phoneHotline: 'Phone / WhatsApp / Hotline',
 			contactBookingUrl: 'Contact / Booking URL',
 			copyright: 'Copyright Owner Name',
+			corporateInfo: 'Corporate Information & Footer',
+			companyName: 'Company / Legal Entity Name',
+			companyNamePlaceholder: 'e.g. KGC Law Firm LLC',
+			taxId: 'Tax Identification Number (TIN / MST)',
+			taxIdPlaceholder: 'e.g. 0319736355',
+			officeAddress: 'Headquarters Address',
+			officeAddressPlaceholder: 'Address displayed in Footer and Contact page',
 			saveSettings: 'Save Settings',
 			savingSettings: 'Saving...'
 		},
@@ -921,6 +931,7 @@ export const en = {
 			notFound: 'Video not found',
 			loadError: 'Unable to load video',
 			missingInfo: 'Please fill in all video details',
+			createError: 'Could not add video',
 			updateNotFound: 'Video to update not found',
 			updateError: 'Unable to update video',
 			deleteNotFound: 'Video to delete not found',
@@ -1011,6 +1022,11 @@ export const en = {
 		posts: {
 			notFound: 'Post not found',
 			missingInfo: 'Title and content are required',
+			missingIdentifier: 'Missing post identifier',
+			deleteSuccess: 'Post deleted successfully',
+			deleteError: 'Error deleting post',
+			createError: 'Could not create post. Error: {message}',
+			unknownError: 'Unknown error',
 			updateError: 'Unable to update post',
 			title: 'Manage Posts - Admin',
 			contentManagement: 'Content Management',
@@ -1172,6 +1188,10 @@ export const en = {
 			videosCount: 'videos',
 			leadsCount: 'leads',
 			noTenants: 'No tenants other than default.'
+		},
+		publish: {
+			success: 'Publish triggered successfully!',
+			error: 'Could not trigger publish, please try again later.'
 		}
 	},
 	homeStory: {
@@ -1238,7 +1258,10 @@ export const en = {
 		github: {
 			missingFile: 'Missing upload file.',
 			unsupportedAction: 'Unsupported action.',
-			missingPathOrSha: 'Missing path or sha'
+			missingPathOrSha: 'Missing path or sha',
+			invalidPath: 'Invalid file path.',
+			forbiddenPath: 'You do not have permission to access this path.',
+			unauthorized: 'You must be signed in to perform this action.'
 		},
 		register: {
 			rateLimit: 'Too many requests. Please try again in a few minutes.',
@@ -1247,37 +1270,70 @@ export const en = {
 			invalidEmail: 'Invalid email format.',
 			serverError: 'An error occurred while processing. Please try again later.'
 		}
-	}
-,
-		onboarding: {
+	},
+	onboarding: {
 		title: 'AI Machine Is Ready',
-		description: 'Hello! You are at the initialization screen of Nido Edge CMS. Your website is currently empty. Use the AI Assistant to automatically design the frontend and CMS administration system.',
+		description:
+			'Hello! You are at the initialization screen of Nido Edge CMS. Your website is currently empty. Use the AI Assistant to automatically design the frontend and CMS administration system.',
 		demoPrompts: 'Demo Prompts',
 		prompt1Title: 'SaaS Landing Page',
-		prompt1Desc: '"Create a SaaS landing page. Include an impressive Hero Banner, Key Features (Icon, Name, Description), 3 Pricing Tiers (Basic, Pro, Enterprise), and Testimonials."',
+		prompt1Desc:
+			'"Create a SaaS landing page. Include an impressive Hero Banner, Key Features (Icon, Name, Description), 3 Pricing Tiers (Basic, Pro, Enterprise), and Testimonials."',
 		prompt2Title: 'Personal Portfolio',
-		prompt2Desc: '"Create a Portfolio for a developer/designer. Include an About Me section, Skills, Featured Projects list (Name, Image, Link), and a Contact Form."',
+		prompt2Desc:
+			'"Create a Portfolio for a developer/designer. Include an About Me section, Skills, Featured Projects list (Name, Image, Link), and a Contact Form."',
 		prompt3Title: 'Restaurant / Cafe',
-		prompt3Desc: '"Create a website for a Cafe. Include photos of the space, a Menu list of signature items (Name, Price, Image), and Open Hours/Address."',
+		prompt3Desc:
+			'"Create a website for a Cafe. Include photos of the space, a Menu list of signature items (Name, Price, Image), and Open Hours/Address."',
 		prompt4Title: 'Service Agency',
-		prompt4Desc: '"Make a landing page for a Marketing Agency. Need a list of Services provided, Featured Clients (Logos), and Core Team members (Name, Role)."',
+		prompt4Desc:
+			'"Make a landing page for a Marketing Agency. Need a list of Services provided, Featured Clients (Logos), and Core Team members (Name, Role)."',
 		startBuilding: 'Start Building',
 		step1: 'Go to the <strong>Admin Area</strong> to secure operations.',
 		step2: 'Log in with the Administrator password configured in your .env file:',
-		step3: 'Paste a Prompt or connect an API Key (Gemini/Claude) for the machine to automatically generate the UI and Admin Page for you.',
+		step3:
+			'Paste a Prompt or connect an API Key (Gemini/Claude) for the machine to automatically generate the UI and Admin Page for you.',
 		goToBuilder: 'Go to AI Control Room',
-		footerNote: 'After you successfully use AI to create a website, this onboarding screen will automatically be replaced by your new Website.'
+		footerNote:
+			'After you successfully use AI to create a website, this onboarding screen will automatically be replaced by your new Website.'
 	},
 	builder: {
-		title: "AI Website Builder",
-		description: "Describe the website you want, AI will generate the UI and Admin dashboard.",
-		provider: "AI Provider",
-		api_key: "API Key",
-		prompt: "Prompt",
-		generate_btn: "Generate Auto",
-		generating: "Generating website...",
-		missing_fields: "Please enter Prompt and API Key",
-		copiedPrompt: "Copied!",
-		copyPromptBtn: "Copy Prompt Template for ChatGPT/Claude"
+		title: 'AI Website Builder',
+		description: 'Describe the website you want, AI will generate the UI and Admin dashboard.',
+		autoTab: 'Auto (API Key required)',
+		manualTab: 'Manual (Free)',
+		provider: 'AI Provider',
+		geminiOption: 'Google Gemini (Recommended)',
+		claudeOption: 'Anthropic Claude 3.5',
+		openaiOption: 'OpenAI GPT-4o',
+		api_key: 'API Key',
+		apiKeyPlaceholder: 'Enter your API Key...',
+		manualGuideTitle: 'Free Usage Guide (Using your ChatGPT/Claude)',
+		manualStep1: 'Enter your website description in the Prompt field below.',
+		manualStep2: 'Click the button',
+		manualStep2Btn: 'Copy Prompt Template for ChatGPT/Claude',
+		manualStep3: 'Open ChatGPT or Claude and paste the prompt.',
+		manualStep4: 'Copy the JSON returned by AI and paste it into',
+		manualStep4Target: 'JSON Result',
+		prompt: 'Prompt',
+		promptPlaceholder:
+			'e.g. Create a Health Coach website with about section, packages, and testimonials...',
+		promptRequirementLabel: '=== MY REQUIREMENTS ===',
+		promptRequirementFallback: '[Describe the website you want here]',
+		copiedPrompt: 'Copied!',
+		copyPromptBtn: 'Copy Prompt Template for ChatGPT/Claude',
+		manualJsonLabel: 'Paste JSON result from ChatGPT here',
+		manualJsonPlaceholder: 'Paste JSON code here...',
+		generatingAuto: 'Generating website...',
+		generatingManual: 'Updating system...',
+		generateAutoBtn: 'Generate Auto',
+		updateWebBtn: 'Update Web',
+		missingAutoFields: 'Please enter Prompt and API Key',
+		missingManualPayload: 'Please paste the JSON result from AI',
+		generateError: 'Error generating website',
+		successTitle: 'Done! System completed generation:',
+		successItem1: 'Frontend has been saved to the public directory.',
+		successItem2: 'CMS Schema has been generated and activated.',
+		viewWebsite: 'View Website →'
 	}
 };

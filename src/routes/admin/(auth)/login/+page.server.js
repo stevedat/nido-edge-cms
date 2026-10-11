@@ -1,6 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import { loginUser } from '$lib/server/auth.js';
 import { createAuthCookie, getClientIP, getUserAgent } from '$lib/server/auth.js';
+import { serverT } from '$lib/i18n/index.js';
 
 export const actions = {
 	default: async ({ request, cookies, locals }) => {
@@ -13,7 +14,7 @@ export const actions = {
 
 			if (!identifier || !password) {
 				console.log('❌ Missing credentials');
-				return fail(400, { message: 'Vui lòng nhập đầy đủ thông tin' });
+				return fail(400, { message: serverT('admin.login.missingCredentials', locals.locale) });
 			}
 
 			// Normalize identifier to email format if needed
@@ -50,7 +51,7 @@ export const actions = {
 				throw error;
 			}
 			console.error('❌ Login server error:', error);
-			return fail(500, { message: 'Lỗi hệ thống, vui lòng thử lại' });
+			return fail(500, { message: serverT('admin.login.serverError', locals.locale) });
 		}
 	}
 };

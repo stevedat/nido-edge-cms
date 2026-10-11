@@ -3,6 +3,7 @@
 	import { CheckCircle2, AlertCircle, Info, AlertTriangle, X } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { fly, fade } from 'svelte/transition';
+	import { t } from '$lib/i18n/index.js';
 
 	const icons = {
 		success: CheckCircle2,
@@ -45,7 +46,7 @@
 			role="status"
 		>
 			<div class="flex items-center gap-3 min-w-0">
-				<Icon class="size-5 shrink-0 {iconColors[item.type]}" />
+				<Icon strokeWidth={1.75} class="size-5 shrink-0 {iconColors[item.type]}" />
 				<p class="text-xs sm:text-sm font-medium text-text-main leading-snug break-words">
 					{item.message}
 				</p>
@@ -55,7 +56,7 @@
 				type="button"
 				onclick={() => toast.remove(item.id)}
 				class="min-w-[44px] min-h-[44px] -my-2 -mr-2 flex items-center justify-center rounded-xl text-text-muted hover:text-text-main hover:bg-soft-bg/80 active:scale-95 transition-all cursor-pointer shrink-0"
-				aria-label="Đóng thông báo"
+				aria-label={t('common.close')}
 			>
 				<X strokeWidth={1.75} class="size-4" />
 			</button>

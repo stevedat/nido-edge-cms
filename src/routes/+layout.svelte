@@ -577,7 +577,8 @@
 						<p class="text-xs text-text-muted font-medium mt-1">
 							{data.settings.companyName}
 							{#if data.settings.taxId}
-								<span class="px-1.5 opacity-50">&middot;</span> {t('common.taxId', { defaultValue: 'MST' })}: {data.settings.taxId}
+								<span class="px-1.5 opacity-50">&middot;</span>
+								{t('common.taxId', { defaultValue: 'MST' })}: {data.settings.taxId}
 							{/if}
 						</p>
 					{/if}

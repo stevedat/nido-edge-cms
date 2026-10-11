@@ -1,5 +1,6 @@
 import { fail, redirect, isRedirect } from '@sveltejs/kit';
 import { createOrUpdateFile, getFile } from '$lib/server/github.js';
+import { serverT } from '$lib/i18n/index.js';
 
 /**
  * @param {unknown} data
@@ -14,7 +15,7 @@ export const actions = {
 		const url = form.get('url')?.toString().trim();
 
 		if (!title || !platform || !url) {
-			return fail(400, { message: 'Điền đủ thông tin video' });
+			return fail(400, { message: serverT('admin.videos.missingInfo', locals.locale) });
 		}
 
 		try {
@@ -81,7 +82,7 @@ export const actions = {
 			if (isRedirect(error)) throw error;
 			console.error('Failed to add video', error);
 			return fail(500, {
-				message: 'Không thể thêm video',
+				message: serverT('admin.videos.createError', locals.locale),
 				details: error instanceof Error ? error.message : 'unknown'
 			});
 		}

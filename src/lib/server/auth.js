@@ -42,6 +42,16 @@ export async function getCurrentUser(request, cookies) {
 
 /**
  * Require authentication middleware
+ *
+ * ⚠️ This RETURNS a result — it never throws and never redirects by itself.
+ * A caller that ignores the return value is not protected at all. It is shaped
+ * for `+page.server.js` load functions, where `{ redirect }` is data the page
+ * can act on. In a `+server.js` endpoint there is no page to hand it to, so
+ * call `getCurrentUser()` and return an explicit 401/403 response instead.
+ *
+ * Note that `allowedRoles` is matched against `user.role`, which the JWT stores
+ * in upper case ('ADMIN', 'EDITOR', ...).
+ *
  * @param {Request} request
  * @param {any} cookies
  * @param {string[]} [allowedRoles] - Optional role restrictions
