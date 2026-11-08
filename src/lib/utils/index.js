@@ -1,5 +1,6 @@
 // @ts-check
 export { cn } from './cn.js';
+export { surface, DESIGN_SYSTEM_DOCS } from './surface.js';
 export { utf8ToBase64, base64ToUtf8, arrayBufferToBase64 } from './base64.js';
 
 /**

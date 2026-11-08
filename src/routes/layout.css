@@ -41,6 +41,16 @@
 /* ==========================================================================
    BASE TYPOGRAPHY & FONT STACKS
    ========================================================================== */
+:root {
+	--touch-target: 36px;
+}
+
+@media (pointer: coarse) {
+	:root {
+		--touch-target: 44px;
+	}
+}
+
 body {
 	font-family:
 		-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', Roboto,
@@ -142,6 +152,11 @@ body {
 @layer components {
 	[data-article] p {
 		@apply leading-relaxed text-text-body;
+	}
+
+	/* Touch-adaptive target size utility inspired by bref-ui */
+	.touch-target {
+		min-height: var(--touch-target, 44px);
 	}
 }
 

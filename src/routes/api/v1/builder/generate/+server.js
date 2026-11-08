@@ -3,6 +3,7 @@ import { json } from '@sveltejs/kit';
 import { getCurrentUser } from '$lib/server/auth.js';
 import { core } from '$lib/server/core.js';
 import { sanitizeTenantDomain } from '$lib/core/index.js';
+import { DESIGN_SYSTEM_DOCS } from '$lib/utils/surface.js';
 
 const SYSTEM_PROMPT = `You are an expert SvelteKit engineer and CMS System Architect.
 The user wants to generate a website. Your task is to output exactly one valid JSON object containing:
@@ -14,13 +15,16 @@ The user wants to generate a website. Your task is to output exactly one valid J
   ]
 }
 
-RULES FOR SOURCE CODE (ui):
+RULES FOR SOURCE CODE (ui) — ${DESIGN_SYSTEM_DOCS.name}:
 1. Svelte source code must only use Tailwind v4 classes and project semantic CSS variable tokens:
    - Backgrounds: bg-main-bg, bg-soft-bg, bg-surface
-   - Text: text-text-main, text-text-muted, text-primary
+   - Text: text-text-main, text-text-body, text-text-muted, text-primary
    - Borders: border-border-subtle, border-border-strong
+   - Utilities: specular-highlight, island-container, touch-target, or the \`surface({ variant, radius, interactive, specular, glass })\` recipe from \`$lib\`.
 2. NEVER use hardcoded hex colors or raw color utilities (e.g. #000, #fff, bg-gray-100, bg-white).
-3. ALL DYNAMIC DATA (e.g. services, pricing, testimonials) MUST NOT be hardcoded. Bind it via \`data.dynamicData.XYZ\`.
+3. Every \`lucide-svelte\` icon MUST declare \`strokeWidth={1.75}\` (or \`strokeWidth={2.25}\` for \`Check\`).
+4. Interactive controls must use \`touch-target\` (or \`min-h-[44px]\`) and \`active:scale-98\` with \`transition-all duration-150\`.
+5. ALL DYNAMIC DATA (e.g. services, pricing, testimonials) MUST NOT be hardcoded. Bind it via \`data.dynamicData.XYZ\`.
    Example: \`{#each data.dynamicData.services as service}\` instead of hardcoding items.
 
 RULES FOR CMS STRUCTURE (schema):
@@ -48,17 +52,12 @@ function resolveBuilderTenant(request, cookies) {
 
 /**
  * GET /api/v1/builder/generate
- * Returns the system prompt so the admin UI can offer a "copy prompt" flow.
+ * Returns the system prompt and design system spec so the public onboarding and admin UI can offer a "copy prompt" flow.
  *
  * @type {import('./$types').RequestHandler}
  */
-export async function GET({ request, cookies }) {
-	const user = await getCurrentUser(request, cookies);
-	if (!user) {
-		return json({ message: 'Authentication required' }, { status: 401 });
-	}
-
-	return json({ systemPrompt: SYSTEM_PROMPT });
+export async function GET() {
+	return json({ systemPrompt: SYSTEM_PROMPT, designSystem: DESIGN_SYSTEM_DOCS });
 }
 
 /**
