@@ -7,6 +7,14 @@ const ipLimitMap = new Map();
 
 function isRateLimited(ip = 'unknown') {
 	const now = Date.now();
+	if (ipLimitMap.size > 1000) {
+		for (const [key, entry] of ipLimitMap.entries()) {
+			if (now > entry.resetTime) {
+				ipLimitMap.delete(key);
+			}
+		}
+	}
+
 	const record = ipLimitMap.get(ip);
 
 	if (!record || now > record.resetTime) {
@@ -101,6 +109,10 @@ export async function POST({ request, getClientAddress, locals, url }) {
 			await saveLead(domain, leadData);
 		} catch (err) {
 			console.error('[Lead] Save lead error:', err);
+			return json(
+				{ success: false, code: 'SERVER_ERROR', message: getApiMessage(locale, 'serverError') },
+				{ status: 500 }
+			);
 		}
 
 		return json({
@@ -110,8 +122,13 @@ export async function POST({ request, getClientAddress, locals, url }) {
 		});
 	} catch (error) {
 		console.error('[Lead API Error]:', error);
+		const fallbackLocale = request.headers.get('accept-language')?.startsWith('en') ? 'en' : 'vi';
 		return json(
-			{ success: false, code: 'SERVER_ERROR', message: getApiMessage('vi', 'serverError') },
+			{
+				success: false,
+				code: 'SERVER_ERROR',
+				message: getApiMessage(fallbackLocale, 'serverError')
+			},
 			{ status: 500 }
 		);
 	}

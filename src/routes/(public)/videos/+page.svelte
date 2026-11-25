@@ -10,11 +10,20 @@
 		platform: string;
 	}
 
+	interface VideosSettings {
+		headerCtaAction?: string;
+		headerCtaUrl?: string;
+		githubUrl?: string;
+		contactEmail?: string;
+		linkedinUrl?: string;
+		[key: string]: unknown;
+	}
+
 	let {
 		data
 	}: {
 		data: {
-			settings: any;
+			settings: VideosSettings;
 			videos: Video[];
 		};
 	} = $props();
@@ -39,7 +48,7 @@
 	<!-- Theater Section -->
 	<section class="max-w-5xl mx-auto px-4 pb-32 space-y-32">
 		{#if data.videos && data.videos.length > 0}
-			{#each data.videos as video, index}
+			{#each data.videos as video, index (video.id)}
 				<article class="space-y-6">
 					<h2 class="font-serif text-3xl md:text-4xl text-text-main text-center">
 						{localized(video, 'title')}

@@ -1,8 +1,36 @@
 // @ts-check
 import { core } from './core.js';
 
+export const SENSITIVE_SETTINGS_FIELDS = [
+	'adminPassword',
+	'adminPasswordHash',
+	'jwtSecret',
+	'secret',
+	'githubToken',
+	'antispamSalt',
+	'antispamSecret',
+	'encryptionKey'
+];
+
 /**
- * @typedef {{ slug: string; meta: { title: string; title_en?: string; date: string; tags: string[]; thumbnail: string }; content: string; content_en?: string; excerpt?: string; excerpt_en?: string; title?: string; publishedAt?: string; createdAt?: string; tags?: string[]; tagSlugs?: string[]; thumbnail?: string }} PostEntry
+ * Strip private credentials, hashes, and secrets before exposing settings to SSR or public APIs
+ * @param {Record<string, any> | null | undefined} settings
+ * @returns {Record<string, any>}
+ */
+export function sanitizePublicSettings(settings) {
+	if (!settings || typeof settings !== 'object' || Array.isArray(settings)) {
+		return {};
+	}
+	/** @type {Record<string, any>} */
+	const safe = { ...settings };
+	for (const key of SENSITIVE_SETTINGS_FIELDS) {
+		delete safe[key];
+	}
+	return safe;
+}
+
+/**
+ * @typedef {{ slug: string; meta: { title: string; title_en?: string; date: string; tags: string[]; thumbnail: string }; content: string; content_en?: string; excerpt?: string; excerpt_en?: string; title?: string; status?: string; publishedAt?: string; createdAt?: string; tags?: string[]; tagSlugs?: string[]; thumbnail?: string }} PostEntry
  */
 
 /**
@@ -29,20 +57,28 @@ function cleanExcerptText(content) {
  */
 
 /**
- * Get lightweight post summaries (omitting full content) for index/listing pages
+ * Get lightweight post summaries (omitting full content) for index/listing pages.
+ * Defaults to publishedOnly=true so DRAFT articles never leak to public pages.
  * @param {string} [domain='default']
+ * @param {{ limit?: number; publishedOnly?: boolean }} [options]
  * @returns {Promise<PostSummary[]>}
  */
-export const getPostSummaries = async (domain = 'default') => {
+export const getPostSummaries = async (domain = 'default', options = {}) => {
 	try {
 		/** @type {any} */
-		const res = await core.content.getPosts(domain, { limit: 100 });
+		const res = await core.content.getPosts(domain, {
+			limit: options.limit ?? 100,
+			publishedOnly: options.publishedOnly ?? true
+		});
 		const posts = Array.isArray(res) ? res : res?.posts || [];
 		return posts.map((/** @type {any} */ post) => {
 			const words = (post.content || '').trim().split(/\s+/).filter(Boolean).length;
 			const readingMinutes = Math.max(2, Math.ceil(words / 200));
 			return {
 				slug: post.slug,
+				title: post.title,
+				title_en: post.title_en || post.title,
+				thumbnail: post.thumbnail || '',
 				meta: {
 					title: post.title,
 					title_en: post.title_en || post.title,
@@ -56,19 +92,23 @@ export const getPostSummaries = async (domain = 'default') => {
 			};
 		});
 	} catch (error) {
-		console.error('Lỗi khi lấy post summaries:', error);
+		console.error('Failed to fetch post summaries:', error);
 		return [];
 	}
 };
 
 /**
  * @param {string} [domain='default']
+ * @param {{ limit?: number; publishedOnly?: boolean }} [options]
  * @returns {Promise<PostEntry[]>}
  */
-export const getAllPosts = async (domain = 'default') => {
+export const getAllPosts = async (domain = 'default', options = {}) => {
 	try {
 		/** @type {any} */
-		const res = await core.content.getPosts(domain, { limit: 100 });
+		const res = await core.content.getPosts(domain, {
+			limit: options.limit ?? 100,
+			publishedOnly: options.publishedOnly ?? true
+		});
 		const posts = Array.isArray(res) ? res : res?.posts || [];
 		return posts.map((/** @type {any} */ post) => ({
 			...post,
@@ -92,7 +132,7 @@ export const getAllPosts = async (domain = 'default') => {
 			}
 		}));
 	} catch (error) {
-		console.error('Lỗi khi lấy posts:', error);
+		console.error('Failed to fetch posts:', error);
 		return [];
 	}
 };
@@ -247,11 +287,20 @@ export async function getPosts(domain = 'default', options = {}) {
 export const createPost = (domain = 'default', postData = {}, authorId = 'admin') =>
 	core.content.savePost(domain, { ...postData, authorId });
 
-export const updatePost = (domain = 'default', slug = '', postData = {}, authorId = 'admin') =>
-	core.content.savePost(domain, { ...postData, slug, authorId });
+export const updatePost = (
+	domain = 'default',
+	originalSlug = '',
+	/** @type {Record<string, any>} */ postData = {},
+	authorId = 'admin'
+) =>
+	core.content.savePost(domain, {
+		...postData,
+		originalSlug,
+		slug: postData.slug || originalSlug,
+		authorId
+	});
 
-export const deletePost = (domain = 'default', slug = '', authorId = 'admin') =>
-	core.content.deletePost(domain, slug);
+export const deletePost = (domain = 'default', slug = '') => core.content.deletePost(domain, slug);
 
 // ==================== PROJECTS (ADMIN) ====================
 
@@ -338,7 +387,7 @@ export const deleteLead = (domain = 'default', leadId = '') =>
  */
 export function sanitizePublicComment(comment) {
 	if (!comment) return comment;
-	const { email, ...safe } = comment;
+	const { email: _email, ...safe } = comment;
 	return safe;
 }
 
@@ -381,13 +430,64 @@ export async function getAllComments(domain = 'default') {
 	);
 }
 
-export const updateCommentStatus = async (
+/**
+ * Update comment moderation status
+ * @param {string} [domain='default']
+ * @param {string} [slugOrId='']
+ * @param {string} [idOrStatus='']
+ * @param {string} [maybeStatus='APPROVED']
+ * @returns {Promise<boolean>}
+ */
+export async function updateCommentStatus(
 	domain = 'default',
-	commentId = '',
-	status = 'APPROVED'
-) => true;
+	slugOrId = '',
+	idOrStatus = '',
+	maybeStatus = 'APPROVED'
+) {
+	const safeDomain = domain || 'default';
+	if (
+		slugOrId &&
+		idOrStatus &&
+		maybeStatus &&
+		idOrStatus !== 'APPROVED' &&
+		idOrStatus !== 'PENDING' &&
+		idOrStatus !== 'REJECTED'
+	) {
+		return await core.content.updateCommentStatus(safeDomain, slugOrId, idOrStatus, maybeStatus);
+	}
+	const commentId = slugOrId;
+	const status = idOrStatus || 'APPROVED';
+	/** @type {any} */
+	const postsRes = await core.content.getPosts(safeDomain);
+	const posts = Array.isArray(postsRes) ? postsRes : postsRes?.posts || [];
+	for (const p of posts) {
+		const updated = await core.content.updateCommentStatus(safeDomain, p.slug, commentId, status);
+		if (updated) return true;
+	}
+	return false;
+}
 
+/**
+ * Delete comment by post slug and comment ID (or scan posts if slug omitted)
+ * @param {string} [domain='default']
+ * @param {string} [slugOrId='']
+ * @param {string} [id='']
+ * @returns {Promise<boolean>}
+ */
 export async function deleteComment(domain = 'default', slugOrId = '', id = '') {
+	const safeDomain = domain || 'default';
+	if (slugOrId && id) {
+		return await core.content.deleteComment(safeDomain, slugOrId, id);
+	}
 	const commentId = id || slugOrId;
-	return await core.content.deleteComment(domain || 'default', '', commentId);
+	if (!commentId) return false;
+
+	/** @type {any} */
+	const postsRes = await core.content.getPosts(safeDomain);
+	const posts = Array.isArray(postsRes) ? postsRes : postsRes?.posts || [];
+	for (const p of posts) {
+		const deleted = await core.content.deleteComment(safeDomain, p.slug, commentId);
+		if (deleted) return true;
+	}
+	return false;
 }

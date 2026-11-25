@@ -1,4 +1,4 @@
-import { error, fail, redirect, isRedirect } from '@sveltejs/kit';
+import { error, fail, redirect, isRedirect, isHttpError } from '@sveltejs/kit';
 import { getPost, updatePost, getSchema } from '$lib/server/content.js';
 import { uploadImage } from '$lib/server/github.js';
 import { slugify } from '$lib/utils/index.js';
@@ -18,6 +18,7 @@ export const load = async ({ params, locals }) => {
 				...post,
 				slug: post.slug,
 				title: post.title,
+				status: post.status || 'PUBLISHED',
 				date: (post.publishedAt || post.createdAt || new Date().toISOString()).slice(0, 10),
 				tags: post.tags || post.tagSlugs || [],
 				thumbnail: post.thumbnail || '',
@@ -26,6 +27,7 @@ export const load = async ({ params, locals }) => {
 			schema: schema?.posts || null
 		};
 	} catch (err) {
+		if (isHttpError(err) || isRedirect(err)) throw err;
 		console.error('Error loading post:', err);
 		throw error(404, 'admin.posts.notFound');
 	}
@@ -38,6 +40,8 @@ export const actions = {
 
 		const title = form.get('title')?.toString().trim();
 		const slugInput = form.get('slug')?.toString().trim();
+		const statusInput = form.get('status')?.toString().trim();
+		const status = statusInput === 'DRAFT' || statusInput === 'PUBLISHED' ? statusInput : undefined;
 		const date = form.get('date')?.toString() ?? new Date().toISOString().slice(0, 10);
 		const tagsInput = form.get('tags')?.toString() ?? '';
 		const body = form.get('content')?.toString().trim();
@@ -67,6 +71,7 @@ export const actions = {
 				'tags',
 				'date',
 				'slug',
+				'status',
 				'thumbnail',
 				'thumbnail_file'
 			];
@@ -90,7 +95,7 @@ export const actions = {
 					thumbnail: thumbnail || null,
 					tags: tagList,
 					publishedAt: new Date(date).toISOString(),
-					status: 'PUBLISHED',
+					...(status ? { status } : {}),
 					...customFields
 				},
 				locals.user?.id || 'admin'

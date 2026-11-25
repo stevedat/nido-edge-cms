@@ -12,6 +12,7 @@ import { signToken, verifyToken } from './jwt.js';
  * @property {string} role
  * @property {string} avatar
  * @property {boolean} isActive
+ * @property {string} [tenant]
  */
 
 /**
@@ -47,10 +48,15 @@ export async function authenticate(credentials, config, tenantSettings) {
 			name: 'Master Admin',
 			role: 'ADMIN',
 			avatar: '',
-			isActive: true
+			isActive: true,
+			tenant: 'default'
 		};
 
-		const token = await signToken(user, config.jwtSecret, config.jwtExpiresIn || '7d');
+		const token = await signToken(
+			{ ...user, sub: user.id },
+			config.jwtSecret,
+			config.jwtExpiresIn || '7d'
+		);
 		return { success: true, user, token };
 	}
 
@@ -67,10 +73,15 @@ export async function authenticate(credentials, config, tenantSettings) {
 				name: tenantSettings.siteName || domain,
 				role: 'ADMIN',
 				avatar: '',
-				isActive: true
+				isActive: true,
+				tenant: domain
 			};
 
-			const token = await signToken(user, config.jwtSecret, config.jwtExpiresIn || '7d');
+			const token = await signToken(
+				{ ...user, sub: user.id },
+				config.jwtSecret,
+				config.jwtExpiresIn || '7d'
+			);
 			return { success: true, user, token };
 		}
 	}
@@ -91,13 +102,16 @@ export async function getUserFromToken(token, secret) {
 	}
 
 	const payload = result.payload;
+	const id = String(payload.id || payload.sub || '');
+	const tenant = payload.tenant ? String(payload.tenant) : undefined;
 	return {
-		id: String(payload.id || ''),
+		id,
 		email: String(payload.email || ''),
 		username: String(payload.username || ''),
 		name: String(payload.name || payload.username || 'Admin'),
 		role: String(payload.role || 'ADMIN'),
 		avatar: String(payload.avatar || ''),
-		isActive: Boolean(payload.isActive ?? true)
+		isActive: Boolean(payload.isActive ?? true),
+		...(tenant ? { tenant } : {})
 	};
 }

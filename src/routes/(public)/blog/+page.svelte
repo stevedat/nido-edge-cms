@@ -2,7 +2,16 @@
 	import { t, localized } from '$lib/i18n/index.js';
 	import { ArrowRight } from 'lucide-svelte';
 
-	let { data }: { data: any } = $props();
+	interface BlogPostItem {
+		slug: string;
+		title?: string;
+		title_en?: string;
+		excerpt?: string;
+		excerpt_en?: string;
+		meta: { title: string; title_en?: string; date: string; tags?: string[]; thumbnail?: string };
+	}
+
+	let { data }: { data: { settings: Record<string, unknown>; posts: BlogPostItem[] } } = $props();
 
 	// Format date nicely
 	function formatDate(dateString: string) {
@@ -31,14 +40,14 @@
 		<!-- Articles List -->
 		{#if data.posts && data.posts.length > 0}
 			<div class="space-y-0">
-				{#each data.posts as post}
+				{#each data.posts as post (post.slug)}
 					<article
 						class="group block border-b border-border-subtle hover:border-border-strong transition-colors py-12 relative cursor-pointer"
 					>
 						<a
 							href="/blog/{post.slug}"
 							class="absolute inset-0 z-10"
-							aria-label={localized(post, 'title')}
+							aria-label={localized(post, 'title') || localized(post.meta, 'title')}
 						></a>
 
 						<div class="flex flex-col md:flex-row md:items-baseline gap-4 md:gap-12">
@@ -52,7 +61,7 @@
 								<h2
 									class="font-serif text-3xl md:text-4xl text-text-main group-hover:text-primary transition-colors leading-tight"
 								>
-									{localized(post, 'title')}
+									{localized(post, 'title') || localized(post.meta, 'title')}
 								</h2>
 								{#if localized(post, 'excerpt')}
 									<p class="text-lg text-text-body leading-relaxed max-w-2xl">

@@ -14,7 +14,7 @@ export async function GET({ url, locals }) {
 	try {
 		const comments = await getPublicComments(locals.domain, slug);
 		return json({ success: true, comments });
-	} catch (error) {
+	} catch {
 		return json({ error: serverT('api.comments.loadError', locals.locale) }, { status: 500 });
 	}
 }

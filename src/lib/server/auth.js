@@ -119,16 +119,17 @@ export function hasPermission(user, action, resource) {
 /**
  * Create auth session cookie
  * @param {string} token
+ * @param {boolean} [isSecure=true]
  * @returns {{name: string, value: string, options: any}}
  */
-export function createAuthCookie(token) {
+export function createAuthCookie(token, isSecure = true) {
 	return {
 		name: 'sb-access-token',
 		value: token,
 		options: {
 			httpOnly: true,
-			secure: true,
-			sameSite: 'none',
+			secure: isSecure,
+			sameSite: 'lax',
 			maxAge: 60 * 60 * 24 * 7, // 7 days
 			path: '/'
 		}
@@ -137,16 +138,17 @@ export function createAuthCookie(token) {
 
 /**
  * Clear auth session cookie
+ * @param {boolean} [isSecure=true]
  * @returns {{name: string, value: string, options: any}}
  */
-export function clearAuthCookie() {
+export function clearAuthCookie(isSecure = true) {
 	return {
 		name: 'sb-access-token',
 		value: '',
 		options: {
 			httpOnly: true,
-			secure: true,
-			sameSite: 'none',
+			secure: isSecure,
+			sameSite: 'lax',
 			maxAge: 0,
 			path: '/'
 		}
@@ -155,11 +157,11 @@ export function clearAuthCookie() {
 
 /**
  * Logout and clear session
- * @param {Request} request
- * @param {any} [cookies]
+ * @param {Request} _request
+ * @param {any} [_cookies]
  * @returns {Promise<boolean>}
  */
-export async function logout(request, cookies) {
+export async function logout(_request, _cookies) {
 	return true;
 }
 
@@ -218,13 +220,12 @@ export async function getUserByToken(token) {
  * @param {string} identifier - Email or username
  * @param {string} password
  * @param {string} [domain='default'] - Tenant domain
- * @param {string} [userAgent]
- * @param {string} [ipAddress]
  * @returns {Promise<{ success: boolean; user?: any; token?: string; message?: string }>}
  */
-export async function loginUser(identifier, password, domain = 'default', userAgent, ipAddress) {
+export async function loginUser(identifier, password, domain = 'default') {
 	try {
-		const res = await core.auth.authenticate({ identifier, password, domain });
+		const tenantSettings = await core.content.getSettings(domain).catch(() => ({}));
+		const res = await core.auth.authenticate({ identifier, password, domain }, tenantSettings);
 		if (res.success && res.user && res.token) {
 			return {
 				success: true,
@@ -244,12 +245,12 @@ export async function loginUser(identifier, password, domain = 'default', userAg
 
 /**
  * Logout user
- * @param {string} [token]
- * @param {string} [userAgent]
- * @param {string} [ipAddress]
+ * @param {string} [_token]
+ * @param {string} [_userAgent]
+ * @param {string} [_ipAddress]
  * @returns {Promise<boolean>}
  */
-export async function logoutUser(token, userAgent, ipAddress) {
+export async function logoutUser(_token, _userAgent, _ipAddress) {
 	return true;
 }
 

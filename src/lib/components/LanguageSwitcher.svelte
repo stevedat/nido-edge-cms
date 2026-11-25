@@ -1,13 +1,7 @@
 <script lang="ts">
-	import { getLocale, setLocale, type Locale } from '$lib/i18n/index.js';
-	import { Languages } from 'lucide-svelte';
+	import { getLocale, setLocale, t } from '$lib/i18n/index.js';
 
 	let current = $derived(getLocale());
-
-	function toggleLanguage() {
-		const next: Locale = current === 'vi' ? 'en' : 'vi';
-		setLocale(next);
-	}
 </script>
 
 <div
@@ -20,7 +14,7 @@
 		'vi'
 			? 'bg-surface text-text-main shadow-xs border border-border-subtle/80'
 			: 'text-text-muted hover:text-text-main'}"
-		aria-label={current === 'vi' ? 'Đang dùng Tiếng Việt' : 'Chuyển sang Tiếng Việt'}
+		aria-label={current === 'vi' ? t('nav.viActive') : t('nav.switchToVi')}
 		aria-pressed={current === 'vi'}
 	>
 		VI
@@ -32,7 +26,7 @@
 		'en'
 			? 'bg-surface text-text-main shadow-xs border border-border-subtle/80'
 			: 'text-text-muted hover:text-text-main'}"
-		aria-label={current === 'en' ? 'English currently active' : 'Switch to English'}
+		aria-label={current === 'en' ? t('nav.enActive') : t('nav.switchToEn')}
 		aria-pressed={current === 'en'}
 	>
 		EN

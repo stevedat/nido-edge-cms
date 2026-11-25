@@ -1,13 +1,13 @@
-import { getSettings } from '$lib/server/content.js';
+import { getSettings, sanitizePublicSettings } from '$lib/server/content.js';
 
 export const load = async ({ locals }) => {
 	const domain = locals.domain || 'default';
-	const settings = locals.settings || (await getSettings(domain));
+	const rawSettings = locals.settings || (await getSettings(domain));
 
 	return {
 		isAuthenticated: locals.isAuthenticated ?? false,
 		domain,
 		locale: locals.locale || 'vi',
-		settings
+		settings: sanitizePublicSettings(rawSettings)
 	};
 };

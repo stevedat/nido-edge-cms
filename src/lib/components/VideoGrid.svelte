@@ -49,7 +49,7 @@
 {#if videos.length > 0}
 	<div class="video-grid w-full">
 		<div class="grid {gridClass} gap-6 sm:gap-8">
-			{#each videos as video}
+			{#each videos as video, idx (video.id ?? `${video.url}-${idx}`)}
 				<div
 					class="video-card p-4 sm:p-5 rounded-2xl bg-surface border border-border-subtle hover:border-border-subtle/80 hover:shadow-sm transition-all space-y-3.5"
 				>

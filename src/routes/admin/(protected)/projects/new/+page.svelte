@@ -1,15 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { t } from '$lib/i18n/index.js';
-	import {
-		ArrowLeft,
-		Save,
-		FolderGit2,
-		Link as LinkIcon,
-		Tag,
-		AlignLeft,
-		Info
-	} from 'lucide-svelte';
+	import { ArrowLeft, Save, FolderGit2, Link as LinkIcon, Tag, AlignLeft } from 'lucide-svelte';
 
 	let { form }: { form?: { message?: string; details?: string; success?: boolean } } = $props();
 	let isSubmitting = $state(false);
@@ -148,7 +140,7 @@
 					<span
 						class="block text-xs sm:text-sm font-bold text-text-main mb-2 flex items-center gap-2"
 					>
-						<LinkIcon size={16} />
+						<LinkIcon strokeWidth={1.75} size={16} />
 						{t('admin.projects.demoLink', { defaultValue: 'Demo / Website Link' })}
 					</span>
 					<input

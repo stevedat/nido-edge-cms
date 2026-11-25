@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { ComponentType } from 'svelte';
-	import { ArrowUpRight } from 'lucide-svelte';
 
 	interface Props {
 		title: string;

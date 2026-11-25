@@ -1,9 +1,18 @@
 <script lang="ts">
 	import { t, localized } from '$lib/i18n/index.js';
-	import { ArrowDown, ArrowRight } from 'lucide-svelte';
+	import { ArrowDown } from 'lucide-svelte';
 	import { openFreeSlotModal } from '$lib/stores/freeSlot.js';
 
-	let { data }: { data: any } = $props();
+	interface AboutSettings {
+		headerCtaAction?: string;
+		headerCtaUrl?: string;
+		githubUrl?: string;
+		contactEmail?: string;
+		linkedinUrl?: string;
+		[key: string]: unknown;
+	}
+
+	let { data }: { data: { settings: AboutSettings } } = $props();
 
 	function scrollToContent() {
 		const element = document.getElementById('story-content');

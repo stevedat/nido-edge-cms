@@ -9,7 +9,7 @@
 		form
 	}: {
 		data: { videos: { id: string; title: string; platform: string; url: string }[] };
-		form: any;
+		form?: { message?: string; success?: boolean };
 	} = $props();
 
 	let deleteVideoId = $state('');
@@ -111,7 +111,7 @@
 						</tr>
 					</thead>
 					<tbody class="divide-y divide-border-subtle">
-						{#each data.videos as video}
+						{#each data.videos as video (video.id)}
 							<tr class="group hover:bg-soft-bg/40 transition-colors">
 								<td class="px-6 py-4">
 									<div class="flex flex-col">

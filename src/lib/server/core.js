@@ -11,6 +11,32 @@ import {
 let coreInstance = null;
 
 /**
+ * Read a server environment variable safely across Cloudflare Workers, Vercel Edge, and Node.js
+ * @param {string} key
+ * @returns {string | undefined}
+ */
+function readEnv(key) {
+	const platformEnv = /** @type {any} */ (globalThis).__PLATFORM_ENV__;
+	if (platformEnv && typeof platformEnv[key] === 'string' && platformEnv[key]) {
+		return platformEnv[key];
+	}
+	if (env && typeof env[key] === 'string' && env[key]) {
+		return env[key];
+	}
+	if (typeof process !== 'undefined' && process.env?.[key]) {
+		return process.env[key];
+	}
+	return undefined;
+}
+
+/**
+ * Reset the cached singleton core instance (useful for tests or runtime re-binding)
+ */
+export function resetCore() {
+	coreInstance = null;
+}
+
+/**
  * Get or initialize the singleton EdgeCMSCore instance.
  * Injects environment secrets into the decoupled core factory.
  *
@@ -22,22 +48,13 @@ export function getCore(overrides = {}) {
 		return coreInstance;
 	}
 
-	const jwtSecret =
-		overrides.jwtSecret ||
-		env.JWT_SECRET ||
-		(typeof process !== 'undefined' ? process.env?.JWT_SECRET : undefined);
-
-	const adminPassword =
-		overrides.adminPassword ||
-		env.ADMIN_PASSWORD ||
-		(typeof process !== 'undefined' ? process.env?.ADMIN_PASSWORD : undefined);
+	const jwtSecret = overrides.jwtSecret || readEnv('JWT_SECRET');
+	const adminPassword = overrides.adminPassword || readEnv('ADMIN_PASSWORD');
 
 	if (!jwtSecret) {
 		console.warn(
 			'⚠️ WARNING: JWT_SECRET is not defined. Please set it in your environment variables.'
 		);
-		// In a real production setup we should throw, but to allow local builds without .env we use a random fallback
-		// that resets on every startup, rendering stored tokens invalid and preventing hardcoded bypass.
 	}
 	const finalJwtSecret =
 		jwtSecret || crypto.randomUUID().replace(/-/g, '') + crypto.randomUUID().replace(/-/g, '');
@@ -49,63 +66,34 @@ export function getCore(overrides = {}) {
 	}
 	const finalAdminPassword = adminPassword || crypto.randomUUID();
 
-	const rootDomain =
-		overrides.rootDomain ||
-		env.ROOT_DOMAIN ||
-		(typeof process !== 'undefined' ? process.env?.ROOT_DOMAIN : undefined) ||
-		'example.com';
-
-	const antispamSalt =
-		overrides.antispamSalt ||
-		env.ANTISPAM_SALT ||
-		(typeof process !== 'undefined' ? process.env?.ANTISPAM_SALT : undefined) ||
-		adminPassword;
-
-	const powDifficulty =
-		overrides.powDifficulty ||
-		env.POW_DIFFICULTY ||
-		(typeof process !== 'undefined' ? process.env?.POW_DIFFICULTY : undefined) ||
-		'000';
+	const rootDomain = overrides.rootDomain || readEnv('ROOT_DOMAIN') || 'example.com';
+	const antispamSalt = overrides.antispamSalt || readEnv('ANTISPAM_SALT') || finalAdminPassword;
+	const powDifficulty = overrides.powDifficulty || readEnv('POW_DIFFICULTY') || '000';
 
 	/** @type {import('$lib/core/storage/interface.js').StorageAdapter} */
 	let storage;
 	if (overrides.storage) {
 		storage = overrides.storage;
 	} else {
-		const githubToken =
-			env.GITHUB_TOKEN || (typeof process !== 'undefined' ? process.env?.GITHUB_TOKEN : undefined);
+		const githubToken = readEnv('GITHUB_TOKEN');
+		const githubOwner = readEnv('GITHUB_REPO_OWNER');
+		const githubName = readEnv('GITHUB_REPO_NAME');
 		const githubRepo =
-			env.GITHUB_REPO ||
-			(typeof process !== 'undefined' ? process.env?.GITHUB_REPO : undefined) ||
-			((env.GITHUB_REPO_OWNER ||
-				(typeof process !== 'undefined' ? process.env?.GITHUB_REPO_OWNER : undefined)) &&
-			(env.GITHUB_REPO_NAME ||
-				(typeof process !== 'undefined' ? process.env?.GITHUB_REPO_NAME : undefined))
-				? `${env.GITHUB_REPO_OWNER || process.env?.GITHUB_REPO_OWNER}/${env.GITHUB_REPO_NAME || process.env?.GITHUB_REPO_NAME}`
-				: null);
+			readEnv('GITHUB_REPO') || (githubOwner && githubName ? `${githubOwner}/${githubName}` : null);
 
-		const storageType =
-			env.STORAGE_ADAPTER ||
-			(typeof process !== 'undefined' ? process.env?.STORAGE_ADAPTER : undefined);
+		const storageType = readEnv('STORAGE_ADAPTER');
 
 		if (storageType === 'cloudflare-kv') {
-			// In Cloudflare Workers, bindings are available on event.platform.env
-			// We expose a global reference that hooks.server.js will populate
 			storage = new CloudflareKVAdapter(() => /** @type {any} */ (globalThis).__KV_BINDING__);
 		} else if (storageType === 'github' && githubToken && githubRepo) {
 			storage = new GitHubStorageAdapter({
 				token: githubToken,
 				repo: githubRepo,
-				branch:
-					env.GITHUB_BRANCH ||
-					(typeof process !== 'undefined' ? process.env?.GITHUB_BRANCH : undefined) ||
-					'main'
+				branch: readEnv('GITHUB_BRANCH') || 'main'
 			});
 		} else {
 			const basePath =
-				env.CONTENT_DIR ||
-				(typeof process !== 'undefined' ? process.env?.CONTENT_DIR : undefined) ||
-				process.cwd();
+				readEnv('CONTENT_DIR') || (typeof process !== 'undefined' ? process.cwd() : '.');
 			storage = new FsStorageAdapter({
 				basePath
 			});
@@ -131,6 +119,15 @@ export function getCore(overrides = {}) {
 }
 
 /**
- * Global EdgeCMSCore server singleton
+ * Lazily-initialized EdgeCMSCore server singleton.
+ * Defers initialization until first property access so Cloudflare Workers
+ * per-request platform env & KV bindings are available before boot.
+ * @type {ReturnType<typeof createEdgeCMSCore>}
  */
-export const core = getCore();
+export const core = new Proxy(/** @type {ReturnType<typeof createEdgeCMSCore>} */ ({}), {
+	get(_target, prop, receiver) {
+		const instance = getCore();
+		const value = Reflect.get(instance, prop, receiver);
+		return typeof value === 'function' ? value.bind(instance) : value;
+	}
+});

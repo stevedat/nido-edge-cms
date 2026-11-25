@@ -4,14 +4,11 @@
 	import QuickActions from '$lib/components/admin/QuickActions.svelte';
 	import {
 		FileText,
-		Video,
 		Briefcase,
 		Gift,
 		Phone,
 		Mail,
 		ExternalLink,
-		ArrowRight,
-		ArrowUpRight,
 		Edit3,
 		Eye,
 		MessageSquare,
@@ -20,8 +17,7 @@
 		Loader2,
 		Copy,
 		Check,
-		Calendar,
-		User
+		Calendar
 	} from 'lucide-svelte';
 
 	interface Lead {
@@ -59,13 +55,12 @@
 		data
 	}: {
 		data: {
-			user: any;
+			user: { id?: string; name?: string; username?: string; role?: string } | null;
 			siteUrl: string;
 			stats: {
 				posts: number;
 				publishedPosts: number;
 				draftPosts: number;
-				videos: number;
 				projects: number;
 				leads: number;
 				comments: number;
@@ -110,7 +105,9 @@
 			setTimeout(() => {
 				if (copiedPhoneId === id) copiedPhoneId = null;
 			}, 2000);
-		} catch (_) {}
+		} catch {
+			// Clipboard write may fail if permission denied
+		}
 	}
 
 	// Handle quick publish
@@ -476,7 +473,7 @@
 
 				{#if data.recentPosts && data.recentPosts.length > 0}
 					<div class="divide-y divide-border-subtle">
-						{#each data.recentPosts as post}
+						{#each data.recentPosts as post (post.slug)}
 							<div
 								class="py-4 first:pt-0 last:pb-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3 group"
 							>
@@ -576,7 +573,7 @@
 
 				{#if data.recentComments && data.recentComments.length > 0}
 					<div class="space-y-3">
-						{#each data.recentComments as comment}
+						{#each data.recentComments as comment (comment.id)}
 							<div
 								class="p-3 rounded-2xl bg-soft-bg border border-border-subtle space-y-1.5 text-xs"
 							>

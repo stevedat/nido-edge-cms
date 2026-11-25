@@ -27,7 +27,7 @@ export const actions = {
 
 		try {
 			const domain = locals.domain || 'default';
-			await deletePost(domain, slug, locals.user?.id || 'admin');
+			await deletePost(domain, slug);
 			return { message: serverT('admin.posts.deleteSuccess', locals.locale) };
 		} catch (error) {
 			const message =

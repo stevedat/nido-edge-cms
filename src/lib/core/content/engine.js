@@ -13,159 +13,41 @@
 import { StorageAdapter } from '../storage/interface.js';
 
 /**
- * Pure Web Standards slugify helper
+ * Pure Web Standards slugify helper using Unicode NFD normalization
+ * (handles Vietnamese and Latin diacritics without hardcoded lookup tables)
  * @param {string} text
  * @returns {string}
  */
 export function slugify(text) {
 	if (!text) return `item-${Date.now()}`;
-	/** @type {Record<string, string>} */
-	const vietnameseMap = {
-		à: 'a',
-		á: 'a',
-		ạ: 'a',
-		ả: 'a',
-		ã: 'a',
-		â: 'a',
-		ầ: 'a',
-		ấ: 'a',
-		ậ: 'a',
-		ẩ: 'a',
-		ẫ: 'a',
-		ă: 'a',
-		ằ: 'a',
-		ắ: 'a',
-		ặ: 'a',
-		ẳ: 'a',
-		ẵ: 'a',
-		è: 'e',
-		é: 'e',
-		ẹ: 'e',
-		ẻ: 'e',
-		ẽ: 'e',
-		ê: 'e',
-		ề: 'e',
-		ế: 'e',
-		ệ: 'e',
-		ể: 'e',
-		ễ: 'e',
-		ì: 'i',
-		í: 'i',
-		ị: 'i',
-		ỉ: 'i',
-		ĩ: 'i',
-		ò: 'o',
-		ó: 'o',
-		ọ: 'o',
-		ỏ: 'o',
-		õ: 'o',
-		ô: 'o',
-		ồ: 'o',
-		ố: 'o',
-		ộ: 'o',
-		ổ: 'o',
-		ỗ: 'o',
-		ơ: 'o',
-		ờ: 'o',
-		ớ: 'o',
-		ợ: 'o',
-		ở: 'o',
-		ỡ: 'o',
-		ù: 'u',
-		ú: 'u',
-		ụ: 'u',
-		ủ: 'u',
-		ũ: 'u',
-		ư: 'u',
-		ừ: 'u',
-		ứ: 'u',
-		ự: 'u',
-		ử: 'u',
-		ữ: 'u',
-		ỳ: 'y',
-		ý: 'y',
-		ỵ: 'y',
-		ỷ: 'y',
-		ỹ: 'y',
-		đ: 'd',
-		À: 'A',
-		Á: 'A',
-		Ạ: 'A',
-		Ả: 'A',
-		Ã: 'A',
-		Â: 'A',
-		Ầ: 'A',
-		Ấ: 'A',
-		Ậ: 'A',
-		Ẩ: 'A',
-		Ẫ: 'A',
-		Ă: 'A',
-		Ằ: 'A',
-		Ắ: 'A',
-		Ặ: 'A',
-		Ẳ: 'A',
-		Ẵ: 'A',
-		È: 'E',
-		É: 'E',
-		Ẹ: 'E',
-		Ẻ: 'E',
-		Ẽ: 'E',
-		Ê: 'E',
-		Ề: 'E',
-		Ế: 'E',
-		Ệ: 'E',
-		Ể: 'E',
-		Ễ: 'E',
-		Ì: 'I',
-		Í: 'I',
-		Ị: 'I',
-		Ỉ: 'I',
-		Ĩ: 'I',
-		Ò: 'O',
-		Ó: 'O',
-		Ọ: 'O',
-		Ỏ: 'O',
-		Õ: 'O',
-		Ô: 'O',
-		Ồ: 'O',
-		Ố: 'O',
-		Ộ: 'O',
-		Ổ: 'O',
-		Ỗ: 'O',
-		Ơ: 'O',
-		Ờ: 'O',
-		Ớ: 'O',
-		Ợ: 'O',
-		Ở: 'O',
-		Ỡ: 'O',
-		Ù: 'U',
-		Ú: 'U',
-		Ụ: 'U',
-		Ủ: 'U',
-		Ũ: 'U',
-		Ư: 'U',
-		Ừ: 'U',
-		Ứ: 'U',
-		Ự: 'U',
-		Ử: 'U',
-		Ữ: 'U',
-		Ỳ: 'Y',
-		Ý: 'Y',
-		Ỵ: 'Y',
-		Ỷ: 'Y',
-		Ỹ: 'Y',
-		Đ: 'D'
-	};
-
 	return (
 		text
-			.split('')
-			.map((char) => vietnameseMap[char] || char)
-			.join('')
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.replace(/\u0111/g, 'd')
+			.replace(/\u0110/g, 'D')
 			.toLowerCase()
 			.replace(/[^a-z0-9]+/g, '-')
 			.replace(/^-+|-+$/g, '') || `item-${Date.now()}`
 	);
+}
+
+/**
+ * Deep clone helper to protect cached objects from caller mutations
+ * @template T
+ * @param {T} value
+ * @returns {T}
+ */
+function deepClone(value) {
+	if (value === null || typeof value !== 'object') return value;
+	if (typeof structuredClone === 'function') {
+		try {
+			return structuredClone(value);
+		} catch {
+			// Fallback to JSON clone if value contains non-cloneable fields
+		}
+	}
+	return JSON.parse(JSON.stringify(value));
 }
 
 /**
@@ -289,11 +171,7 @@ export class ContentEngine {
 
 		if (cached && Date.now() < cached.expiresAt) {
 			if (!cached.isFallback || allowFallback) {
-				return Array.isArray(cached.data)
-					? [...cached.data]
-					: typeof cached.data === 'object' && cached.data !== null
-						? { ...cached.data }
-						: cached.data;
+				return deepClone(cached.data);
 			}
 		}
 
@@ -331,21 +209,18 @@ export class ContentEngine {
 
 		if (content !== null) {
 			this.cache.set(cacheKey, {
-				data: parsedData,
+				data: deepClone(parsedData),
 				expiresAt: Date.now() + this.cacheTtlMs,
 				isFallback
 			});
 		}
 
-		return Array.isArray(parsedData)
-			? [...parsedData]
-			: typeof parsedData === 'object' && parsedData !== null
-				? { ...parsedData }
-				: parsedData;
+		return deepClone(parsedData);
 	}
 
 	/**
-	 * Internal helper to write JSON data
+	 * Internal helper to write JSON data.
+	 * Persists to storage BEFORE updating cache so failed writes never poison in-memory cache.
 	 * @private
 	 * @param {string} tenant
 	 * @param {string} fileName
@@ -358,15 +233,16 @@ export class ContentEngine {
 		const cacheKey = `${safeTenant}/${fileName}`;
 
 		this.invalidateCache(safeTenant, fileName);
-		this.cache.set(cacheKey, {
-			data,
-			expiresAt: Date.now() + this.cacheTtlMs,
-			isFallback: false
-		});
 
 		const filePath = `src/content/${safeTenant}/${fileName}`;
 		const jsonString = JSON.stringify(data, null, '\t');
 		await this.storage.write(filePath, jsonString, commitMessage);
+
+		this.cache.set(cacheKey, {
+			data: deepClone(data),
+			expiresAt: Date.now() + this.cacheTtlMs,
+			isFallback: false
+		});
 	}
 
 	// ==================== POSTS ====================
@@ -486,46 +362,62 @@ export class ContentEngine {
 		const safeTenant = this.sanitizeTenant(tenant);
 		return this.withLock(safeTenant, 'posts.json', async () => {
 			const posts = await this.readJson(safeTenant, 'posts.json', [], false);
+			const { originalSlug, ...postFields } = post || {};
+			const lookupSlug = originalSlug || postFields.slug;
 			const existingIdx = posts.findIndex(
 				(/** @type {any} */ p) =>
-					(post.id && p.id === post.id) || (post.slug && p.slug === post.slug)
+					(postFields.id && p.id === postFields.id) || (lookupSlug && p.slug === lookupSlug)
 			);
 
 			let savedPost;
 			if (existingIdx !== -1) {
-				// Update: Preserve existing slug unless explicitly given
+				// Update: allow renaming slug safely while preventing duplicate slug collisions
 				const existing = posts[existingIdx];
+				const targetSlug = postFields.slug || existing.slug;
+				if (targetSlug !== existing.slug) {
+					const collisionIdx = posts.findIndex(
+						(/** @type {any} */ p, /** @type {number} */ i) =>
+							i !== existingIdx && p.slug === targetSlug
+					);
+					if (collisionIdx !== -1) {
+						throw new Error(`A post with slug "${targetSlug}" already exists`);
+					}
+				}
+				const nextStatus = postFields.status || existing.status || 'PUBLISHED';
 				savedPost = {
 					...existing,
-					...post,
-					slug: post.slug || existing.slug,
+					...postFields,
+					id: existing.id,
+					slug: targetSlug,
+					status: nextStatus,
 					publishedAt:
-						post.status === 'PUBLISHED' && !existing.publishedAt
-							? new Date().toISOString()
-							: post.publishedAt || existing.publishedAt,
+						nextStatus === 'PUBLISHED' && !existing.publishedAt
+							? postFields.publishedAt || new Date().toISOString()
+							: postFields.publishedAt || existing.publishedAt,
 					updatedAt: new Date().toISOString()
 				};
 				posts[existingIdx] = savedPost;
 			} else {
-				// Create: Generate unique ID and slug
-				const slug = post.slug || slugify(post.title);
+				// Create: Generate unique ID and slug; defaults override empty/undefined values
+				const slug = postFields.slug || slugify(postFields.title);
+				const nextStatus = postFields.status || 'DRAFT';
 				savedPost = {
-					id: post.id || `post_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-					title: post.title || '',
+					...postFields,
+					id: postFields.id || `post_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+					title: postFields.title || '',
 					slug,
-					content: post.content || '',
-					excerpt: post.excerpt || '',
-					status: post.status || 'DRAFT',
-					authorId: post.authorId || '',
-					categoryId: post.categoryId || '',
-					categorySlug: post.categorySlug || post.categoryId || '',
-					thumbnail: post.thumbnail || '',
+					content: postFields.content || '',
+					excerpt: postFields.excerpt || '',
+					status: nextStatus,
+					authorId: postFields.authorId || '',
+					categoryId: postFields.categoryId || '',
+					categorySlug: postFields.categorySlug || postFields.categoryId || '',
+					thumbnail: postFields.thumbnail || '',
 					publishedAt:
-						post.status === 'PUBLISHED' ? post.publishedAt || new Date().toISOString() : null,
-					createdAt: post.createdAt || new Date().toISOString(),
-					tags: post.tags || [],
-					tagSlugs: post.tagSlugs || post.tags || [],
-					...post
+						nextStatus === 'PUBLISHED' ? postFields.publishedAt || new Date().toISOString() : null,
+					createdAt: postFields.createdAt || new Date().toISOString(),
+					tags: postFields.tags || [],
+					tagSlugs: postFields.tagSlugs || postFields.tags || []
 				};
 				posts.unshift(savedPost);
 			}
@@ -597,14 +489,14 @@ export class ContentEngine {
 			} else {
 				const id = project.id || `proj_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
 				saved = {
+					...project,
 					id,
 					title: project.title || '',
 					description: project.description || '',
 					link: project.link || '',
 					tags: project.tags || [],
 					status: project.status || 'COMPLETED',
-					createdAt: project.createdAt || new Date().toISOString(),
-					...project
+					createdAt: project.createdAt || new Date().toISOString()
 				};
 				projects.unshift(saved);
 			}
@@ -675,6 +567,7 @@ export class ContentEngine {
 		return this.withLock(safeTenant, 'videos.json', async () => {
 			const videos = await this.readJson(safeTenant, 'videos.json', [], false);
 			const newVideo = {
+				...video,
 				id: video.id || `video_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
 				title: video.title,
 				url: video.url,
@@ -682,8 +575,7 @@ export class ContentEngine {
 				thumbnail: video.thumbnail || '',
 				description: video.description || '',
 				authorId: video.authorId || '',
-				createdAt: video.createdAt || new Date().toISOString(),
-				...video
+				createdAt: video.createdAt || new Date().toISOString()
 			};
 
 			videos.unshift(newVideo);
@@ -967,6 +859,40 @@ export class ContentEngine {
 			if (filtered.length === initialLength) return false;
 
 			await this.writeJson(safeTenant, fileName, filtered, `Delete comment ${id}`);
+			return true;
+		});
+	}
+
+	/**
+	 * Update comment moderation status by ID
+	 * @param {string} [tenant='default']
+	 * @param {string} [postSlug='']
+	 * @param {string} [id='']
+	 * @param {string} [status='APPROVED']
+	 * @returns {Promise<boolean>}
+	 */
+	async updateCommentStatus(tenant = 'default', postSlug = '', id = '', status = 'APPROVED') {
+		const safeSlug = cleanSlug(postSlug);
+		if (!safeSlug || !id) return false;
+
+		const safeTenant = this.sanitizeTenant(tenant);
+		const fileName = `comments/${safeSlug}.json`;
+		return this.withLock(safeTenant, fileName, async () => {
+			const comments = await this.readJson(safeTenant, fileName, [], false);
+			const idx = comments.findIndex((/** @type {any} */ c) => c.id === id);
+			if (idx === -1) return false;
+
+			comments[idx] = {
+				...comments[idx],
+				status,
+				updatedAt: new Date().toISOString()
+			};
+			await this.writeJson(
+				safeTenant,
+				fileName,
+				comments,
+				`Update comment ${id} status to ${status}`
+			);
 			return true;
 		});
 	}

@@ -79,7 +79,7 @@
 						})
 				);
 			}
-		} catch (error) {
+		} catch {
 			toast.error(
 				t('admin.dashboard.publishConnectError', {
 					defaultValue: 'Cannot connect to the publishing server.'
@@ -195,7 +195,7 @@
 				{t('admin.nav.mainMenu')}
 			</p>
 			<ul class="space-y-1">
-				{#each finalMenu as item}
+				{#each finalMenu as item (item.href)}
 					{@const active =
 						isActive(item.href) &&
 						(item.href === '/admin/dashboard' ? $page.url.pathname === '/admin/dashboard' : true)}

@@ -26,10 +26,10 @@ async function parseError(response) {
 		try {
 			const json = JSON.parse(text);
 			return json.message || text;
-		} catch (_) {
+		} catch {
 			return text.trim() || `HTTP ${response.status} ${response.statusText}`;
 		}
-	} catch (err) {
+	} catch {
 		return `HTTP ${response.status} ${response.statusText}`;
 	}
 }
@@ -280,8 +280,13 @@ export async function uploadImage(file) {
 export async function triggerDeploy(branchName = getRepoParams().branch) {
 	const timestamp = new Date().toISOString();
 	const content = `Deploy triggered at: ${timestamp}`;
-	return createOrUpdateFile('src/content/.deploy', content, '🚀 Xuất bản giao diện mới', {
-		branch: branchName,
-		skipCi: false
-	});
+	return createOrUpdateFile(
+		'src/content/.deploy',
+		content,
+		'chore(deploy): trigger production publish',
+		{
+			branch: branchName,
+			skipCi: false
+		}
+	);
 }

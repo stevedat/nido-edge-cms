@@ -10,9 +10,6 @@
 		ArrowRight,
 		HelpCircle,
 		ChevronDown,
-		MessageSquare,
-		Send,
-		ExternalLink,
 		Sparkles,
 		Layers,
 		BookOpen,
@@ -20,15 +17,7 @@
 		ArrowUpRight
 	} from 'lucide-svelte';
 	import { openFreeSlotModal } from '$lib/stores/freeSlot.js';
-	import {
-		t,
-		getLocale,
-		formatDate,
-		formatReadingTime,
-		localized,
-		localizedArray
-	} from '$lib/i18n/index.js';
-	import ShareButton from '$lib/components/ShareButton.svelte';
+	import { t, formatReadingTime, localized, localizedArray } from '$lib/i18n/index.js';
 	import VideoEmbed from '$lib/components/VideoEmbed.svelte';
 	import { isMasterDomain } from '$lib/utils/index.js';
 
@@ -36,7 +25,7 @@
 		data
 	}: {
 		data: {
-			settings: any;
+			settings: Record<string, unknown>;
 			posts: {
 				slug: string;
 				meta: { title: string; date: string; tags: string[]; thumbnail: string };
@@ -104,14 +93,10 @@
 			<h1
 				class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-text-main tracking-tight leading-[1.12] text-balance break-words"
 			>
-				{getLocale() === 'en' && data.settings?.heroTitle_en
-					? data.settings.heroTitle_en
-					: data.settings?.heroTitle || t('consulting.heroTitle')}
+				{localized(data.settings, 'heroTitle') || t('consulting.heroTitle')}
 			</h1>
 			<p class="text-base sm:text-xl text-text-body leading-relaxed font-normal text-balance">
-				{getLocale() === 'en' && data.settings?.heroBio_en
-					? data.settings.heroBio_en
-					: data.settings?.heroBio || t('consulting.heroBio')}
+				{localized(data.settings, 'heroBio') || t('consulting.heroBio')}
 			</p>
 		</div>
 
@@ -128,7 +113,7 @@
 				</button>
 			{:else}
 				<a
-					href={data.settings?.contactUrl || '#services'}
+					href={String(data.settings?.contactUrl || '#services')}
 					class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-text-main text-main-bg hover:opacity-90 font-bold text-sm shadow-md transition-all active:scale-98 min-h-[48px]"
 				>
 					<Calendar strokeWidth={1.75} size={17} />
@@ -298,7 +283,7 @@
 					</button>
 				{:else}
 					<a
-						href={data.settings?.contactUrl || '#booking'}
+						href={String(data.settings?.contactUrl || '#booking')}
 						class="w-full py-3 px-4 rounded-xl bg-soft-bg hover:bg-surface border border-border-subtle text-text-main font-bold text-xs sm:text-sm transition-all text-center block"
 					>
 						{t('consulting.auditBtn')}
@@ -353,7 +338,7 @@
 					</button>
 				{:else}
 					<a
-						href={data.settings?.contactUrl || '#booking'}
+						href={String(data.settings?.contactUrl || '#booking')}
 						class="w-full py-3 px-4 rounded-xl bg-text-main text-main-bg hover:opacity-90 font-bold text-xs sm:text-sm transition-all text-center shadow-sm block"
 					>
 						{t('consulting.comprehensiveBtn')}
@@ -400,7 +385,7 @@
 					</button>
 				{:else}
 					<a
-						href={data.settings?.contactUrl || '#booking'}
+						href={String(data.settings?.contactUrl || '#booking')}
 						class="w-full py-3 px-4 rounded-xl bg-soft-bg hover:bg-surface border border-border-subtle text-text-main font-bold text-xs sm:text-sm transition-all text-center block"
 					>
 						{t('consulting.retainerBtn')}
@@ -469,8 +454,10 @@
 								</button>
 							{:else}
 								<a
-									href={data.settings?.contactUrl ||
-										(data.settings?.contactEmail ? `mailto:${data.settings.contactEmail}` : '#')}
+									href={String(
+										data.settings?.contactUrl ||
+											(data.settings?.contactEmail ? `mailto:${data.settings.contactEmail}` : '#')
+									)}
 									class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-text-main text-main-bg hover:opacity-90 font-bold text-sm shadow-md transition-all active:scale-98 min-h-[56px] w-full sm:w-auto"
 								>
 									<Calendar strokeWidth={1.75} size={18} />
@@ -602,7 +589,7 @@
 			</div>
 
 			<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				{#each data.projects.slice(0, 3) as project}
+				{#each data.projects.slice(0, 3) as project (project.id)}
 					<article
 						class="p-6 rounded-3xl bg-surface border border-border-subtle specular-highlight hover:border-border-strong hover:shadow-md transition-all flex flex-col justify-between space-y-4"
 					>
@@ -628,7 +615,7 @@
 						</div>
 
 						<div class="pt-3 border-t border-border-subtle flex flex-wrap gap-1.5">
-							{#each (localizedArray(project, 'tags') || project.tags).slice(0, 3) as tag}
+							{#each (localizedArray(project, 'tags') || project.tags).slice(0, 3) as tag (tag)}
 								<span
 									class="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-soft-bg text-text-muted border border-border-subtle"
 								>
@@ -671,7 +658,7 @@
 			</div>
 
 			<div class="grid gap-6 md:grid-cols-2">
-				{#each data.posts.slice(0, 2) as post}
+				{#each data.posts.slice(0, 2) as post (post.slug)}
 					<a
 						href={`/blog/${post.slug}`}
 						class="p-6 rounded-3xl bg-surface border border-border-subtle specular-highlight hover:border-border-strong hover:shadow-md transition-all space-y-3 block group"
@@ -728,7 +715,7 @@
 			</div>
 
 			<div class="grid gap-6 md:grid-cols-2">
-				{#each data.videos.slice(0, 2) as video}
+				{#each data.videos.slice(0, 2) as video (video.id)}
 					<div
 						class="p-4 sm:p-5 rounded-3xl bg-surface border border-border-subtle specular-highlight hover:border-border-strong hover:shadow-md transition-all space-y-3.5"
 					>

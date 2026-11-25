@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { t } from '$lib/i18n/index.js';
-	import { PenSquare, Film, PlusSquare, Settings, MessageSquare, ArrowRight } from 'lucide-svelte';
+	import { PenSquare, Film, PlusSquare, MessageSquare, ArrowRight } from 'lucide-svelte';
 
-	let { user } = $props();
+	let { user: _user } = $props();
 
 	const actions = [
 		{
@@ -63,7 +63,7 @@
 	</div>
 
 	<div class="grid grid-cols-1 gap-2.5">
-		{#each actions as action}
+		{#each actions as action (action.href)}
 			{@const Icon = action.icon}
 			<a
 				href={action.href}

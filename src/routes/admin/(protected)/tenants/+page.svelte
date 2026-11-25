@@ -19,7 +19,6 @@
 		EyeOff,
 		ShieldCheck,
 		Lock,
-		RotateCcw,
 		Info
 	} from 'lucide-svelte';
 	import { t } from '$lib/i18n/index.js';
@@ -434,7 +433,7 @@
 					</div>
 					<input type="hidden" name="homeLayout" value={selectedLayout} />
 					<div class="space-y-1.5">
-						{#each layouts as l}
+						{#each layouts as l (l.id)}
 							<button
 								type="button"
 								onclick={() => (selectedLayout = l.id)}
@@ -465,20 +464,20 @@
 					</div>
 					<input type="hidden" name="themePreset" value={selectedTheme} />
 					<div class="grid grid-cols-2 gap-1.5">
-						{#each themes as t}
+						{#each themes as themeItem (themeItem.id)}
 							<button
 								type="button"
-								onclick={() => (selectedTheme = t.id)}
+								onclick={() => (selectedTheme = themeItem.id)}
 								class="p-2 rounded-xl border text-left text-xs transition-all cursor-pointer flex items-center gap-2 {selectedTheme ===
-								t.id
+								themeItem.id
 									? 'border-primary bg-primary/5 text-text-main font-semibold'
 									: 'border-border-subtle bg-soft-bg/30 text-text-muted hover:border-border-strong'}"
 							>
 								<span
 									class="size-3 rounded-full shrink-0 shadow-2xs"
-									style="background-color: {t.color}"
+									style="background-color: {themeItem.color}"
 								></span>
-								<span class="text-[11px] truncate">{t.label.split(' ')[0]}</span>
+								<span class="text-[11px] truncate">{themeItem.label.split(' ')[0]}</span>
 							</button>
 						{/each}
 					</div>
@@ -570,7 +569,7 @@
 
 		<div class="space-y-3">
 			{#if data?.tenants && data.tenants.length > 0}
-				{#each data.tenants as tenant}
+				{#each data.tenants as tenant (tenant.domain)}
 					<div
 						class="rounded-2xl border border-border-subtle bg-surface p-5 shadow-2xs hover:border-border-strong transition-all"
 					>

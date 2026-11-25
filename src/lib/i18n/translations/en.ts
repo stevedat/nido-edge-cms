@@ -2,12 +2,18 @@ export const en = {
 	nav: {
 		projects: 'Projects',
 		blog: 'Blog',
+		insights: 'Insights',
 		videos: 'Videos',
 		about: 'About',
+		contact: 'Contact',
 		freeSlotCTA: 'Claim $0 Setup',
 		freeSlotCTAMobile: '5 Slots $0',
 		freeSlotTooltip: 'Exclusive offer: 5 personal website setups with $0 hosting in Sep & Oct',
 		langToggle: 'Switch to Vietnamese',
+		viActive: 'Vietnamese currently active',
+		switchToVi: 'Switch to Vietnamese',
+		enActive: 'English currently active',
+		switchToEn: 'Switch to English',
 		mainNavAria: 'Main navigation',
 		navigation: 'Navigation',
 		languageDisplay: 'Display Language',
@@ -87,6 +93,11 @@ export const en = {
 		minutesAgo: '{count}m ago',
 		hoursAgo: '{count}h ago',
 		daysAgo: '{count}d ago',
+		defaultHeroBio:
+			'Designing digital products and engineering software focused on high utility, instant responsiveness, and craft.',
+		defaultMetaDesc:
+			'Explore EdTech & FinTech products, engineering articles, and pragmatic insights.',
+		directConsultation: 'Direct consultation',
 		delete: 'Delete',
 		yesterday: 'Yesterday',
 		actions: 'Actions',
@@ -257,7 +268,7 @@ export const en = {
 			'Engineered an intuitive 6-Jars personal finance platform synchronized seamlessly across iOS, Android, and Web without intrusive ads.',
 		m2026Title: '$0 Running Cost Personal Website Platform',
 		m2026Desc:
-			'Standardized Edge CMS architecture: Tailored for specialists, advisors, physicians, and authors. Apple aesthetics, 100% Git data ownership, and permanent \$0 server hosting.',
+			'Standardized Edge CMS architecture: Tailored for specialists, advisors, physicians, and authors. Apple aesthetics, 100% Git data ownership, and permanent $0 server hosting.',
 		colophonTitle: 'Technical Colophon',
 		colophonDesc: 'The minimalist edge architecture powering this entire web ecosystem.',
 		infraTitle: 'Infrastructure & Platform',
@@ -351,7 +362,8 @@ export const en = {
 		copyCode: 'Copy',
 		copiedCode: 'Copied!',
 		codeError: 'Error',
-		tableOfContents: 'Table of Contents'
+		tableOfContents: 'Table of Contents',
+		notFound: 'Article not found'
 	},
 	comments: {
 		title: 'Comments',
@@ -1028,6 +1040,9 @@ export const en = {
 			createError: 'Could not create post. Error: {message}',
 			unknownError: 'Unknown error',
 			updateError: 'Unable to update post',
+			statusLabel: 'Status',
+			statusPublished: 'Published',
+			statusDraft: 'Draft',
 			title: 'Manage Posts - Admin',
 			contentManagement: 'Content Management',
 			heading: 'Manage Posts',
@@ -1065,7 +1080,9 @@ export const en = {
 					tags: 'Tags',
 					tagsPlaceholder: 'javascript, svelte, tips',
 					thumbnail: 'Thumbnail',
-					uploadImage: 'Upload New Image<br/><span class='
+					uploadImageTitle: 'Upload New Image',
+					uploadImage:
+						'Upload New Image<br/><span class="text-[10px] font-normal text-text-muted">JPG, PNG, WebP</span>'
 				}
 			},
 			new: {
@@ -1103,11 +1120,20 @@ export const en = {
 					tags: 'Tags',
 					tagsPlaceholder: 'javascript, svelte, tips',
 					thumbnail: 'Thumbnail',
-					uploadImage: 'Upload Image<br/><span class='
+					uploadImageTitle: 'Upload Image',
+					uploadImage:
+						'Upload Image<br/><span class="text-[10px] font-normal text-text-muted">JPG, PNG, WebP</span>'
 				}
 			}
 		},
 		tenants: {
+			invalidDomain: 'Please enter a valid domain name (minimum 3 characters, e.g. my-tenant.com)',
+			alreadyExists: 'Tenant "{domain}" already exists on the system!',
+			createSuccessMsg: 'Successfully initialized tenant "{domain}" with complete sample data!',
+			createError: 'Error initializing tenant: {error}',
+			missingDomainReset: 'Missing or invalid domain information to reset password',
+			resetSuccessMsg: 'Successfully reset password for tenant "{domain}"!',
+			resetError: 'Cannot reset password: {error}',
 			layout: {
 				editorial: {
 					desc: 'Article & Project Timeline'
@@ -1290,6 +1316,9 @@ export const en = {
 			'"Make a landing page for a Marketing Agency. Need a list of Services provided, Featured Clients (Logos), and Core Team members (Name, Role)."',
 		startBuilding: 'Start Building',
 		step1: 'Go to the <strong>Admin Area</strong> to secure operations.',
+		step1Prefix: 'Go to the ',
+		step1Highlight: 'Admin Area',
+		step1Suffix: ' to secure operations.',
 		step2: 'Log in with the Administrator password configured in your .env file:',
 		step3:
 			'Paste a Prompt or connect an API Key (Gemini/Claude) for the machine to automatically generate the UI and Admin Page for you.',

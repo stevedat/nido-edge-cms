@@ -33,19 +33,19 @@ export class CloudflareKVAdapter extends StorageAdapter {
 	/**
 	 * @param {string} path
 	 * @param {string} content
-	 * @param {string} [commitMessage]
+	 * @param {string} [_commitMessage]
 	 * @returns {Promise<void>}
 	 */
-	async write(path, content, commitMessage) {
+	async write(path, content, _commitMessage) {
 		await this.kv.put(path, content);
 	}
 
 	/**
 	 * @param {string} path
-	 * @param {string} [commitMessage]
+	 * @param {string} [_commitMessage]
 	 * @returns {Promise<void>}
 	 */
-	async delete(path, commitMessage) {
+	async delete(path, _commitMessage) {
 		await this.kv.delete(path);
 	}
 

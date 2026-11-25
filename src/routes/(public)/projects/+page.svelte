@@ -6,7 +6,7 @@
 		data
 	}: {
 		data: {
-			settings: any;
+			settings: Record<string, unknown>;
 			projects: {
 				id: string;
 				title: string;
@@ -75,7 +75,7 @@
 					{t('projectGallery.colFintech')}
 				</h2>
 				<div class="space-y-32">
-					{#each fintechProjects as project}
+					{#each fintechProjects as project (project.id)}
 						<div class="group relative">
 							<a
 								href={project.link || `#`}
@@ -133,7 +133,7 @@
 					{t('projectGallery.colEdtech')}
 				</h2>
 				<div class="space-y-32">
-					{#each edtechProjects as project}
+					{#each edtechProjects as project (project.id)}
 						<div class="group relative">
 							<a
 								href={project.link || `#`}
@@ -191,7 +191,7 @@
 					{t('projectGallery.colOthers')}
 				</h2>
 				<div class="space-y-32">
-					{#each otherProjects as project}
+					{#each otherProjects as project (project.id)}
 						<div class="group relative">
 							<a
 								href={project.link || `#`}

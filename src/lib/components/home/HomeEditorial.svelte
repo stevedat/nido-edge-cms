@@ -4,30 +4,21 @@
 	import {
 		ArrowUpRight,
 		ArrowRight,
-		Sparkles,
 		BookOpen,
 		Layers,
-		PlayCircle,
 		Clock,
 		Check,
 		ExternalLink
 	} from 'lucide-svelte';
 	import { openFreeSlotModal } from '$lib/stores/freeSlot.js';
-	import {
-		t,
-		getLocale,
-		formatDate,
-		formatReadingTime,
-		localized,
-		localizedArray
-	} from '$lib/i18n/index.js';
+	import { t, formatDate, formatReadingTime, localized, localizedArray } from '$lib/i18n/index.js';
 	import { isMasterDomain } from '$lib/utils/index.js';
 
 	let {
 		data
 	}: {
 		data: {
-			settings: any;
+			settings: Record<string, unknown>;
 			posts: {
 				slug: string;
 				meta: { title: string; date: string; tags: string[]; thumbnail: string };
@@ -115,19 +106,12 @@
 			<h1
 				class="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-text-main tracking-tight leading-[1.08] text-balance break-words"
 			>
-				{getLocale() === 'en' && data.settings?.heroTitle_en
-					? data.settings.heroTitle_en
-					: data.settings?.heroTitle || 'Designer & Builder.'}
+				{localized(data.settings, 'heroTitle') || 'Designer & Builder.'}
 			</h1>
 			<p
 				class="text-base sm:text-xl md:text-2xl text-text-body leading-relaxed font-normal text-balance"
 			>
-				{getLocale() === 'en' && data.settings?.heroBio_en
-					? data.settings.heroBio_en
-					: data.settings?.heroBio ||
-						(getLocale() === 'en'
-							? 'Designing digital products and engineering software focused on high utility, instant responsiveness, and craft.'
-							: 'Thiết kế sản phẩm và kỹ thuật phần mềm tập trung vào tính ứng dụng cao, tốc độ phản hồi tức thì và sự hoàn thiện đến từng chi tiết.')}
+				{localized(data.settings, 'heroBio') || t('common.defaultHeroBio')}
 			</p>
 		</div>
 
@@ -312,7 +296,7 @@
 									{t('projects.coreFeatures')}
 								</p>
 								<ul class="space-y-1.5 text-xs sm:text-sm text-text-body">
-									{#each localizedArray(featuredProject, 'highlights').slice(0, 2) as highlight}
+									{#each localizedArray(featuredProject, 'highlights').slice(0, 2) as highlight (highlight)}
 										<li class="flex items-start gap-2">
 											<Check
 												size={14}
@@ -332,7 +316,7 @@
 					>
 						{#if featuredProject.tags && featuredProject.tags.length > 0}
 							<div class="flex flex-wrap gap-1.5">
-								{#each featuredProject.tags as tag}
+								{#each featuredProject.tags as tag (tag)}
 									<span
 										class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-soft-bg text-text-muted border border-border-subtle"
 									>
@@ -366,7 +350,7 @@
 			<!-- Secondary Project Grid (2 columns) -->
 			{#if otherProjects.length > 0}
 				<div class="grid gap-6 sm:grid-cols-2">
-					{#each otherProjects as project}
+					{#each otherProjects as project (project.id)}
 						<article
 							class="group p-6 sm:p-7 rounded-2xl bg-surface border border-border-subtle specular-highlight hover:border-border-strong hover:shadow-xs transition-all flex flex-col justify-between space-y-4"
 						>
@@ -408,7 +392,7 @@
 							</div>
 
 							<div class="pt-3 border-t border-border-subtle flex flex-wrap gap-1.5">
-								{#each (localizedArray(project, 'tags') || project.tags).slice(0, 3) as tag}
+								{#each (localizedArray(project, 'tags') || project.tags).slice(0, 3) as tag (tag)}
 									<span
 										class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-soft-bg text-text-muted border border-border-subtle"
 									>
@@ -462,7 +446,7 @@
 				<div
 					class="lg:col-span-8 divide-y divide-border-subtle border-t lg:border-t-0 border-border-subtle"
 				>
-					{#each data.posts.slice(0, 4) as post, idx}
+					{#each data.posts.slice(0, 4) as post, idx (post.slug)}
 						<a
 							href={`/blog/${post.slug}`}
 							class="group py-6 first:pt-2 lg:first:pt-0 last:pb-2 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-6 transition-colors block"
@@ -568,7 +552,7 @@
 
 			<!-- Video Cards -->
 			<div class="relative z-10 grid gap-6 md:grid-cols-2">
-				{#each data.videos.slice(0, 2) as video}
+				{#each data.videos.slice(0, 2) as video (video.id)}
 					<div
 						class="p-4 sm:p-5 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-white/20 transition-all space-y-3.5 backdrop-blur-xs"
 					>

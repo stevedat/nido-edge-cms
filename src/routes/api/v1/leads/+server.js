@@ -1,4 +1,5 @@
 // @ts-check
+import { env } from '$env/dynamic/private';
 import { core } from '$lib/server/core.js';
 import { jsonOk, jsonError, corsPreflight } from '$lib/server/api.js';
 import { fromBase64Url } from '$lib/core/index.js';
@@ -93,7 +94,10 @@ export async function POST({ request, getClientAddress }) {
 	}
 
 	// Gate 6: Human timegate (minimum 3 seconds)
-	const bypassTimegate = request.headers.get('x-test-bypass-timegate') === 'true';
+	// Bypass only permitted when explicitly enabled via server-side test env flag
+	const allowTestBypass = env.ALLOW_TEST_TIMEGATE_BYPASS === 'true';
+	const bypassTimegate =
+		allowTestBypass && request.headers.get('x-test-bypass-timegate') === 'true';
 	if (!bypassTimegate && now - tokenTime < MIN_SUBMISSION_TIME_MS) {
 		return jsonError('Action too fast (suspected bot). Please wait at least 3 seconds.', 403);
 	}

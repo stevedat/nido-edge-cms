@@ -3,7 +3,36 @@
 	import { openFreeSlotModal } from '$lib/stores/freeSlot.js';
 	import { t, localized } from '$lib/i18n/index.js';
 
-	let { data }: { data: any } = $props();
+	interface StoryPost {
+		slug: string;
+		meta: { title: string; title_en?: string; tags?: string[] };
+		excerpt?: string;
+		excerpt_en?: string;
+		content?: string;
+		content_en?: string;
+	}
+	interface StoryProject {
+		id: string;
+		title: string;
+		description: string;
+		link?: string;
+		thumbnail?: string;
+		tags?: string[];
+	}
+	interface StorySettings {
+		showBlog?: boolean;
+		showProjects?: boolean;
+		headerCtaAction?: string;
+		headerCtaUrl?: string;
+		githubUrl?: string;
+		contactEmail?: string;
+		linkedinUrl?: string;
+		[key: string]: unknown;
+	}
+	let {
+		data
+	}: { data: { settings: StorySettings; posts?: StoryPost[]; projects?: StoryProject[] } } =
+		$props();
 
 	// Smooth scroll to the next section
 	function scrollToContent() {
@@ -45,7 +74,9 @@
 		<h1
 			class="font-serif text-5xl md:text-7xl lg:text-8xl text-text-main tracking-tight leading-[1.1] max-w-5xl mb-8"
 		>
-			{@html localized(data.settings, 'heroTitle').replace(/\s*·\s*/g, '<br/>')}
+			{#each localized(data.settings, 'heroTitle').split(/\s*·\s*/) as line, idx (idx)}
+				{#if idx > 0}<br />{/if}{line}
+			{/each}
 		</h1>
 		<p class="text-lg text-text-muted max-w-2xl leading-relaxed">
 			{localized(data.settings, 'heroBio')}
@@ -87,7 +118,7 @@
 
 				<!-- Scrolling Right Side (Bento Boxes of Posts) -->
 				<div class="grid grid-cols-1 gap-6">
-					{#each data.posts.slice(0, 3) as post}
+					{#each data.posts.slice(0, 3) as post (post.slug)}
 						<a
 							href="/blog/{post.slug}"
 							class="bg-surface p-10 rounded-[2rem] border border-border-subtle shadow-sm flex flex-col justify-center hover:border-border-strong hover:scale-98 active:scale-95 transition-all group cursor-pointer block"
@@ -104,7 +135,7 @@
 									''}...
 							</p>
 							<div class="mt-6 flex flex-wrap gap-2">
-								{#each (post.meta.tags || []).slice(0, 2) as tag}
+								{#each (post.meta.tags || []).slice(0, 2) as tag (tag)}
 									<span
 										class="text-[10px] font-bold text-text-muted uppercase tracking-wider bg-soft-bg px-2 py-1 rounded-md"
 										>{tag}</span
@@ -134,7 +165,7 @@
 				</div>
 
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-					{#each data.projects.slice(0, 4) as project, i}
+					{#each data.projects.slice(0, 4) as project, i (project.id)}
 						<a
 							href={project.link || `/projects/${project.id}`}
 							target={project.link ? '_blank' : '_self'}
@@ -162,7 +193,7 @@
 								></div>
 							</div>
 							<div class="flex flex-wrap gap-2 mb-3">
-								{#each (localized(project, 'tags') || project.tags || []).slice(0, 3) as tag}
+								{#each (localized(project, 'tags') || project.tags || []).slice(0, 3) as tag (tag)}
 									<span
 										class="text-[10px] font-bold text-text-muted bg-soft-bg px-3 py-1 rounded-full uppercase tracking-widest"
 										>{tag}</span

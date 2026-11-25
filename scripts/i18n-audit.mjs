@@ -34,7 +34,7 @@ function parseTsObjectKeys(filePath) {
 	// Safely evaluate translation dictionary as JS object using Function or JSON-like parse
 	const cleanJs = match[1]
 		.replace(/\/\*[\s\S]*?\*\/|([^:]|^)\/\/.*$/gm, '') // Remove comments
-		.replace(/,\s*([\}\]])/g, '$1'); // Remove trailing commas
+		.replace(/,\s*([}\]])/g, '$1'); // Remove trailing commas
 
 	try {
 		// Use Function to evaluate JS object literal
@@ -123,11 +123,12 @@ const inlineTernaryOccurrences = [];
 const usedTranslationKeys = new Set();
 
 for (const file of allFiles) {
-	// Skip translation files themselves & seeds/tests & utils slug map
+	// Skip translation dictionaries & non-UI files (e.g. spam keyword heuristics, i18n helper)
 	if (
 		file.includes('i18n/translations/vi.ts') ||
 		file.includes('i18n/translations/en.ts') ||
-		file.includes('src/lib/utils.js')
+		file.includes('src/lib/server/antispam.js') ||
+		file.includes('src/lib/i18n/index.ts')
 	)
 		continue;
 
@@ -135,8 +136,8 @@ for (const file of allFiles) {
 	const content = fs.readFileSync(file, 'utf8');
 	const lines = content.split('\n');
 
-	// Check used t('...') calls
-	const tMatches = content.matchAll(/t\(\s*['"]([a-zA-Z0-9_.]+)['"]/g);
+	// Check used t('...') and serverT('...') calls
+	const tMatches = content.matchAll(/(?:serverT|t)\(\s*['"]([a-zA-Z0-9_.]+)['"]/g);
 	for (const m of tMatches) {
 		usedTranslationKeys.add(m[1]);
 	}
@@ -229,25 +230,26 @@ sortedFiles
 
 // 5. Estimated Overall Coverage Score
 console.log('\n--- [4] OVERALL i18n COVERAGE SCORECARD ---');
-const storefrontScore = Math.max(0, Math.round(100 - (issues.storefront.length / 150) * 100));
-const adminScore = issues.admin.length > 50 ? 0 : 50; // Admin has virtually zero i18n
-const apiScore = issues.servicesApi.length > 20 ? 0 : 40;
+const storefrontScore = Math.max(0, Math.round(100 - (issues.storefront.length / 50) * 100));
+const adminScore = Math.max(0, Math.round(100 - (issues.admin.length / 50) * 100));
+const apiScore = Math.max(0, Math.round(100 - (issues.servicesApi.length / 20) * 100));
 const overallScore = Math.round(storefrontScore * 0.5 + adminScore * 0.35 + apiScore * 0.15);
 
 console.log(`📊 Storefront (Public-facing):  ~${storefrontScore}% Covered`);
-console.log(
-	`📊 Admin Portal (/admin/*):     ~${adminScore}% Covered (Completely Hardcoded in Vietnamese)`
-);
-console.log(
-	`📊 API & System Services:       ~${apiScore}% Covered (Raw Vietnamese error/success strings)`
-);
+console.log(`📊 Admin Portal (/admin/*):     ~${adminScore}% Covered`);
+console.log(`📊 API & System Services:       ~${apiScore}% Covered`);
 console.log(`------------------------------------------------------`);
-console.log(`🎯 TOTAL SYSTEM i18n COVERAGE:  ~${overallScore}% (NOT 100% COVERED)\n`);
+const coverageNote = overallScore === 100 ? '100% COVERED ✅' : 'NOT 100% COVERED';
+console.log(`🎯 TOTAL SYSTEM i18n COVERAGE:  ~${overallScore}% (${coverageNote})\n`);
 
 const isStrict = process.argv.includes('--strict');
 if (
 	isStrict &&
-	(issues.admin.length > 0 || issues.storefront.length > 0 || missingInEn.length > 0)
+	(issues.admin.length > 0 ||
+		issues.storefront.length > 0 ||
+		issues.servicesApi.length > 0 ||
+		missingInEn.length > 0 ||
+		missingInVi.length > 0)
 ) {
 	console.error('❌ Strict check failed: Found unlocalized strings or missing translation keys.');
 	process.exit(1);

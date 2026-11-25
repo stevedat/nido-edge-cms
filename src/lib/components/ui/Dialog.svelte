@@ -77,7 +77,6 @@
 		class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6"
 	>
 		<!-- Light-dismiss Backdrop -->
-		<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
 		<div
 			class="fixed inset-0 bg-overlay backdrop-blur-xs transition-opacity duration-200 cursor-pointer"
 			onclick={handleClose}

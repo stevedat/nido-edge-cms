@@ -1,18 +1,26 @@
 import { error } from '@sveltejs/kit';
 import { marked } from 'marked';
-import { getPost, getPostSummaries } from '$lib/server/content.js';
-import { getPublicComments } from '$lib/server/content.js';
+import { getPost, getPostSummaries, getPublicComments } from '$lib/server/content.js';
 import { createAntiSpamChallenge } from '$lib/server/antispam.js';
+import { sanitizeHtml } from '$lib/utils/sanitize.js';
+import { serverT } from '$lib/i18n/index.js';
 
 export const load = async ({ params, locals }) => {
 	const domain = locals.domain || 'default';
-	const post = await getPost(domain, params.slug);
+	// Anonymous visitors can only view PUBLISHED articles; authenticated admins may preview drafts
+	const publishedOnly = !locals.isAuthenticated;
+	const post = await getPost(domain, params.slug, publishedOnly);
 	if (!post) {
-		throw error(404, locals.locale === 'en' ? 'Article not found' : 'Bài viết không tồn tại');
+		throw error(
+			404,
+			serverT('blog.notFound', locals.locale, { defaultValue: 'Article not found' })
+		);
 	}
 
-	const html = marked.parse(post.content);
-	const html_en = post.content_en ? marked.parse(post.content_en) : null;
+	const rawHtml = await marked.parse(post.content || '');
+	const html = sanitizeHtml(typeof rawHtml === 'string' ? rawHtml : '');
+	const rawHtmlEn = post.content_en ? await marked.parse(post.content_en) : null;
+	const html_en = rawHtmlEn ? sanitizeHtml(typeof rawHtmlEn === 'string' ? rawHtmlEn : '') : null;
 
 	// Fetch related posts, public comments, and anti-spam challenge in parallel
 	const [allSummaries, comments, antiSpamChallenge] = await Promise.all([
@@ -28,6 +36,11 @@ export const load = async ({ params, locals }) => {
 	return {
 		post: {
 			slug: post.slug,
+			title: post.title || post.meta?.title || '',
+			title_en: post.meta?.title_en || '',
+			excerpt: post.excerpt || '',
+			excerpt_en: post.excerpt_en || '',
+			thumbnail: post.thumbnail || post.meta?.thumbnail || '',
 			meta: post.meta,
 			html,
 			html_en,

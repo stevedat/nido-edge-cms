@@ -138,7 +138,7 @@
 		<input type="hidden" name="themePreset" value={selectedTheme} />
 
 		<div class="grid gap-4 sm:grid-cols-2">
-			{#each themes as theme}
+			{#each themes as theme (theme.id)}
 				<button
 					type="button"
 					onclick={() => (selectedTheme = theme.id)}
@@ -161,7 +161,7 @@
 								<span
 									class="size-5 rounded-full bg-primary text-white flex items-center justify-center shadow-xs"
 								>
-									<Check size={13} strokeWidth={3} />
+									<Check size={13} strokeWidth={2.25} />
 								</span>
 							{/if}
 						</div>
@@ -223,7 +223,7 @@
 		<input type="hidden" name="homeLayout" value={selectedLayout} />
 
 		<div class="grid gap-4 sm:grid-cols-3">
-			{#each layouts as layout}
+			{#each layouts as layout (layout.id)}
 				<button
 					type="button"
 					onclick={() => (selectedLayout = layout.id)}
@@ -243,7 +243,7 @@
 								<span
 									class="size-5 rounded-full bg-primary text-white flex items-center justify-center shadow-xs"
 								>
-									<Check size={13} strokeWidth={3} />
+									<Check size={13} strokeWidth={2.25} />
 								</span>
 							{/if}
 						</div>

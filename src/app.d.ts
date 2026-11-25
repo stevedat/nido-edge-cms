@@ -12,20 +12,20 @@ declare global {
 				avatar: string;
 				isActive: boolean;
 				branch?: string;
+				tenant?: string;
 			};
 			isAuthenticated: boolean;
 			domain?: string;
 			locale?: 'vi' | 'en';
-			settings?: any;
+			settings?: Record<string, unknown> | null;
 		}
 		interface PageData {
 			domain?: string;
-			settings?: any;
+			settings?: Record<string, unknown>;
 			isAuthenticated?: boolean;
 			locale?: 'vi' | 'en';
-			[key: string]: any;
+			[key: string]: unknown;
 		}
-		// interface PageState {}
 		// interface PageState {}
 		// interface Platform {}
 	}

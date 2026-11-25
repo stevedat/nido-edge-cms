@@ -1,14 +1,14 @@
 import { fail } from '@sveltejs/kit';
-import { getSettings, updateSettings } from '$lib/server/content.js';
+import { getSettings, updateSettings, sanitizePublicSettings } from '$lib/server/content.js';
 import { hashPassword, verifyPassword } from '$lib/server/auth.js';
+import { constantTimeEqual } from '$lib/core/index.js';
 import { env } from '$env/dynamic/private';
 
 export const load = async ({ locals }) => {
 	const settings = await getSettings(locals.domain);
-	const { adminPasswordHash, ...safeSettings } = settings || {};
 	return {
-		settings: safeSettings,
-		hasCustomPassword: !!adminPasswordHash
+		settings: sanitizePublicSettings(settings),
+		hasCustomPassword: Boolean(settings?.adminPasswordHash)
 	};
 };
 
@@ -117,13 +117,11 @@ export const actions = {
 
 			let isCurrentValid = false;
 
-			// Check master override
-			if (adminPassword && currentPassword === adminPassword) {
+			// Check master override using constant-time comparison
+			if (adminPassword && constantTimeEqual(currentPassword, adminPassword)) {
 				isCurrentValid = true;
 			} else if (settings?.adminPasswordHash) {
 				isCurrentValid = await verifyPassword(currentPassword, settings.adminPasswordHash);
-			} else if (!settings?.adminPasswordHash && adminPassword) {
-				isCurrentValid = currentPassword === adminPassword;
 			}
 
 			if (!isCurrentValid) {

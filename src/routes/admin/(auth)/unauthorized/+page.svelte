@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ShieldAlert, ArrowLeft, LogOut } from 'lucide-svelte';
+	import { ShieldAlert } from 'lucide-svelte';
 	import { t } from '$lib/i18n/index.js';
 </script>
 

@@ -209,7 +209,7 @@ export async function verifyCommentSubmission({
 		};
 	}
 
-	const isValid = await core.crypto.verifyPoW(token, nonce, slug, { minSubmissionTimeMs: 3000 });
+	const isValid = await core.crypto.verifyPoW(token, nonce, slug, { minTimeMs: 3000 });
 	if (!isValid) {
 		return {
 			isValid: false,

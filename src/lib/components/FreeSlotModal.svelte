@@ -91,9 +91,9 @@
 			}
 
 			isSuccess = true;
-		} catch (err: any) {
+		} catch (err: unknown) {
 			console.error('Free slot registration error:', err);
-			submitError = err.message || t('freeSlotModal.submitErrorGeneral');
+			submitError = err instanceof Error ? err.message : t('freeSlotModal.submitErrorGeneral');
 		} finally {
 			isSubmitting = false;
 		}
@@ -233,7 +233,7 @@
 
 				<!-- Quick-Select Chips -->
 				<div class="flex flex-wrap gap-2 pt-1">
-					{#each quickFieldOptions as opt}
+					{#each quickFieldOptions as opt (opt.label)}
 						<button
 							type="button"
 							onclick={() => handleQuickSelectField(opt.label)}

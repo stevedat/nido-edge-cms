@@ -10,17 +10,24 @@
 		Download,
 		Search,
 		Clock,
-		Filter,
 		Copy,
 		Check,
-		Trash2,
-		ExternalLink,
-		Sparkles,
-		Tag,
-		UserCheck,
-		AlertCircle
+		Trash2
 	} from 'lucide-svelte';
 	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
+
+	interface LeadItem {
+		id: string;
+		phone: string;
+		email?: string;
+		name?: string;
+		field?: string;
+		note?: string;
+		adminNote?: string;
+		source?: string;
+		status?: string;
+		createdAt: string;
+	}
 
 	let { data, form } = $props();
 
@@ -43,14 +50,18 @@
 	// Stats metrics
 	let totalLeads = $derived(data.leads.length);
 	let newLeadsCount = $derived(
-		data.leads.filter((l: any) => !l.status || l.status === 'NEW').length
+		data.leads.filter((l: LeadItem) => !l.status || l.status === 'NEW').length
 	);
-	let contactedCount = $derived(data.leads.filter((l: any) => l.status === 'CONTACTED').length);
-	let confirmedCount = $derived(data.leads.filter((l: any) => l.status === 'CONFIRMED').length);
+	let contactedCount = $derived(
+		data.leads.filter((l: LeadItem) => l.status === 'CONTACTED').length
+	);
+	let confirmedCount = $derived(
+		data.leads.filter((l: LeadItem) => l.status === 'CONFIRMED').length
+	);
 
 	// Filtered leads
 	let filteredLeads = $derived(
-		data.leads.filter((lead: any) => {
+		data.leads.filter((lead: LeadItem) => {
 			const leadStatus = lead.status || 'NEW';
 			if (statusFilter !== 'ALL' && leadStatus !== statusFilter) {
 				return false;
@@ -109,7 +120,7 @@
 			'Source'
 		];
 
-		const rows = data.leads.map((l: any) => [
+		const rows = data.leads.map((l: LeadItem) => [
 			`"${l.id}"`,
 			`"${formatDateTime(l.createdAt)}"`,
 			`"${(l.name || '').replace(/"/g, '""')}"`,

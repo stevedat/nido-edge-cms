@@ -274,8 +274,8 @@
 			} else {
 				successMessage = data.message || t('comments.successMsg');
 			}
-		} catch (err: any) {
-			errorMessage = err.message || t('common.error');
+		} catch (err: unknown) {
+			errorMessage = err instanceof Error ? err.message : t('common.error');
 		} finally {
 			isSubmitting = false;
 		}
@@ -336,8 +336,8 @@
 				cancelReply();
 				refreshChallenge();
 			}
-		} catch (err: any) {
-			replyError = err.message || t('comments.errorReplyGeneric');
+		} catch (err: unknown) {
+			replyError = err instanceof Error ? err.message : t('comments.errorReplyGeneric');
 		} finally {
 			isSubmittingReply = false;
 		}

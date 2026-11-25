@@ -131,8 +131,6 @@ async function auditFile(filePath) {
 
 						if (shouldFix) {
 							const defaultStroke = icon === 'Check' ? 'strokeWidth={2.25}' : 'strokeWidth={1.75}';
-							// Insert strokeWidth right after <IconName
-							const replacement = `<${icon} ${defaultStroke}${attrs}>`;
 							// Only replace if matched self-closing or open tag
 							if (match[0].endsWith('/>')) {
 								line = line.replace(match[0], `<${icon} ${defaultStroke}${attrs}/>`);

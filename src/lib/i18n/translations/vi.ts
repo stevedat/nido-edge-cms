@@ -2,12 +2,18 @@ export const vi = {
 	nav: {
 		projects: 'Dự án',
 		blog: 'Blog',
+		insights: 'Chia sẻ',
 		videos: 'Videos',
 		about: 'Về tôi',
+		contact: 'Liên hệ',
 		freeSlotCTA: 'Nhận miễn phí',
 		freeSlotCTAMobile: 'Miễn phí',
 		freeSlotTooltip: 'Ưu đãi 5 suất website cá nhân chi phí $0 tháng 9 & 10',
 		langToggle: 'Đổi sang English',
+		viActive: 'Đang dùng Tiếng Việt',
+		switchToVi: 'Chuyển sang Tiếng Việt',
+		enActive: 'Đang dùng Tiếng Anh',
+		switchToEn: 'Chuyển sang Tiếng Anh',
 		mainNavAria: 'Điều hướng chính',
 		navigation: 'Điều hướng',
 		languageDisplay: 'Ngôn ngữ hiển thị',
@@ -88,6 +94,11 @@ export const vi = {
 		hoursAgo: '{count} giờ trước',
 		daysAgo: '{count} ngày trước',
 		yesterday: 'Hôm qua',
+		defaultHeroBio:
+			'Thiết kế sản phẩm và kỹ thuật phần mềm tập trung vào tính ứng dụng cao, tốc độ phản hồi tức thì và sự hoàn thiện đến từng chi tiết.',
+		defaultMetaDesc:
+			'Khám phá các sản phẩm EdTech, FinTech, bài viết chuyên sâu và video chia sẻ kinh nghiệm thực tế.',
+		directConsultation: 'Liên hệ tư vấn trực tiếp',
 		delete: 'Xóa',
 		actions: 'Thao tác',
 		edit: 'Chỉnh sửa',
@@ -259,7 +270,7 @@ export const vi = {
 			'Mở rộng hệ sinh thái với các module quản lý dự án, blog đa ngôn ngữ và hệ thống multi-tenant cho phép triển khai đồng thời nhiều website từ một mã nguồn duy nhất.',
 		m2026Title: 'Nền tảng Website Cá Nhân $0 Chi Phí Vận Hành',
 		m2026Desc:
-			'Chuẩn hóa kiến trúc Edge CMS: Tối ưu cho chuyên gia, cố vấn, bác sĩ và nhà sáng tạo. Chuẩn mực thẩm mỹ Apple, tự chủ dữ liệu 100% trên Git và duy trì trọn đời với \$0 máy chủ.',
+			'Chuẩn hóa kiến trúc Edge CMS: Tối ưu cho chuyên gia, cố vấn, bác sĩ và nhà sáng tạo. Chuẩn mực thẩm mỹ Apple, tự chủ dữ liệu 100% trên Git và duy trì trọn đời với $0 máy chủ.',
 		colophonTitle: 'Hậu trường Kỹ thuật (Colophon)',
 		colophonDesc: 'Kiến trúc tối giản đứng sau toàn bộ hệ sinh thái của trang web này.',
 		infraTitle: 'Hạ tầng & Nền tảng',
@@ -352,7 +363,8 @@ export const vi = {
 		copyCode: 'Sao chép',
 		copiedCode: 'Đã chép!',
 		codeError: 'Lỗi',
-		tableOfContents: 'Mục lục bài viết'
+		tableOfContents: 'Mục lục bài viết',
+		notFound: 'Bài viết không tồn tại'
 	},
 	comments: {
 		title: 'Bình luận',
@@ -1025,6 +1037,9 @@ export const vi = {
 			createError: 'Không thể tạo bài viết. Lỗi: {message}',
 			unknownError: 'Lỗi không xác định',
 			updateError: 'Không thể cập nhật bài viết',
+			statusLabel: 'Trạng thái',
+			statusPublished: 'Đã xuất bản',
+			statusDraft: 'Bản nháp',
 			title: 'Quản lý Bài viết - Admin',
 			contentManagement: 'Quản lý Nội dung',
 			heading: 'Quản lý Bài viết',
@@ -1062,6 +1077,7 @@ export const vi = {
 					tags: 'Thẻ (Tags)',
 					tagsPlaceholder: 'javascript, svelte, tips',
 					thumbnail: 'Ảnh đại diện',
+					uploadImageTitle: 'Tải ảnh mới lên',
 					uploadImage:
 						'Tải ảnh mới lên<br/><span class="text-[10px] font-normal text-text-muted">JPG, PNG, WebP</span>'
 				}
@@ -1101,12 +1117,20 @@ export const vi = {
 					tags: 'Thẻ (Tags)',
 					tagsPlaceholder: 'javascript, svelte, tips',
 					thumbnail: 'Ảnh đại diện',
+					uploadImageTitle: 'Tải ảnh lên',
 					uploadImage:
 						'Tải ảnh lên<br/><span class="text-[10px] font-normal text-text-muted">JPG, PNG, WebP</span>'
 				}
 			}
 		},
 		tenants: {
+			invalidDomain: 'Vui lòng nhập tên miền hợp lệ (tối thiểu 3 ký tự, ví dụ: my-tenant.com)',
+			alreadyExists: 'Tenant "{domain}" đã tồn tại trên hệ thống!',
+			createSuccessMsg: 'Đã khởi tạo thành công tenant "{domain}" kèm dữ liệu mẫu!',
+			createError: 'Lỗi khi khởi tạo tenant: {error}',
+			missingDomainReset: 'Thiếu hoặc sai định dạng tên miền cần đặt lại mật khẩu',
+			resetSuccessMsg: 'Đã đặt lại mật khẩu thành công cho tenant "{domain}"!',
+			resetError: 'Không thể đặt lại mật khẩu: {error}',
 			layout: {
 				editorial: {
 					desc: 'Bố cục Dòng thời gian bài viết & dự án'
@@ -1289,6 +1313,9 @@ export const vi = {
 			'"Làm landing page cho Agency Marketing. Yêu cầu có các Dịch Vụ cung cấp, Khách hàng tiêu biểu (Logo đối tác), và Đội ngũ nhân sự chính (Tên, Chức vụ)."',
 		startBuilding: 'Bắt Đầu Tạo Web',
 		step1: 'Truy cập vào <strong>Khu vực Quản trị (Admin)</strong> để bảo mật thao tác.',
+		step1Prefix: 'Truy cập vào ',
+		step1Highlight: 'Khu vực Quản trị (Admin)',
+		step1Suffix: ' để bảo mật thao tác.',
 		step2: 'Đăng nhập với mật khẩu Quản trị viên cấu hình trong tệp .env:',
 		step3:
 			'Dán Prompt hoặc kết nối API Key (Gemini/Claude) để cỗ máy tự động sinh Giao diện và Trang Admin cho bạn.',

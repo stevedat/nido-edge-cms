@@ -30,12 +30,15 @@ export function serverT(
 	const fallbackDict = translations[DEFAULT_LOCALE];
 
 	const keys = key.split('.');
-	let value: any = dict;
-	let fallbackValue: any = fallbackDict;
+	let value: unknown = dict;
+	let fallbackValue: unknown = fallbackDict;
 
 	for (const k of keys) {
-		value = value?.[k];
-		fallbackValue = fallbackValue?.[k];
+		value = value && typeof value === 'object' ? (value as Record<string, unknown>)[k] : undefined;
+		fallbackValue =
+			fallbackValue && typeof fallbackValue === 'object'
+				? (fallbackValue as Record<string, unknown>)[k]
+				: undefined;
 	}
 
 	let result: string;
@@ -68,12 +71,15 @@ export function t(key: string, params?: Record<string, string | number>): string
 	const fallbackDict = translations[DEFAULT_LOCALE];
 
 	const keys = key.split('.');
-	let value: any = dict;
-	let fallbackValue: any = fallbackDict;
+	let value: unknown = dict;
+	let fallbackValue: unknown = fallbackDict;
 
 	for (const k of keys) {
-		value = value?.[k];
-		fallbackValue = fallbackValue?.[k];
+		value = value && typeof value === 'object' ? (value as Record<string, unknown>)[k] : undefined;
+		fallbackValue =
+			fallbackValue && typeof fallbackValue === 'object'
+				? (fallbackValue as Record<string, unknown>)[k]
+				: undefined;
 	}
 
 	let result: string;
@@ -122,34 +128,33 @@ export function formatDate(
  * Calculate localized reading time string
  */
 export function formatReadingTime(minutes: number): string {
-	if (getLocale() === 'vi') {
-		return `${minutes} phút đọc`;
-	}
-	return `${minutes} min read`;
+	return `${minutes} ${t('common.minutesRead')}`;
 }
 
 /**
  * Helper to get localized field from an object (e.g. tagline_en, description_en)
  */
-export function localized(item: any, field: string): string {
-	if (!item) return '';
-	if (getLocale() === 'en' && item[`${field}_en`]) {
-		return item[`${field}_en`];
+export function localized(item: unknown, field: string): string {
+	if (!item || typeof item !== 'object') return '';
+	const record = item as Record<string, unknown>;
+	const enVal = record[`${field}_en`];
+	if (getLocale() === 'en' && typeof enVal === 'string' && enVal) {
+		return enVal;
 	}
-	return item[field] || '';
+	const val = record[field];
+	return typeof val === 'string' ? val : '';
 }
 
 /**
  * Helper to get localized array from an object (e.g. highlights_en)
  */
-export function localizedArray(item: any, field: string): string[] {
-	if (!item) return [];
-	if (
-		getLocale() === 'en' &&
-		Array.isArray(item[`${field}_en`]) &&
-		item[`${field}_en`].length > 0
-	) {
-		return item[`${field}_en`];
+export function localizedArray(item: unknown, field: string): string[] {
+	if (!item || typeof item !== 'object') return [];
+	const record = item as Record<string, unknown>;
+	const enVal = record[`${field}_en`];
+	if (getLocale() === 'en' && Array.isArray(enVal) && enVal.length > 0) {
+		return enVal as string[];
 	}
-	return item[field] || [];
+	const val = record[field];
+	return Array.isArray(val) ? (val as string[]) : [];
 }

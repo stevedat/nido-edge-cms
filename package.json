@@ -18,6 +18,7 @@
 		"i18n:check": "node scripts/i18n-audit.mjs --strict",
 		"mobile:audit": "node scripts/mobile-ux-audit.mjs",
 		"mobile:check": "node scripts/mobile-ux-audit.mjs --strict",
+		"test:unit": "node --test tests/unit/*.test.mjs",
 		"test:e2e": "e2e run",
 		"test:e2e:ui": "e2e run --ui"
 	},

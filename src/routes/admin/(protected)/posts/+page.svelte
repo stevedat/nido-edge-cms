@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { PenLine, Trash2, Plus, FileText, Loader2 } from 'lucide-svelte';
+	import { PenLine, Trash2, Plus, FileText } from 'lucide-svelte';
 	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
 	import { t } from '$lib/i18n/index.js';
 
@@ -93,7 +93,7 @@
 					</tr>
 				</thead>
 				<tbody class="divide-y divide-border-subtle">
-					{#each data.posts as post}
+					{#each data.posts as post (post.slug)}
 						<tr class="hover:bg-soft-bg/40 transition-colors group">
 							<td class="px-6 py-4">
 								<p
@@ -112,11 +112,13 @@
 							</td>
 							<td class="px-6 py-4">
 								<div class="flex flex-wrap gap-1.5">
-									{#each post.meta.tags || [] as tag}
+									{#each post.meta.tags || [] as tag, tagIdx (tagIdx)}
 										<span
 											class="inline-flex px-2 py-0.5 rounded-md bg-soft-bg text-text-muted text-[11px] font-semibold border border-border-subtle"
 										>
-											#{typeof (tag as any) === 'object' ? (tag as any)?.name || tag : tag}
+											#{typeof tag === 'object' && tag !== null
+												? ((tag as { name?: string }).name ?? String(tag))
+												: tag}
 										</span>
 									{/each}
 								</div>

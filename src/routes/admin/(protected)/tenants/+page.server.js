@@ -1,6 +1,8 @@
 import { fail } from '@sveltejs/kit';
 import { core } from '$lib/server/core.js';
+import { sanitizeTenantDomain } from '$lib/core/index.js';
 import { hashPassword, generateRandomPassword } from '$lib/server/auth.js';
+import { serverT } from '$lib/i18n/index.js';
 
 export const load = async () => {
 	/** @type {Array<any>} */
@@ -29,7 +31,9 @@ export const load = async () => {
 			try {
 				const settingsRaw = await core.storage.read(`src/content/${domain}/settings.json`);
 				if (settingsRaw) settings = JSON.parse(settingsRaw);
-			} catch (_) {}
+			} catch {
+				// Ignore missing/invalid settings file
+			}
 
 			try {
 				const postsRaw = await core.storage.read(`src/content/${domain}/posts.json`);
@@ -37,7 +41,9 @@ export const load = async () => {
 					const posts = JSON.parse(postsRaw);
 					postsCount = Array.isArray(posts) ? posts.length : 0;
 				}
-			} catch (_) {}
+			} catch {
+				// Ignore missing/invalid posts file
+			}
 
 			try {
 				const projectsRaw = await core.storage.read(`src/content/${domain}/projects.json`);
@@ -45,7 +51,9 @@ export const load = async () => {
 					const projects = JSON.parse(projectsRaw);
 					projectsCount = Array.isArray(projects) ? projects.length : 0;
 				}
-			} catch (_) {}
+			} catch {
+				// Ignore missing/invalid projects file
+			}
 
 			try {
 				const videosRaw = await core.storage.read(`src/content/${domain}/videos.json`);
@@ -53,7 +61,9 @@ export const load = async () => {
 					const videos = JSON.parse(videosRaw);
 					videosCount = Array.isArray(videos) ? videos.length : 0;
 				}
-			} catch (_) {}
+			} catch {
+				// Ignore missing/invalid videos file
+			}
 
 			try {
 				const leadsRaw = await core.storage.read(`src/content/${domain}/leads.json`);
@@ -61,7 +71,9 @@ export const load = async () => {
 					const leads = JSON.parse(leadsRaw);
 					leadsCount = Array.isArray(leads) ? leads.length : 0;
 				}
-			} catch (_) {}
+			} catch {
+				// Ignore missing/invalid leads file
+			}
 
 			tenants.push({
 				domain,
@@ -95,27 +107,34 @@ export const load = async () => {
 };
 
 export const actions = {
-	createTenant: async ({ request }) => {
+	createTenant: async ({ request, locals }) => {
 		const form = await request.formData();
 		const rawDomain = form.get('domain')?.toString() || '';
 
-		// Clean and normalize domain name
-		const domain = rawDomain
+		const stripped = rawDomain
 			.trim()
 			.toLowerCase()
 			.replace(/^https?:\/\//, '')
-			.replace(/\/.*$/, '')
-			.replace(/[^a-z0-9.-]/g, '');
+			.replace(/\/.*$/, '');
+		const domain = sanitizeTenantDomain(stripped);
 
-		if (!domain || domain.length < 3) {
+		if (domain === 'default' || domain.length < 3 || stripped.includes('..')) {
 			return fail(400, {
-				message: 'Please enter a valid domain name (minimum 3 characters, e.g. my-tenant.com)'
+				message: serverT('admin.tenants.invalidDomain', locals.locale, {
+					defaultValue:
+						'Please enter a valid domain name (minimum 3 characters, e.g. my-tenant.com)'
+				})
 			});
 		}
 
 		const settingsCheck = await core.storage.read(`src/content/${domain}/settings.json`);
 		if (settingsCheck !== null) {
-			return fail(400, { message: `Tenant "${domain}" already exists on the system!` });
+			return fail(400, {
+				message: serverT('admin.tenants.alreadyExists', locals.locale, {
+					domain,
+					defaultValue: `Tenant "${domain}" already exists on the system!`
+				})
+			});
 		}
 
 		const rawTheme = form.get('themePreset')?.toString() || 'apple';
@@ -220,55 +239,76 @@ export const actions = {
 					`feat(tenant): initialize space ${domain} [skip ci]`
 				);
 			}
+			core.content.invalidateCache(domain);
 
 			return {
 				success: true,
-				message: `Successfully initialized tenant "${domain}" with complete sample data!`,
+				message: serverT('admin.tenants.createSuccessMsg', locals.locale, {
+					domain,
+					defaultValue: `Successfully initialized tenant "${domain}" with complete sample data!`
+				}),
 				newDomain: domain,
 				initialPassword: plainPassword
 			};
 		} catch (error) {
 			console.error('Error creating tenant:', error);
-			// @ts-ignore
-			return fail(500, { message: 'Error initializing tenant: ' + (error?.message || error) });
+			return fail(500, {
+				message: serverT('admin.tenants.createError', locals.locale, {
+					error: error instanceof Error ? error.message : String(error),
+					defaultValue: 'Error initializing tenant'
+				})
+			});
 		}
 	},
 
-	resetPassword: async ({ request }) => {
+	resetPassword: async ({ request, locals }) => {
 		const form = await request.formData();
-		const domain = form.get('domain')?.toString().trim();
-		if (!domain) return fail(400, { message: 'Missing domain information to reset password' });
+		const rawDomain = form.get('domain')?.toString().trim() || '';
+		if (
+			!rawDomain ||
+			rawDomain.includes('..') ||
+			rawDomain.includes('/') ||
+			rawDomain.includes('\\')
+		) {
+			return fail(400, {
+				message: serverT('admin.tenants.missingDomainReset', locals.locale, {
+					defaultValue: 'Missing or invalid domain information to reset password'
+				})
+			});
+		}
+		const domain = rawDomain === 'default' ? 'default' : sanitizeTenantDomain(rawDomain);
+		if (rawDomain !== 'default' && domain === 'default') {
+			return fail(400, {
+				message: serverT('admin.tenants.missingDomainReset', locals.locale, {
+					defaultValue: 'Missing or invalid domain information to reset password'
+				})
+			});
+		}
 
 		const customPassword = form.get('newPassword')?.toString().trim();
 		const newPlainPassword = customPassword || generateRandomPassword(10);
 		const newHash = await hashPassword(newPlainPassword);
 
 		try {
-			let settings = {};
-			try {
-				const raw = await core.storage.read(`src/content/${domain}/settings.json`);
-				if (raw) settings = JSON.parse(raw);
-			} catch (_) {}
-
-			settings.adminPasswordHash = newHash;
-			const updatedContent = JSON.stringify(settings, null, 2);
-
-			await core.storage.write(
-				`src/content/${domain}/settings.json`,
-				updatedContent,
-				`chore(tenant): reset password for ${domain} [skip ci]`
-			);
+			await core.content.saveSettings(domain, { adminPasswordHash: newHash });
 
 			return {
 				resetSuccess: true,
 				resetDomain: domain,
 				resetPassword: newPlainPassword,
-				message: `Successfully reset password for tenant "${domain}"!`
+				message: serverT('admin.tenants.resetSuccessMsg', locals.locale, {
+					domain,
+					defaultValue: `Successfully reset password for tenant "${domain}"!`
+				})
 			};
 		} catch (error) {
 			console.error('Error resetting tenant password:', error);
-			// @ts-ignore
-			return fail(500, { message: 'Cannot reset password: ' + (error?.message || error) });
+			return fail(500, {
+				message: serverT('admin.tenants.resetError', locals.locale, {
+					error: error instanceof Error ? error.message : String(error),
+					defaultValue: 'Cannot reset password'
+				})
+			});
 		}
 	}
 };

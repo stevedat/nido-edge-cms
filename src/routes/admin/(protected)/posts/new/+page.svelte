@@ -17,6 +17,7 @@
 
 	let title = $state('');
 	let slug = $state('');
+	let status = $state('PUBLISHED');
 	let content = $state('');
 	let isSubmitting = $state(false);
 
@@ -197,10 +198,25 @@ ${t('admin.posts.new.template.conclusionText', { defaultValue: 'Summarize the ma
 				>
 					{t('admin.posts.new.sidebar.publish', { defaultValue: 'Publish' })}
 				</h3>
+				<label class="block">
+					<span class="block text-xs font-semibold text-text-muted mb-1.5">
+						{t('admin.posts.statusLabel', { defaultValue: 'Status' })}
+					</span>
+					<select
+						name="status"
+						bind:value={status}
+						class="w-full min-h-[44px] rounded-xl bg-soft-bg border border-border-subtle px-3.5 py-2.5 text-text-main focus:outline-none focus:border-primary text-xs sm:text-sm font-medium"
+					>
+						<option value="PUBLISHED"
+							>{t('admin.posts.statusPublished', { defaultValue: 'Published' })}</option
+						>
+						<option value="DRAFT">{t('admin.posts.statusDraft', { defaultValue: 'Draft' })}</option>
+					</select>
+				</label>
 				<button
 					type="submit"
 					disabled={isSubmitting || !title || !content}
-					class="w-full flex items-center justify-center gap-2 rounded-2xl bg-primary hover:bg-primary-light disabled:opacity-50 disabled:cursor-not-allowed py-3 px-4 text-xs sm:text-sm font-bold text-white transition-all shadow-sm cursor-pointer"
+					class="w-full min-h-[44px] flex items-center justify-center gap-2 rounded-2xl bg-primary hover:bg-primary-light disabled:opacity-50 disabled:cursor-not-allowed py-3 px-4 text-xs sm:text-sm font-bold text-white transition-all active:scale-98 shadow-sm cursor-pointer"
 				>
 					<Save strokeWidth={1.75} size={16} />
 					<span
@@ -274,7 +290,7 @@ ${t('admin.posts.new.template.conclusionText', { defaultValue: 'Summarize the ma
 							{t('admin.posts.new.sidebar.customFields', { defaultValue: 'Custom Fields' })}
 						</h4>
 
-						{#each data.schema as field}
+						{#each data.schema as field (field.name)}
 							<label class="block">
 								<span
 									class="block text-xs sm:text-sm font-semibold text-text-main mb-1.5 flex items-center gap-1.5"
@@ -303,7 +319,7 @@ ${t('admin.posts.new.template.conclusionText', { defaultValue: 'Summarize the ma
 												>-- {t('admin.common.select', { defaultValue: 'Select' })} --</option
 											>
 										{/if}
-										{#each field.options || [] as option}
+										{#each field.options || [] as option, optIdx (option.value || option || optIdx)}
 											<option value={option.value || option}>{option.label || option}</option>
 										{/each}
 									</select>
@@ -334,7 +350,7 @@ ${t('admin.posts.new.template.conclusionText', { defaultValue: 'Summarize the ma
 					<span
 						class="block text-xs sm:text-sm font-semibold text-text-main mb-1.5 flex items-center gap-1.5"
 					>
-						<ImageIcon size={15} /> Image URL
+						<ImageIcon strokeWidth={1.75} size={15} /> Image URL
 					</span>
 					<input
 						type="text"
@@ -349,14 +365,17 @@ ${t('admin.posts.new.template.conclusionText', { defaultValue: 'Summarize the ma
 						class="relative w-full rounded-2xl border-2 border-dashed border-border-subtle hover:border-primary bg-soft-bg/50 p-6 flex flex-col items-center justify-center gap-2 transition-colors group cursor-pointer"
 					>
 						<ImageIcon
+							strokeWidth={1.75}
 							size={24}
 							class="text-text-muted group-hover:text-primary transition-colors"
 						/>
-						<span class="text-xs font-semibold text-text-main text-center">
-							{@html t('admin.posts.new.sidebar.uploadImage', {
-								defaultValue:
-									'Upload Image<br/><span class="text-[10px] font-normal text-text-muted">JPG, PNG, WebP</span>'
-							})}
+						<span class="text-xs font-semibold text-text-main text-center flex flex-col gap-0.5">
+							<span
+								>{t('admin.posts.new.sidebar.uploadImageTitle', {
+									defaultValue: 'Upload Image'
+								})}</span
+							>
+							<span class="text-[10px] font-normal text-text-muted">JPG, PNG, WebP</span>
 						</span>
 						<input
 							type="file"

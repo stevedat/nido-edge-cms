@@ -14,14 +14,7 @@
 		ExternalLink
 	} from 'lucide-svelte';
 	import { openFreeSlotModal } from '$lib/stores/freeSlot.js';
-	import {
-		t,
-		getLocale,
-		formatDate,
-		formatReadingTime,
-		localized,
-		localizedArray
-	} from '$lib/i18n/index.js';
+	import { t, formatReadingTime, localized, localizedArray } from '$lib/i18n/index.js';
 	import VideoEmbed from '$lib/components/VideoEmbed.svelte';
 	import ShareButton from '$lib/components/ShareButton.svelte';
 	import { isMasterDomain } from '$lib/utils/index.js';
@@ -30,7 +23,7 @@
 		data
 	}: {
 		data: {
-			settings: any;
+			settings: Record<string, unknown>;
 			posts: {
 				slug: string;
 				meta: { title: string; date: string; tags: string[]; thumbnail: string };
@@ -103,14 +96,10 @@
 			<h1
 				class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-text-main tracking-tight leading-[1.1] text-balance break-words"
 			>
-				{getLocale() === 'en' && data.settings?.heroTitle_en
-					? data.settings.heroTitle_en
-					: data.settings?.heroTitle || t('bento.heroTitle')}
+				{localized(data.settings, 'heroTitle') || t('bento.heroTitle')}
 			</h1>
 			<p class="text-base sm:text-xl text-text-body leading-relaxed font-normal text-balance">
-				{getLocale() === 'en' && data.settings?.heroBio_en
-					? data.settings.heroBio_en
-					: data.settings?.heroBio || t('bento.heroBio')}
+				{localized(data.settings, 'heroBio') || t('bento.heroBio')}
 			</p>
 		</div>
 
@@ -143,7 +132,7 @@
 				</button>
 			{:else}
 				<a
-					href={data.settings?.contactUrl || '/about'}
+					href={String(data.settings?.contactUrl || '/about')}
 					class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-surface border border-border-subtle text-text-main hover:bg-soft-bg font-semibold text-xs sm:text-sm transition-all active:scale-98 min-h-[44px]"
 				>
 					<span>{t('bento.contactBtn')}</span>
@@ -220,7 +209,7 @@
 						class="pt-4 border-t border-border-subtle flex flex-wrap items-center justify-between gap-3"
 					>
 						<div class="flex flex-wrap gap-1.5">
-							{#each (featuredProject.tags || []).slice(0, 4) as tag}
+							{#each (featuredProject.tags || []).slice(0, 4) as tag (tag)}
 								<span
 									class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[10px] font-semibold bg-soft-bg text-text-muted border border-border-subtle"
 								>
@@ -319,7 +308,7 @@
 				</div>
 
 				<div class="grid grid-cols-2 gap-2.5">
-					{#each techStack as tech}
+					{#each techStack as tech (tech.name)}
 						<div
 							class="p-3 rounded-xl bg-soft-bg border border-border-subtle {tech.glow} transition-colors"
 						>
@@ -394,7 +383,7 @@
 			</div>
 
 			<div class="grid gap-5 sm:grid-cols-3">
-				{#each otherProjects as project}
+				{#each otherProjects as project (project.id)}
 					<article
 						class="p-5 rounded-2xl bg-surface border border-border-subtle specular-highlight hover:border-border-strong hover:shadow-md transition-all flex flex-col justify-between space-y-4"
 					>
@@ -420,7 +409,7 @@
 						</div>
 
 						<div class="pt-3 border-t border-border-subtle flex flex-wrap gap-1">
-							{#each (localizedArray(project, 'tags') || project.tags).slice(0, 2) as tag}
+							{#each (localizedArray(project, 'tags') || project.tags).slice(0, 2) as tag (tag)}
 								<span
 									class="px-2 py-0.5 rounded text-[10px] font-medium bg-soft-bg text-text-muted border border-border-subtle"
 								>
@@ -456,7 +445,7 @@
 			</div>
 
 			<div class="grid gap-5 md:grid-cols-2">
-				{#each data.posts.slice(0, 2) as post}
+				{#each data.posts.slice(0, 2) as post (post.slug)}
 					<a
 						href={`/blog/${post.slug}`}
 						class="p-6 rounded-2xl bg-surface border border-border-subtle specular-highlight hover:border-border-strong hover:shadow-md transition-all space-y-3 block group"
@@ -509,7 +498,7 @@
 			</div>
 
 			<div class="grid gap-6 md:grid-cols-2">
-				{#each data.videos.slice(0, 2) as video}
+				{#each data.videos.slice(0, 2) as video (video.id)}
 					<div
 						class="p-4 sm:p-5 rounded-3xl bg-surface border border-border-subtle specular-highlight hover:border-border-strong hover:shadow-md transition-all space-y-3.5"
 					>

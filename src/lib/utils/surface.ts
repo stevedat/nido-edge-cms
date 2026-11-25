@@ -99,10 +99,16 @@ export const DESIGN_SYSTEM_DOCS = {
 		backgrounds: [
 			{ token: 'bg-main-bg', description: 'Page canvas (#f5f5f7 light / #000000 OLED dark)' },
 			{ token: 'bg-soft-bg', description: 'Secondary section fill & subtle hover fill' },
-			{ token: 'bg-surface', description: 'Elevated Card, Dialog, Modal, Drawer (#ffffff light / #1c1c1e dark)' }
+			{
+				token: 'bg-surface',
+				description: 'Elevated Card, Dialog, Modal, Drawer (#ffffff light / #1c1c1e dark)'
+			}
 		],
 		borders: [
-			{ token: 'border-border-subtle', description: 'Hairline border (9% light / 14% dark reflection)' },
+			{
+				token: 'border-border-subtle',
+				description: 'Hairline border (9% light / 14% dark reflection)'
+			},
 			{ token: 'border-border-strong', description: 'Emphasized or hovered border' }
 		],
 		typography: [
@@ -112,9 +118,18 @@ export const DESIGN_SYSTEM_DOCS = {
 			{ token: 'text-primary', description: 'Brand accent color (#0066cc light / #2997ff dark)' }
 		],
 		utilities: [
-			{ token: 'specular-highlight', description: 'Top-edge inner specular reflection for cards on OLED dark mode' },
-			{ token: 'island-container', description: 'Color-mixed translucent section frame with rounded-3xl border' },
-			{ token: 'touch-target', description: 'Pointer-adaptive minimum height (36px fine pointer / 44px coarse touch)' }
+			{
+				token: 'specular-highlight',
+				description: 'Top-edge inner specular reflection for cards on OLED dark mode'
+			},
+			{
+				token: 'island-container',
+				description: 'Color-mixed translucent section frame with rounded-3xl border'
+			},
+			{
+				token: 'touch-target',
+				description: 'Pointer-adaptive minimum height (36px fine pointer / 44px coarse touch)'
+			}
 		]
 	},
 	rules: [

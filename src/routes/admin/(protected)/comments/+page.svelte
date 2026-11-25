@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { MessageSquare, Trash2, ExternalLink, Clock, Mail, Loader2 } from 'lucide-svelte';
+	import { MessageSquare, Trash2, ExternalLink, Clock, Mail } from 'lucide-svelte';
 	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
 	import { t } from '$lib/i18n/index.js';
 

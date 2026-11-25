@@ -18,6 +18,8 @@ export const actions = {
 		const body = form.get('content')?.toString().trim();
 		const tagsInput = form.get('tags')?.toString() ?? '';
 		const date = form.get('date')?.toString() ?? new Date().toISOString().slice(0, 10);
+		const statusInput = form.get('status')?.toString().trim();
+		const status = statusInput === 'DRAFT' ? 'DRAFT' : 'PUBLISHED';
 		let slug = form.get('slug')?.toString().trim() ?? '';
 		let thumbnail = form.get('thumbnail')?.toString().trim();
 		const thumbnailFile = form.get('thumbnail_file');
@@ -26,7 +28,7 @@ export const actions = {
 			return fail(400, { message: serverT('admin.posts.missingInfo', locals.locale) });
 		}
 
-		slug = slug || slugify(title);
+		slug = slug ? slugify(slug) : slugify(title);
 
 		try {
 			if (thumbnailFile instanceof File && thumbnailFile.size > 0) {
@@ -45,6 +47,7 @@ export const actions = {
 				'tags',
 				'date',
 				'slug',
+				'status',
 				'thumbnail',
 				'thumbnail_file'
 			];
@@ -65,7 +68,7 @@ export const actions = {
 					excerpt: body.substring(0, 150) + '...',
 					thumbnail: thumbnail || null,
 					tags,
-					status: 'PUBLISHED',
+					status,
 					publishedAt: new Date(date).toISOString(),
 					...customFields
 				},

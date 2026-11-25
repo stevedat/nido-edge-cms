@@ -35,3 +35,18 @@ export function arrayBufferToBase64(buffer) {
 	}
 	return btoa(binary);
 }
+
+/**
+ * Decode a Base64 string (including whitespace/newlines from GitHub API) to raw binary bytes
+ * @param {string} b64
+ * @returns {Uint8Array}
+ */
+export function base64ToUint8Array(b64) {
+	const clean = b64.replace(/\s+/g, '');
+	const binary = atob(clean);
+	const bytes = new Uint8Array(binary.length);
+	for (let i = 0; i < binary.length; i++) {
+		bytes[i] = binary.charCodeAt(i);
+	}
+	return bytes;
+}

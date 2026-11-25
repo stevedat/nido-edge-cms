@@ -86,7 +86,7 @@
 
 	{#if activities.length > 0}
 		<div class="space-y-4">
-			{#each activities as activity}
+			{#each activities as activity, idx (`${activity.action}-${activity.resource}-${String(activity.createdAt)}-${idx}`)}
 				<div class="flex items-start gap-3">
 					<div
 						class="flex size-8 items-center justify-center rounded-full {getActionColor(

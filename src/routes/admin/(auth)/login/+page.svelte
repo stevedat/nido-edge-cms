@@ -24,7 +24,7 @@
 			return async ({ result, update }) => {
 				isSubmitting = false;
 				if (result.type === 'failure') {
-					const data = result.data as Record<string, any> | undefined;
+					const data = result.data as Record<string, unknown> | undefined;
 					localErrorMessage =
 						typeof data?.message === 'string'
 							? data.message

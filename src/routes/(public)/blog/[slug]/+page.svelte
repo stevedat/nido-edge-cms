@@ -5,7 +5,39 @@
 	import { ArrowLeft } from 'lucide-svelte';
 	import { page } from '$app/stores';
 
-	let { data }: { data: any } = $props();
+	interface BlogArticlePageData {
+		settings: Record<string, unknown>;
+		post: {
+			slug: string;
+			title?: string;
+			title_en?: string;
+			excerpt?: string;
+			excerpt_en?: string;
+			thumbnail?: string;
+			html: string;
+			html_en?: string | null;
+			meta: { title: string; title_en?: string; date: string; tags: string[]; thumbnail: string };
+		};
+		comments?: {
+			id: string;
+			name: string;
+			email?: string;
+			content: string;
+			createdAt: string;
+			parentId?: string;
+			replyToName?: string;
+			isAuthor?: boolean;
+		}[];
+		antiSpamChallenge?: {
+			challenge: string;
+			token: string;
+			salt: string;
+			difficulty: string;
+			timestamp: number;
+		} | null;
+	}
+
+	let { data }: { data: BlogArticlePageData } = $props();
 
 	function formatDate(dateString: string) {
 		const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -65,6 +97,7 @@
 		>
 			<!-- Drop-cap effect using global style wrapper -->
 			<div class="drop-cap-article">
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -- sanitized via sanitizeHtml() in +page.server.js -->
 				{@html localized(data.post, 'html')}
 			</div>
 		</div>

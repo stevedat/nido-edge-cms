@@ -44,7 +44,9 @@
 					text: description || title,
 					url: fullUrl
 				});
-			} catch (e) {}
+			} catch {
+				// User cancelled native share sheet
+			}
 		}
 	}
 

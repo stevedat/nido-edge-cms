@@ -56,9 +56,7 @@ export const GET = async ({ locals, url }) => {
 	if (Array.isArray(projects) && projects.length > 0) {
 		lines.push('## Featured Projects');
 		for (const project of projects.slice(0, 10)) {
-			lines.push(
-				`- **${project.title}**${project.description ? `: ${project.description}` : ''}`
-			);
+			lines.push(`- **${project.title}**${project.description ? `: ${project.description}` : ''}`);
 		}
 		lines.push('');
 	}

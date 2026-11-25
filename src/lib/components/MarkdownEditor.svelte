@@ -78,7 +78,10 @@
 			content: value,
 			onUpdate: ({ editor: currentEditor }) => {
 				// tiptap-markdown gives us the getMarkdown() function!
-				const markdownOutput = (currentEditor.storage as any).markdown.getMarkdown();
+				const storage = currentEditor.storage as unknown as {
+					markdown?: { getMarkdown: () => string };
+				};
+				const markdownOutput = storage.markdown?.getMarkdown() ?? '';
 				value = markdownOutput;
 				if (showWordCount) {
 					updateWordCount(currentEditor.getText());
@@ -86,7 +89,9 @@
 				if (autosave && markdownOutput && typeof window !== 'undefined') {
 					try {
 						localStorage.setItem(autosaveKey, markdownOutput);
-					} catch (e) {}
+					} catch {
+						// Ignore storage quota or private-mode errors
+					}
 				}
 			},
 			onTransaction: () => {
@@ -212,10 +217,10 @@
 					type="button"
 					onclick={addLink}
 					class:is-active={editor?.isActive('link')}
-					title={t('admin.editor.link')}><LinkIcon size={16} /></button
+					title={t('admin.editor.link')}><LinkIcon strokeWidth={1.75} size={16} /></button
 				>
 				<button type="button" onclick={addImage} title={t('admin.editor.image')}
-					><ImageIcon size={16} /></button
+					><ImageIcon strokeWidth={1.75} size={16} /></button
 				>
 			</div>
 

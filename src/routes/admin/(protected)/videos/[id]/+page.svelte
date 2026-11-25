@@ -7,7 +7,10 @@
 	let {
 		data,
 		form
-	}: { data: any; form?: { message?: string; details?: string; success?: boolean } } = $props();
+	}: {
+		data: { sha?: string; video: { title: string; url: string; platform: string } };
+		form?: { message?: string; details?: string; success?: boolean };
+	} = $props();
 
 	let isSubmitting = $state(false);
 	let isDeleting = $state(false);
@@ -106,7 +109,7 @@
 					<span
 						class="block text-xs sm:text-sm font-bold text-text-main mb-2 flex items-center gap-2"
 					>
-						<LinkIcon size={16} class="text-primary" />
+						<LinkIcon strokeWidth={1.75} size={16} class="text-primary" />
 						{t('admin.videos.videoUrl', { defaultValue: 'Video URL' })}
 						<span class="text-red-500">*</span>
 					</span>

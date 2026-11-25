@@ -9,9 +9,7 @@
 		form
 	}: {
 		data: {
-			projectsJson: string;
 			projects: { id?: string; title: string; description: string; link: string; tags: string[] }[];
-			sha: string | null;
 		};
 		form?: { message?: string; details?: string; success?: boolean };
 	} = $props();
@@ -120,7 +118,7 @@
 						</tr>
 					</thead>
 					<tbody class="divide-y divide-border-subtle">
-						{#each data.projects as project}
+						{#each data.projects as project, idx (project.id ?? `${project.title}-${idx}`)}
 							<tr class="group hover:bg-soft-bg/40 transition-colors">
 								<td class="px-6 py-4">
 									<div class="flex flex-col">
@@ -147,7 +145,7 @@
 								</td>
 								<td class="px-6 py-4">
 									<div class="flex flex-wrap gap-1.5">
-										{#each project.tags || [] as tag}
+										{#each project.tags || [] as tag, tagIdx (`${tag}-${tagIdx}`)}
 											<span
 												class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-semibold bg-soft-bg text-text-muted border border-border-subtle"
 											>

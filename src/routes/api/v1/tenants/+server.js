@@ -1,5 +1,7 @@
 // @ts-check
+import { env } from '$env/dynamic/private';
 import { core } from '$lib/server/core.js';
+import { constantTimeEqual, sanitizeTenantDomain } from '$lib/core/index.js';
 import { jsonOk, jsonError, corsPreflight } from '$lib/server/api.js';
 import { hashPassword, generateRandomPassword } from '$lib/server/auth.js';
 
@@ -14,41 +16,44 @@ export async function OPTIONS() {
  *
  * @type {import('./$types').RequestHandler}
  */
-export async function POST({ request }) {
-	const authHeader = request.headers.get('authorization');
-	const masterKey = process.env.MASTER_API_KEY || process.env.NIDO_MASTER_KEY;
+export async function POST({ request, platform }) {
+	const authHeader = request.headers.get('authorization') || '';
+	const platformEnv = /** @type {any} */ (platform)?.env;
+	const masterKey =
+		platformEnv?.MASTER_API_KEY ||
+		platformEnv?.NIDO_MASTER_KEY ||
+		env.MASTER_API_KEY ||
+		env.NIDO_MASTER_KEY ||
+		(typeof process !== 'undefined'
+			? process.env?.MASTER_API_KEY || process.env?.NIDO_MASTER_KEY
+			: undefined);
 
 	if (!masterKey) {
 		return jsonError('Server is not configured with a MASTER_API_KEY for auto-provisioning.', 500);
 	}
 
-	if (!authHeader || authHeader !== `Bearer ${masterKey}`) {
+	if (!authHeader || !constantTimeEqual(authHeader, `Bearer ${masterKey}`)) {
 		return jsonError('Unauthorized. Invalid or missing Bearer token.', 401);
 	}
 
 	try {
 		/** @type {any} */
 		const body = await request.json();
-		const rawDomain = body.domain || '';
+		const rawDomain = typeof body?.domain === 'string' ? body.domain : '';
 
-		// Clean and normalize domain name
-		const domain = rawDomain
+		// Clean and normalize domain name with strict traversal guard
+		const stripped = rawDomain
 			.trim()
 			.toLowerCase()
 			.replace(/^https?:\/\//, '')
-			.replace(/\/.*$/, '')
-			.replace(/[^a-z0-9.-]/g, '');
+			.replace(/\/.*$/, '');
+		const domain = sanitizeTenantDomain(stripped);
 
-		if (!domain || domain.length < 3) {
+		if (domain === 'default' || domain.length < 3 || stripped.includes('..')) {
 			return jsonError(
 				'Please provide a valid domain name (minimum 3 characters, e.g. my-tenant.com)',
 				400
 			);
-		}
-
-		// Prevent overriding 'default' or existing domains
-		if (domain === 'default' || domain === 'reset') {
-			return jsonError(`Domain "${domain}" is reserved.`, 400);
 		}
 
 		const settingsCheck = await core.storage.read(`src/content/${domain}/settings.json`);
@@ -159,6 +164,7 @@ export async function POST({ request }) {
 				`feat(tenant): auto-provision space ${domain} [skip ci]`
 			);
 		}
+		core.content.invalidateCache(domain);
 
 		return jsonOk(
 			{

@@ -1,10 +1,10 @@
 <script>
-	import { Wand2, Key, Play, Terminal, ArrowRight, LayoutTemplate } from 'lucide-svelte';
+	import { Wand2, ArrowRight, LayoutTemplate } from 'lucide-svelte';
 	import { t } from '$lib/i18n/index';
 </script>
 
 <svelte:head>
-	<title>{t('onboarding.title') || 'Khởi tạo Cỗ Máy | Nido Edge CMS'}</title>
+	<title>{t('onboarding.title')} | Nido Edge CMS</title>
 </svelte:head>
 
 <div class="min-h-screen bg-main-bg text-text-main font-sans selection:bg-primary/30">
@@ -87,7 +87,11 @@
 					>
 						1
 					</div>
-					<p>{@html t('onboarding.step1')}</p>
+					<p>
+						{t('onboarding.step1Prefix')}<strong class="text-text-main"
+							>{t('onboarding.step1Highlight')}</strong
+						>{t('onboarding.step1Suffix')}
+					</p>
 				</div>
 				<div class="flex items-start gap-3">
 					<div

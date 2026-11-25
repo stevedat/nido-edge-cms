@@ -7,7 +7,7 @@
 	import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
 	import FreeSlotModal from '$lib/components/FreeSlotModal.svelte';
 	import { openFreeSlotModal } from '$lib/stores/freeSlot.js';
-	import { initLocale, t, getLocale, localized } from '$lib/i18n/index.js';
+	import { initLocale, t, localized } from '$lib/i18n/index.js';
 	import {
 		Github,
 		Mail,
@@ -23,15 +23,42 @@
 		Phone,
 		Lock
 	} from 'lucide-svelte';
+	import type { Snippet } from 'svelte';
 	import { SITE_URL, SITE_NAME, TWITTER_HANDLE } from '$lib/config.js';
 	import { isMasterDomain } from '$lib/utils/index.js';
+
+	interface LayoutSettings {
+		siteName?: string;
+		siteTitle?: string;
+		siteDescription?: string;
+		footerCopyright?: string;
+		themePreset?: string;
+		combineBlogAndVideos?: boolean;
+		showProjects?: boolean;
+		showBlog?: boolean;
+		showVideos?: boolean;
+		showFreeSlot?: boolean;
+		contactEmail?: string;
+		contactUrl?: string;
+		githubUrl?: string;
+		linkedinUrl?: string;
+		facebookUrl?: string;
+		youtubeUrl?: string;
+		phone?: string;
+		headerCtaAction?: string;
+		headerCtaUrl?: string;
+		companyName?: string;
+		taxId?: string;
+		officeAddress?: string;
+		[key: string]: unknown;
+	}
 
 	let {
 		children,
 		data
 	}: {
-		children: () => any;
-		data: { isAuthenticated: boolean; settings: any; locale?: string; domain?: string };
+		children: Snippet;
+		data: { isAuthenticated: boolean; settings: LayoutSettings; locale?: string; domain?: string };
 	} = $props();
 
 	// Initialize i18n from server-detected locale
@@ -39,30 +66,14 @@
 
 	// Dynamic navigation labels with tenant custom override & i18n support
 	let navProjectsLabel = $derived(
-		getLocale() === 'en' && data.settings?.navProjectsLabel_en
-			? data.settings.navProjectsLabel_en
-			: data.settings?.navProjectsLabel || t('nav.projects')
+		localized(data.settings, 'navProjectsLabel') || t('nav.projects')
 	);
 	let navBlogLabel = $derived(
-		getLocale() === 'en' && data.settings?.navBlogLabel_en
-			? data.settings.navBlogLabel_en
-			: data.settings?.navBlogLabel ||
-					(data.settings?.combineBlogAndVideos
-						? getLocale() === 'en'
-							? 'Insights'
-							: 'Chia sẻ'
-						: t('nav.blog'))
+		localized(data.settings, 'navBlogLabel') ||
+			(data.settings?.combineBlogAndVideos ? t('nav.insights') : t('nav.blog'))
 	);
-	let navVideosLabel = $derived(
-		getLocale() === 'en' && data.settings?.navVideosLabel_en
-			? data.settings.navVideosLabel_en
-			: data.settings?.navVideosLabel || t('nav.videos')
-	);
-	let navAboutLabel = $derived(
-		getLocale() === 'en' && data.settings?.navAboutLabel_en
-			? data.settings.navAboutLabel_en
-			: data.settings?.navAboutLabel || t('nav.about')
-	);
+	let navVideosLabel = $derived(localized(data.settings, 'navVideosLabel') || t('nav.videos'));
+	let navAboutLabel = $derived(localized(data.settings, 'navAboutLabel') || t('nav.about'));
 
 	let isCombinedInsights = $derived(data.settings?.combineBlogAndVideos === true);
 
@@ -91,10 +102,8 @@
 	let isMaster = $derived(isMasterDomain(data.domain) && data.settings?.showFreeSlot !== false);
 
 	let headerCtaText = $derived(
-		getLocale() === 'en' && data.settings?.headerCtaText_en
-			? data.settings.headerCtaText_en
-			: data.settings?.headerCtaText ||
-					(isMaster ? t('nav.freeSlotCTA') : getLocale() === 'en' ? 'Contact' : 'Liên hệ')
+		localized(data.settings, 'headerCtaText') ||
+			(isMaster ? t('nav.freeSlotCTA') : t('nav.contact'))
 	);
 	let headerCtaAction = $derived(data.settings?.headerCtaAction || (isMaster ? 'modal' : 'link'));
 	let headerCtaUrl = $derived(data.settings?.headerCtaUrl || contactUrl);
@@ -117,7 +126,7 @@
 					{
 						id: 'phone',
 						label: phone,
-						href: `tel:${phone.replace(/[\s\-\(\)]/g, '')}`,
+						href: `tel:${phone.replace(/[\s\-()]/g, '')}`,
 						icon: Phone,
 						external: false
 					}
@@ -204,9 +213,7 @@
 		name="description"
 		content={localized(data.settings, 'siteDescription') ||
 			data.settings?.siteDescription ||
-			(getLocale() === 'en'
-				? 'Explore EdTech & FinTech products, engineering articles, and pragmatic insights.'
-				: 'Khám phá các sản phẩm EdTech, FinTech, bài viết chuyên sâu và video chia sẻ kinh nghiệm thực tế.')}
+			t('common.defaultMetaDesc')}
 	/>
 
 	<!-- Canonical & OpenGraph with Official Production Domain -->
@@ -307,7 +314,7 @@
 					class="hidden md:flex items-center gap-1.5 sm:gap-2 text-sm font-medium"
 					aria-label="Main navigation"
 				>
-					{#each links as link}
+					{#each links as link (link.href)}
 						{@const active = isLinkActive(link.href)}
 						<a
 							href={link.href}
@@ -381,7 +388,7 @@
 					<p class="px-3 text-[10px] font-bold uppercase tracking-wider text-text-muted mb-2">
 						{t('nav.navigation')}
 					</p>
-					{#each links as link}
+					{#each links as link (link.href)}
 						{@const active = isLinkActive(link.href)}
 						<a
 							href={link.href}
@@ -463,7 +470,7 @@
 							<div>
 								<h4 class="text-xs font-bold text-text-main">{headerCtaText}</h4>
 								<p class="text-[11px] text-text-muted">
-									{data.settings?.siteName || 'Liên hệ tư vấn trực tiếp'}
+									{data.settings?.siteName || t('common.directConsultation')}
 								</p>
 							</div>
 						</div>
@@ -504,7 +511,7 @@
 						class="pt-2 border-t border-border-subtle flex flex-wrap items-center justify-between gap-2 text-xs text-text-muted"
 					>
 						<div class="flex flex-wrap items-center gap-3">
-							{#each socialLinks as item}
+							{#each socialLinks as item (item.id)}
 								{@const Icon = item.icon}
 								<a
 									href={item.href}
@@ -593,7 +600,7 @@
 				<div
 					class="flex items-center flex-wrap justify-center md:justify-end gap-3 sm:gap-4 text-xs font-medium"
 				>
-					{#each socialLinks as item}
+					{#each socialLinks as item (item.id)}
 						{@const Icon = item.icon}
 						<a
 							href={item.href}

@@ -15,7 +15,18 @@
 	let {
 		data,
 		form
-	}: { data: any; form?: { message?: string; details?: string; success?: boolean } } = $props();
+	}: {
+		data: {
+			sha?: string;
+			project: {
+				title: string;
+				description: string;
+				link?: string;
+				tags?: string[] | string;
+			};
+		};
+		form?: { message?: string; details?: string; success?: boolean };
+	} = $props();
 
 	let isSubmitting = $state(false);
 	let isDeleting = $state(false);
@@ -164,7 +175,7 @@
 					<span
 						class="block text-xs sm:text-sm font-bold text-text-main mb-2 flex items-center gap-2"
 					>
-						<LinkIcon size={16} />
+						<LinkIcon strokeWidth={1.75} size={16} />
 						{t('admin.projects.demoLink', { defaultValue: 'Demo / Website Link' })}
 					</span>
 					<input

@@ -23,7 +23,9 @@
 				const data = await res.json();
 				systemPrompt = data.systemPrompt;
 			}
-		} catch (e) {}
+		} catch {
+			// Ignore initial prompt prefetch errors
+		}
 	});
 
 	async function copyPrompt() {

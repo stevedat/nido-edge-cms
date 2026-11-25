@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Share2, Check, Copy, Linkedin } from 'lucide-svelte';
+	import { Share2, Check, Copy } from 'lucide-svelte';
 	import { t } from '$lib/i18n/index.js';
 	import { SITE_URL } from '$lib/config.js';
 	import { onMount } from 'svelte';
@@ -77,7 +77,7 @@
 				});
 				isOpen = false;
 				return;
-			} catch (e) {
+			} catch {
 				// User cancelled or share failed, fallback to popover
 			}
 		}
@@ -105,7 +105,6 @@
 
 	let encodedUrl = $derived(encodeURIComponent(fullUrl));
 	let encodedTitle = $derived(encodeURIComponent(title));
-	let encodedText = $derived(encodeURIComponent(description || title));
 
 	let shareLinks = $derived([
 		{
@@ -196,7 +195,7 @@
 
 			<!-- Social Platform Direct Links -->
 			<div class="grid grid-cols-2 gap-1 pt-1">
-				{#each shareLinks as item}
+				{#each shareLinks as item (item.id)}
 					<button
 						type="button"
 						onclick={() => openSocialWindow(item.url)}

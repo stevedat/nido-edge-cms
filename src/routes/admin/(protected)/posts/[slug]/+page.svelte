@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { slugify } from '$lib/utils/index.js';
 	import MarkdownEditor from '$lib/components/MarkdownEditor.svelte';
 	import {
 		ArrowLeft,
@@ -14,6 +13,15 @@
 	} from 'lucide-svelte';
 	import { t } from '$lib/i18n/index.js';
 
+	interface SchemaField {
+		name: string;
+		label?: string;
+		type?: string;
+		required?: boolean;
+		placeholder?: string;
+		options?: (string | { value?: string; label?: string })[];
+	}
+
 	let {
 		data,
 		form
@@ -22,25 +30,26 @@
 			post: {
 				slug: string;
 				title: string;
+				status?: string;
 				date: string;
 				tags: string[];
 				thumbnail: string;
 				content: string;
-				[key: string]: any;
+				[key: string]: unknown;
 			};
-			schema?: any;
+			schema?: SchemaField[] | null;
 		};
 		form?: { message?: string; details?: string };
 	} = $props();
 
 	let title = $state(data.post.title);
 	let slug = $state(data.post.slug);
+	let status = $state(data.post.status || 'PUBLISHED');
 	let content = $state(data.post.content);
 	let isSubmitting = $state(false);
 
 	const onTitle = (value: string) => {
 		title = value;
-		slug = slugify(value) || data.post.slug;
 	};
 </script>
 
@@ -178,10 +187,25 @@
 				>
 					{t('admin.posts.edit.sidebar.update', { defaultValue: 'Update' })}
 				</h3>
+				<label class="block">
+					<span class="block text-xs font-semibold text-text-muted mb-1.5">
+						{t('admin.posts.statusLabel', { defaultValue: 'Status' })}
+					</span>
+					<select
+						name="status"
+						bind:value={status}
+						class="w-full min-h-[44px] rounded-xl bg-soft-bg border border-border-subtle px-3.5 py-2.5 text-text-main focus:outline-none focus:border-primary text-xs sm:text-sm font-medium"
+					>
+						<option value="PUBLISHED"
+							>{t('admin.posts.statusPublished', { defaultValue: 'Published' })}</option
+						>
+						<option value="DRAFT">{t('admin.posts.statusDraft', { defaultValue: 'Draft' })}</option>
+					</select>
+				</label>
 				<button
 					type="submit"
 					disabled={isSubmitting || !title || !content}
-					class="w-full flex items-center justify-center gap-2 rounded-2xl bg-primary hover:bg-primary-light disabled:opacity-50 disabled:cursor-not-allowed py-3 px-4 text-xs sm:text-sm font-bold text-white transition-all shadow-sm cursor-pointer"
+					class="w-full min-h-[44px] flex items-center justify-center gap-2 rounded-2xl bg-primary hover:bg-primary-light disabled:opacity-50 disabled:cursor-not-allowed py-3 px-4 text-xs sm:text-sm font-bold text-white transition-all active:scale-98 shadow-sm cursor-pointer"
 				>
 					<Save strokeWidth={1.75} size={16} />
 					<span
@@ -252,13 +276,13 @@
 				</label>
 
 				<!-- Dynamic Schema Fields -->
-				{#if /** @type {any} */ (data).schema && Array.isArray(/** @type {any} */ (data).schema) && /** @type {any} */ (data).schema.length > 0}
+				{#if data.schema && Array.isArray(data.schema) && data.schema.length > 0}
 					<div class="pt-4 mt-4 border-t border-border-subtle space-y-4">
 						<h4 class="text-xs sm:text-sm font-bold text-text-muted uppercase tracking-wider mb-2">
 							{t('admin.posts.edit.sidebar.customFields', { defaultValue: 'Custom Fields' })}
 						</h4>
 
-						{#each data.schema as field}
+						{#each data.schema as field (field.name)}
 							<label class="block">
 								<span
 									class="block text-xs sm:text-sm font-semibold text-text-main mb-1.5 flex items-center gap-1.5"
@@ -274,14 +298,14 @@
 										name={field.name}
 										required={field.required}
 										placeholder={field.placeholder || ''}
-										value={/** @type {any} */ (data.post)[field.name] || ''}
+										value={String(data.post[field.name] ?? '')}
 										class="w-full rounded-xl bg-soft-bg border border-border-subtle px-3.5 py-2.5 text-text-main focus:outline-none focus:border-primary text-xs sm:text-sm min-h-[80px]"
 									></textarea>
 								{:else if field.type === 'select'}
 									<select
 										name={field.name}
 										required={field.required}
-										value={/** @type {any} */ (data.post)[field.name] || ''}
+										value={String(data.post[field.name] ?? '')}
 										class="w-full rounded-xl bg-soft-bg border border-border-subtle px-3.5 py-2.5 text-text-main focus:outline-none focus:border-primary text-xs sm:text-sm"
 									>
 										{#if !field.required}
@@ -289,8 +313,12 @@
 												>-- {t('admin.common.select', { defaultValue: 'Select' })} --</option
 											>
 										{/if}
-										{#each field.options || [] as option}
-											<option value={option.value || option}>{option.label || option}</option>
+										{#each field.options || [] as option, optIdx (typeof option === 'string' ? option : (option.value ?? optIdx))}
+											<option value={typeof option === 'string' ? option : (option.value ?? '')}
+												>{typeof option === 'string'
+													? option
+													: (option.label ?? option.value ?? '')}</option
+											>
 										{/each}
 									</select>
 								{:else}
@@ -299,7 +327,7 @@
 										name={field.name}
 										required={field.required}
 										placeholder={field.placeholder || ''}
-										value={/** @type {any} */ (data.post)[field.name] || ''}
+										value={String(data.post[field.name] ?? '')}
 										class="w-full rounded-xl bg-soft-bg border border-border-subtle px-3.5 py-2.5 text-text-main focus:outline-none focus:border-primary text-xs sm:text-sm"
 									/>
 								{/if}
@@ -321,7 +349,7 @@
 					<span
 						class="block text-xs sm:text-sm font-semibold text-text-main mb-1.5 flex items-center gap-1.5"
 					>
-						<ImageIcon size={15} /> Image URL
+						<ImageIcon strokeWidth={1.75} size={15} /> Image URL
 					</span>
 					<input
 						type="text"
@@ -337,14 +365,17 @@
 						class="relative w-full rounded-2xl border-2 border-dashed border-border-subtle hover:border-primary bg-soft-bg/50 p-6 flex flex-col items-center justify-center gap-2 transition-colors group cursor-pointer"
 					>
 						<ImageIcon
+							strokeWidth={1.75}
 							size={24}
 							class="text-text-muted group-hover:text-primary transition-colors"
 						/>
-						<span class="text-xs font-semibold text-text-main text-center">
-							{@html t('admin.posts.edit.sidebar.uploadImage', {
-								defaultValue:
-									'Upload New Image<br/><span class="text-[10px] font-normal text-text-muted">JPG, PNG, WebP</span>'
-							})}
+						<span class="text-xs font-semibold text-text-main text-center flex flex-col gap-0.5">
+							<span
+								>{t('admin.posts.edit.sidebar.uploadImageTitle', {
+									defaultValue: 'Upload New Image'
+								})}</span
+							>
+							<span class="text-[10px] font-normal text-text-muted">JPG, PNG, WebP</span>
 						</span>
 						<input
 							type="file"

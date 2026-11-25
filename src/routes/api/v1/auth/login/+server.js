@@ -1,5 +1,6 @@
 // @ts-check
 import { core } from '$lib/server/core.js';
+import { sanitizeTenantDomain } from '$lib/core/index.js';
 import { jsonOk, jsonError, corsPreflight } from '$lib/server/api.js';
 
 /**
@@ -37,12 +38,13 @@ export async function POST({ request, url }) {
 	// 3. Multi-tenant target resolution (body -> header -> query -> host -> default)
 	const headerTenant = request.headers.get('x-tenant-domain');
 	const queryTenant = url.searchParams.get('tenant');
-	const targetTenant =
+	const rawTargetTenant =
 		(body.tenant && typeof body.tenant === 'string' ? body.tenant.trim() : null) ||
 		(headerTenant ? headerTenant.trim() : null) ||
 		(queryTenant ? queryTenant.trim() : null) ||
 		core.tenant.resolveTenant(request) ||
 		'default';
+	const targetTenant = sanitizeTenantDomain(rawTargetTenant);
 
 	// 4. Retrieve tenant settings for password hash verification
 	let tenantSettings = null;
@@ -53,43 +55,48 @@ export async function POST({ request, url }) {
 	}
 
 	// 5. Authenticate credentials via core auth service
-	const identifier = body.identifier || body.username || body.email?.split('@')[0] || 'admin';
 	const authResult = await core.auth.authenticate(
 		{
 			password,
-			identifier,
 			domain: targetTenant
 		},
 		tenantSettings
 	);
 
-	if (!authResult.success) {
+	if (!authResult.success || !authResult.user) {
 		return jsonError('Invalid credentials', 401);
 	}
 
-	// 6. Construct unified user profile
+	// 6. Construct unified user profile strictly bound to authenticated principal
+	// Never trust caller-supplied identifier/username to prevent cross-tenant impersonation
+	const isMasterAdmin = authResult.user.id === 'admin';
+	const boundTenant = isMasterAdmin ? targetTenant : targetTenant;
 	const user = {
-		id:
-			authResult.user?.id ||
-			(targetTenant === 'default' ? 'tenant_default' : `tenant_${targetTenant}`),
+		id: isMasterAdmin ? 'admin' : `tenant_${boundTenant}`,
 		email:
-			authResult.user?.email && !authResult.user.email.endsWith('.local')
+			authResult.user.email && !authResult.user.email.endsWith('.local')
 				? authResult.user.email
-				: `${identifier}@${targetTenant}`,
-		username: identifier,
-		name: authResult.user?.name || tenantSettings?.siteName || 'Administrator',
+				: isMasterAdmin
+					? 'admin@system.local'
+					: `admin@${boundTenant}`,
+		username: isMasterAdmin ? 'admin' : boundTenant,
+		name: authResult.user.name || tenantSettings?.siteName || 'Administrator',
 		role: 'ADMIN',
-		tenant: targetTenant
+		tenant: boundTenant,
+		isActive: true
 	};
 
-	// 7. Sign JWT containing all standard claims: sub, email, username, role, tenant, exp
+	// 7. Sign JWT containing both id and sub claims for full compatibility across /admin and /api/v1
 	const token = await core.auth.signToken(
 		{
+			id: user.id,
 			sub: user.id,
 			email: user.email,
 			username: user.username,
+			name: user.name,
 			role: user.role,
-			tenant: targetTenant
+			tenant: user.tenant,
+			isActive: true
 		},
 		'24h'
 	);
